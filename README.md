@@ -227,5 +227,4 @@ Future:
 
 ## Author
 
-Zheng Zhenghao
-University of Sydney
+Zheng Sihan
