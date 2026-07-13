@@ -1,4 +1,7 @@
 import re
+import time
+
+from agents.reader_result import ReaderResult
 
 
 class ReaderAgent:
@@ -8,6 +11,8 @@ class ReaderAgent:
         abstract: str,
         extracted_text: str,
     ) -> dict:
+        start_time = time.perf_counter()
+
         clean_abstract = self._clean_text(abstract)
         clean_text = self._clean_text(extracted_text)
 
@@ -48,9 +53,10 @@ class ReaderAgent:
             (
                 "dataset",
                 "benchmark",
-                "simulation environment",
-                "real-world office",
+                "simulation",
                 "robotic platform",
+                "real-world",
+                "office environment",
             ),
             limit=3,
         )
@@ -77,26 +83,28 @@ class ReaderAgent:
                 "restricted",
                 "cannot",
                 "fails",
-                "remains to be",
+                "remain",
             ),
             limit=2,
         )
 
-        return {
-            "title": title,
-            "research_problem": research_problem,
-            "methodology": methodology,
-            "datasets": (
+        elapsed = time.perf_counter() - start_time
+
+        result = ReaderResult(
+            title=title,
+            research_problem=research_problem,
+            methodology=methodology,
+            datasets=(
                 " ".join(dataset_sentences)
                 if dataset_sentences
                 else "No dataset or experimental environment was identified."
             ),
-            "main_contributions": (
+            main_contributions=(
                 contribution_sentences
                 if contribution_sentences
                 else ["No explicit contribution statement was identified."]
             ),
-            "limitations": (
+            limitations=(
                 " ".join(limitation_sentences)
                 if limitation_sentences
                 else (
@@ -104,9 +112,18 @@ class ReaderAgent:
                     "A complete-paper or LLM-based analysis may be required."
                 )
             ),
-            "abstract": clean_abstract,
-            "text_preview": clean_text[:1500],
-        }
+            model_name="rule-based-reader-v1",
+            elapsed_seconds=elapsed,
+            input_tokens=0,
+            output_tokens=0,
+            estimated_cost_usd=0.0,
+            metadata={
+                "abstract": clean_abstract,
+                "text_preview": clean_text[:1500],
+            },
+        )
+
+        return result.to_dict()
 
     @staticmethod
     def _clean_text(text: str) -> str:
@@ -127,7 +144,7 @@ class ReaderAgent:
 
         sentences = re.split(r"(?<=[.!?])\s+", text)
 
-        cleaned_sentences = []
+        cleaned = []
 
         for sentence in sentences:
             sentence = sentence.strip()
@@ -135,15 +152,15 @@ class ReaderAgent:
             if len(sentence) < 35:
                 continue
 
-            if sentence.startswith("TABLE "):
+            if sentence.startswith("TABLE"):
                 continue
 
             if sentence.startswith("--- Page"):
                 continue
 
-            cleaned_sentences.append(sentence)
+            cleaned.append(sentence)
 
-        return cleaned_sentences
+        return cleaned
 
     @staticmethod
     def _find_first_match(
@@ -151,10 +168,11 @@ class ReaderAgent:
         keywords: tuple[str, ...],
         fallback: str,
     ) -> str:
-        for sentence in sentences:
-            lower_sentence = sentence.lower()
 
-            if any(keyword.lower() in lower_sentence for keyword in keywords):
+        for sentence in sentences:
+            lower = sentence.lower()
+
+            if any(keyword in lower for keyword in keywords):
                 return sentence
 
         return fallback
@@ -165,34 +183,27 @@ class ReaderAgent:
         keywords: tuple[str, ...],
         limit: int,
     ) -> list[str]:
+
         results = []
-        normalized_results = set()
+        seen = set()
 
         for sentence in sentences:
-            lower_sentence = sentence.lower()
+            lower = sentence.lower()
 
-            if not any(
-                keyword.lower() in lower_sentence
-                for keyword in keywords
-            ):
+            if not any(keyword in lower for keyword in keywords):
                 continue
 
             normalized = re.sub(
-                r"[^a-z0-9]+",
+                r"[^a-z0-9]",
                 "",
-                lower_sentence,
+                lower,
             )
 
-            duplicate = any(
-                normalized in existing or existing in normalized
-                for existing in normalized_results
-            )
-
-            if duplicate:
+            if normalized in seen:
                 continue
 
+            seen.add(normalized)
             results.append(sentence)
-            normalized_results.add(normalized)
 
             if len(results) >= limit:
                 break
