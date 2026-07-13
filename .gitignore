@@ -15,3 +15,6 @@ venv/
 
 # macOS
 .DS_Store
+
+# Downloaded papers
+data/papers/
