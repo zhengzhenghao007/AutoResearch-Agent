@@ -44,6 +44,9 @@ def main() -> None:
     analysis = result["analysis"]
 
     if analysis is not None:
+        print(f"Reader: {analysis['model_name']}")
+        print(f"Elapsed Time: {analysis['elapsed_seconds']:.6f} seconds")
+        print(f"Estimated Cost: ${analysis['estimated_cost_usd']:.6f}")
         print(f"Research Problem: {analysis['research_problem']}")
         print(f"Methodology: {analysis['methodology']}")
         print(f"Datasets: {analysis['datasets']}")
@@ -52,7 +55,22 @@ def main() -> None:
         print("\nMain Contributions:")
 
         for contribution in analysis["main_contributions"]:
-            print(f"- {contribution}")
+            print(f"* {contribution}")
+
+    print("\nReview Result:")
+
+    review = result["review"]
+
+    if review is not None:
+        print(f"Approved: {review['approved']}")
+        print(f"Score: {review['score']:.2f}")
+        print(f"Feedback: {review['feedback']}")
+
+        if review["issues"]:
+            print("\nDetected Issues:")
+
+            for issue in review["issues"]:
+                print(f"* {issue}")
 
 
 if __name__ == "__main__":

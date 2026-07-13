@@ -3,6 +3,7 @@ from pathlib import Path
 from agents.planner import PlannerAgent
 from agents.reader import ReaderAgent
 from agents.researcher import ResearcherAgent
+from agents.reviewer import ReviewerAgent
 from tools.pdf_reader import download_pdf, extract_text_from_pdf
 
 
@@ -11,6 +12,7 @@ class ResearchWorkflow:
         self.planner = PlannerAgent()
         self.researcher = ResearcherAgent()
         self.reader = ReaderAgent()
+        self.reviewer = ReviewerAgent()
 
     @staticmethod
     def create_safe_filename(title: str) -> str:
@@ -35,11 +37,9 @@ class ResearchWorkflow:
         max_pages: int = 5,
     ) -> dict:
         print("Creating research plan...")
-
         plan = self.planner.plan(topic)
 
         print("Searching arXiv papers...")
-
         papers = self.researcher.search_papers(
             research_topic=topic,
             max_results=max_results,
@@ -53,6 +53,7 @@ class ResearchWorkflow:
             "pdf_path": None,
             "extracted_text": "",
             "analysis": None,
+            "review": None,
         }
 
         if not papers:
@@ -83,9 +84,14 @@ class ResearchWorkflow:
             extracted_text=extracted_text,
         )
 
+        print("Reviewing analysis...")
+
+        review = self.reviewer.review(analysis)
+
         result["selected_paper"] = selected_paper
         result["pdf_path"] = str(Path(pdf_path))
         result["extracted_text"] = extracted_text
         result["analysis"] = analysis
+        result["review"] = review
 
         return result
