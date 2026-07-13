@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from agents.planner import PlannerAgent
+from agents.reader import ReaderAgent
 from agents.researcher import ResearcherAgent
 from tools.pdf_reader import download_pdf, extract_text_from_pdf
 
@@ -9,6 +10,7 @@ class ResearchWorkflow:
     def __init__(self) -> None:
         self.planner = PlannerAgent()
         self.researcher = ResearcherAgent()
+        self.reader = ReaderAgent()
 
     @staticmethod
     def create_safe_filename(title: str) -> str:
@@ -50,6 +52,7 @@ class ResearchWorkflow:
             "selected_paper": None,
             "pdf_path": None,
             "extracted_text": "",
+            "analysis": None,
         }
 
         if not papers:
@@ -72,8 +75,17 @@ class ResearchWorkflow:
             max_pages=max_pages,
         )
 
+        print("Analyzing paper...")
+
+        analysis = self.reader.analyze(
+            title=selected_paper["title"],
+            abstract=selected_paper["summary"],
+            extracted_text=extracted_text,
+        )
+
         result["selected_paper"] = selected_paper
         result["pdf_path"] = str(Path(pdf_path))
         result["extracted_text"] = extracted_text
+        result["analysis"] = analysis
 
         return result

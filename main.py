@@ -3,8 +3,8 @@ from workflow.research_workflow import ResearchWorkflow
 
 def main() -> None:
     topic = (
-    '(ti:"vision language" OR abs:"vision language") '
-    'AND (ti:robot OR abs:robot OR ti:navigation OR abs:navigation)'
+        '(ti:"vision language" OR abs:"vision language") '
+        'AND (ti:robot OR abs:robot OR ti:navigation OR abs:navigation)'
     )
 
     workflow = ResearchWorkflow()
@@ -38,6 +38,21 @@ def main() -> None:
 
     print("\nExtracted Text Preview:")
     print(result["extracted_text"][:3000])
+
+    print("\nPaper Analysis:")
+
+    analysis = result["analysis"]
+
+    if analysis is not None:
+        print(f"Research Problem: {analysis['research_problem']}")
+        print(f"Methodology: {analysis['methodology']}")
+        print(f"Datasets: {analysis['datasets']}")
+        print(f"Limitations: {analysis['limitations']}")
+
+        print("\nMain Contributions:")
+
+        for contribution in analysis["main_contributions"]:
+            print(f"- {contribution}")
 
 
 if __name__ == "__main__":
