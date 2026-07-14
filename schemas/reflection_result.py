@@ -1,4 +1,15 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field, field_validator
+
+
+ReflectionField = Literal[
+    "research_problem",
+    "methodology",
+    "datasets",
+    "main_contributions",
+    "limitations",
+]
 
 
 class ReflectionResult(BaseModel):
@@ -9,39 +20,43 @@ class ReflectionResult(BaseModel):
     should_retry: bool = Field(
         ...,
         description=(
-            "Whether the paper should be analyzed again."
+            "Whether another paper analysis attempt is required."
         ),
     )
 
     critique: list[str] = Field(
         default_factory=list,
+        max_length=5,
         description=(
-            "Specific problems found in the previous analysis."
+            "Specific weaknesses found in the previous analysis. "
+            "Each item must be a concise complete sentence."
         ),
     )
 
     improvement_instructions: list[str] = Field(
         default_factory=list,
+        max_length=5,
         description=(
-            "Concrete instructions for producing a better analysis."
+            "Concrete instructions for improving the next analysis. "
+            "Each item must be directly actionable."
         ),
     )
 
-    focus_fields: list[str] = Field(
+    focus_fields: list[ReflectionField] = Field(
         default_factory=list,
         description=(
-            "Analysis fields that require special attention."
+            "Fields requiring improvement. Values must use "
+            "the supported paper analysis field names."
         ),
     )
 
     @field_validator(
         "critique",
         "improvement_instructions",
-        "focus_fields",
         mode="before",
     )
     @classmethod
-    def normalize_lists(
+    def normalize_text_lists(
         cls,
         value: object,
     ) -> list[str]:
@@ -49,14 +64,58 @@ class ReflectionResult(BaseModel):
             return []
 
         if isinstance(value, str):
-            cleaned_value = value.strip()
-            return [cleaned_value] if cleaned_value else []
+            value = [value]
 
         if not isinstance(value, list):
             value = [value]
 
-        return [
-            str(item).strip()
-            for item in value
-            if str(item).strip()
-        ]
+        cleaned_items = []
+
+        for item in value:
+            cleaned_item = str(item).strip()
+
+            if not cleaned_item:
+                continue
+
+            if len(cleaned_item) > 500:
+                cleaned_item = cleaned_item[:500].rstrip()
+
+            cleaned_items.append(cleaned_item)
+
+        return cleaned_items[:5]
+
+    @field_validator(
+        "focus_fields",
+        mode="before",
+    )
+    @classmethod
+    def normalize_focus_fields(
+        cls,
+        value: object,
+    ) -> list[str]:
+        allowed_fields = {
+            "research_problem",
+            "methodology",
+            "datasets",
+            "main_contributions",
+            "limitations",
+        }
+
+        if value is None:
+            return []
+
+        if isinstance(value, str):
+            value = [value]
+
+        if not isinstance(value, list):
+            value = [value]
+
+        cleaned_fields = []
+
+        for item in value:
+            cleaned_item = str(item).strip()
+
+            if cleaned_item in allowed_fields:
+                cleaned_fields.append(cleaned_item)
+
+        return list(dict.fromkeys(cleaned_fields))

@@ -124,6 +124,7 @@ def main() -> None:
 
     workflow = ResearchWorkflow(
         reader_mode="auto",
+        max_reader_retries=2,
     )
 
     result = workflow.run(
@@ -160,7 +161,47 @@ def main() -> None:
     print_review(
         result["review"]
     )
+    
+    pipeline_result = result.get(
+        "reader_pipeline"
+    )
 
+    if pipeline_result is not None:
+        print("\nReader Pipeline:")
+        print(
+            "Approved: "
+            f"{pipeline_result['approved']}"
+        )
+        print(
+            "Attempts: "
+            f"{pipeline_result['attempt_count']}"
+        )
+        print(
+            "Retries: "
+            f"{pipeline_result['retry_count']}"
+        )
+
+        statistics = pipeline_result.get(
+            "statistics",
+            {},
+        )
+
+        print(
+            "Total Tokens: "
+            f"{statistics.get('total_tokens', 0)}"
+        )
+
+        print(
+            "Pipeline Time: "
+            f"{statistics.get('total_elapsed_seconds', 0.0):.3f} "
+            "seconds"
+        )
+
+    if result.get("used_fallback"):
+        print(
+            "\nWarning: The workflow used "
+            "the Rule-Based Reader fallback."
+        )
 
 if __name__ == "__main__":
     main()
