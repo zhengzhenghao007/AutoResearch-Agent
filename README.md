@@ -1,230 +1,285 @@
 # AutoResearch-Agent
 
-An extensible Multi-Agent system for automated literature review.
+> A Multi-Agent Literature Review System powered by Large Language Models.
 
-## Overview
+AutoResearch-Agent is an AI research assistant that automatically searches academic papers, downloads PDFs, extracts key information, reviews the analysis, and progressively generates high-quality literature reviews.
 
-AutoResearch-Agent is an AI research assistant that automatically:
-
-- Generates a research plan
-- Searches relevant papers from arXiv
-- Downloads research papers
-- Extracts PDF content
-- Analyzes paper structure
-- Reviews analysis quality
-- Prepares for automatic literature review generation
-
-The project is designed with a modular multi-agent architecture and can be extended with LLMs, memory systems, and workflow engines.
+The long-term goal is to build an autonomous research workflow similar to OpenAI Deep Research, but focused on academic literature analysis.
 
 ---
 
-## Current Architecture
+# Features
 
-```text
-User
- │
- ▼
+## Current
+
+- Research topic planning
+- arXiv paper search
+- Automatic PDF download
+- PDF text extraction
+- Structured LLM Paper Reader
+- Rule-based Reader fallback
+- Reviewer Agent
+- Reader evaluation pipeline
+- Modular workflow architecture
+- OpenRouter integration
+- Pydantic structured output
+
+---
+
+# Project Architecture
+
+```
+
+User Research Topic
+│
+▼
 Planner Agent
- │
- ▼
-Researcher Agent
- │
- ▼
-arXiv Search
- │
- ▼
+│
+▼
+Paper Searcher
+│
+▼
 PDF Downloader
- │
- ▼
+│
+▼
 PDF Reader
- │
- ▼
-Rule-Based Reader
- │
- ▼
-Reviewer Agent
+│
+▼
+LLM Reader
+│
+▼
+Reviewer
+│
+▼
+Research Report
+
+```
+
+Current workflow:
+
+```
+
+Topic
+→ Planner
+→ arXiv Search
+→ Download PDF
+→ Extract Text
+→ Structured LLM Reader
+→ Reviewer
+
 ```
 
 ---
 
-## Current Features
+# Example Output
 
-### Planner Agent
+```
 
-Generate a structured research plan from a research topic.
+Paper Analysis
 
-Example:
+Reader Model:
+nvidia/nemotron-nano-9b-v2:free
 
-- Define research scope
-- Search papers
-- Compare methods
-- Generate literature review
+Research Problem
 
----
+Current robotic systems lack privacy-aware navigation capabilities...
 
-### Researcher Agent
+Methodology
 
-Search papers directly from arXiv.
+The framework combines A* path planning with Vision Language Models...
 
-Features:
+Datasets
 
-- Keyword search
-- Relevance ranking
-- PDF link retrieval
-- Metadata extraction
+• S3DIS Dataset
 
----
+Main Contributions
 
-### PDF Reader
+• Privacy-aware navigation framework
+• Gaussian privacy distance metric
+• Real robot deployment
 
-Automatically:
+Limitations
 
-- Download PDFs
-- Extract text
-- Prepare documents for analysis
+• Limited real-world evaluation
+• Static environment assumption
+
+```
 
 ---
 
-### Rule-Based Reader
+# Repository Structure
 
-Extracts:
+```
 
-- Research Problem
-- Methodology
-- Datasets
-- Main Contributions
-- Limitations
-
----
-
-### Reviewer Agent
-
-Evaluate extraction quality.
-
-Checks include:
-
-- Missing fields
-- Duplicate information
-- Placeholder content
-- Background mixed into limitations
-- Dataset quality
-
----
-
-### Workflow Engine
-
-Coordinates all agents in a unified pipeline.
-
----
-
-## Project Structure
-
-```text
 AutoResearch-Agent
 │
 ├── agents/
 │   ├── planner.py
 │   ├── researcher.py
 │   ├── reader.py
-│   ├── reviewer.py
-│   └── reader_result.py
+│   ├── llm_reader.py
+│   └── reviewer.py
+│
+├── schemas/
+│   ├── paper_analysis.py
+│   └── reflection_result.py
+│
+├── services/
+│   └── llm_client.py
 │
 ├── workflow/
 │   └── research_workflow.py
 │
-├── tools/
-│   ├── arxiv_search.py
-│   └── pdf_reader.py
-│
 ├── evaluation/
-│   └── evaluate_reader.py
 │
-├── data/
-│
-├── memory/
-│
-├── tests/
+├── tools/
 │
 └── main.py
+
 ```
 
 ---
 
-## Current Pipeline
+# Technology Stack
 
-```
-Research Topic
-      │
-      ▼
-Planner
-      │
-      ▼
-Researcher
-      │
-      ▼
-Search arXiv
-      │
-      ▼
-Download PDF
-      │
-      ▼
-Extract Text
-      │
-      ▼
-Reader
-      │
-      ▼
-Reviewer
-```
-
----
-
-## Technologies
-
-- Python 3.12
-- arXiv API
-- pypdf
-- requests
-
-Future:
-
+- Python 3.11+
+- LangChain
 - OpenRouter
-- GPT-4.1
-- Claude
-- Gemini
-- ChromaDB
-- LangGraph
+- Pydantic
+- arXiv API
+- PyMuPDF
+- LLM Structured Output
 
 ---
 
-## Roadmap
+# Current Milestones
 
-### Phase 1
+## Milestone 1
 
-- [x] Planner Agent
-- [x] Researcher Agent
-- [x] PDF Reader
-- [x] Rule-Based Reader
-- [x] Reviewer
-- [x] Workflow
-- [x] Evaluation
+- Planner Agent
+- Paper Search
+- PDF Reader
+- Rule-based Reader
+- Reviewer
 
-### Phase 2
-
-- [ ] LLM Reader
-- [ ] Reflection Loop
-- [ ] Memory
-- [ ] Literature Review Generator
-
-### Phase 3
-
-- [ ] Web Interface
-- [ ] Multi-Paper Review
-- [ ] Knowledge Graph
-- [ ] Benchmark Experiments
+Completed
 
 ---
 
-## Author
+## Milestone 2
 
-Zheng Sihan
+- OpenRouter Integration
+- Structured LLM Reader
+- Pydantic Output
+- Automatic Rule-based Fallback
+
+Completed
+
+---
+
+## Milestone 3 (In Progress)
+
+Reflection Agent
+
+---
+
+## Future Roadmap
+
+### Reflection Agent
+
+Automatically improve low-quality paper analyses.
+
+### Memory Agent
+
+Remember previous papers to avoid repeated analysis.
+
+### Multi-paper Reading
+
+Read multiple papers simultaneously.
+
+### Literature Review Generator
+
+Automatically generate survey papers.
+
+### Citation Graph
+
+Analyze citation relationships.
+
+### Web UI
+
+Interactive browser interface.
+
+### Local Model Support
+
+Support Ollama and local LLM deployment.
+
+---
+
+# Installation
+
+Clone the repository.
+
+```bash
+git clone https://github.com/zhengzhenghao007/AutoResearch-Agent.git
+
+cd AutoResearch-Agent
+```
+
+Create a virtual environment.
+
+```bash
+python -m venv .venv
+```
+
+Activate the environment.
+
+Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+Install dependencies.
+
+```bash
+pip install -r requirements.txt
+```
+
+Create a `.env` file.
+
+```env
+OPENROUTER_API_KEY=your_api_key
+OPENROUTER_MODEL=openrouter/free
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+```
+
+Run the project.
+
+```bash
+python main.py
+```
+
+---
+
+# Future Vision
+
+AutoResearch-Agent is designed as a modular multi-agent research platform.
+
+Eventually it will support:
+
+- Autonomous literature review
+- Reflection-based self-improvement
+- Long-term memory
+- Multi-paper reasoning
+- Survey generation
+- Knowledge graph construction
+- Research planning
+- Local and cloud LLMs
+
+The objective is to create an AI research assistant capable of supporting the complete academic literature review workflow.
+
+---
+
+# License
+
+MIT License
