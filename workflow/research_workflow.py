@@ -319,7 +319,23 @@ class ResearchWorkflow:
         if not papers:
             return result
 
-        selected_paper = papers[0]
+        search_result = workflow.search(
+            topic=topic,
+            max_results=5,
+        )
+
+        print_research_plan(search_result["plan"])
+        print_papers(search_result["papers"])
+
+        selected_index = select_paper(search_result["papers"])
+
+        result = workflow.analyze_selected_paper(
+            topic=topic,
+            plan=search_result["plan"],
+            papers=search_result["papers"],
+            selected_index=selected_index,
+            max_pages=5,
+        )
 
         filename = self.create_safe_filename(
             selected_paper["title"]

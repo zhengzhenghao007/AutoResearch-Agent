@@ -1,11 +1,10 @@
 from services.json_parser import JSONParser
 
-parser = JSONParser()
 
-print("=" * 60)
-print("Test 1")
+def test_parse_json_from_markdown_code_block():
+    parser = JSONParser()
 
-text = """
+    text = """
 Here is the result:
 
 ```json
@@ -15,3 +14,32 @@ Here is the result:
         "A new method"
     ]
 }
+```
+"""
+
+    result = parser.parse(text)
+
+    assert result["research_problem"] == "Robot navigation"
+    assert result["main_contributions"] == ["A new method"]
+
+
+def test_parse_plain_json():
+    parser = JSONParser()
+
+    text = """
+{
+    "research_problem": "Vision-language navigation",
+    "main_contributions": [
+        "Structured analysis",
+        "Reflection support"
+    ]
+}
+"""
+
+    result = parser.parse(text)
+
+    assert result["research_problem"] == "Vision-language navigation"
+    assert result["main_contributions"] == [
+        "Structured analysis",
+        "Reflection support",
+    ]
