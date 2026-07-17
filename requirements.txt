@@ -5,3 +5,6 @@ python-dotenv
 arxiv
 pypdf
 streamlit
+fastapi
+uvicorn[standard]
+python-multipart
