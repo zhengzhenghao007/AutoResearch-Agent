@@ -4,3 +4,4 @@ langgraph
 python-dotenv
 arxiv
 pypdf
+streamlit
