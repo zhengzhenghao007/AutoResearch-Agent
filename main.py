@@ -1,207 +1,160 @@
+from typing import Final
+
+from cli import (
+    print_header,
+    print_papers,
+    print_research_plan,
+    print_result,
+    prompt_research_topic,
+    select_paper,
+)
 from workflow.research_workflow import ResearchWorkflow
 
 
-DEFAULT_TOPIC = (
+DEFAULT_TOPIC: Final[str] = (
     '(ti:"vision language" OR abs:"vision language") '
     "AND "
     "(ti:robot OR abs:robot "
     "OR ti:navigation OR abs:navigation)"
 )
 
+MAX_RESULTS: Final[int] = 5
+MAX_PAGES: Final[int] = 5
+READER_MODE: Final[str] = "auto"
+MAX_READER_RETRIES: Final[int] = 2
 
-def print_research_plan(plan: object) -> None:
-    print("\nResearch Plan:")
-    print(plan)
 
+def run_application() -> None:
+    """
+    Run the interactive research workflow.
+    """
+    print_header()
 
-def print_papers(papers: list[dict]) -> None:
-    print("\nFound Papers:")
+    topic = prompt_research_topic(
+        default_topic=DEFAULT_TOPIC,
+    )
+
+    workflow = ResearchWorkflow(
+        reader_mode=READER_MODE,
+        max_reader_retries=MAX_READER_RETRIES,
+    )
+
+    search_result = workflow.search(
+        topic=topic,
+        max_results=MAX_RESULTS,
+    )
+
+    plan = search_result["plan"]
+    papers = search_result["papers"]
+
+    print_research_plan(
+        plan
+    )
+    print_papers(
+        papers
+    )
 
     if not papers:
-        print("No papers were found.")
-        return
-
-    for index, paper in enumerate(
-        papers,
-        start=1,
-    ):
-        print(f"\n{index}. {paper['title']}")
-        print(f"Published: {paper['published']}")
+        print()
         print(
-            "Authors: "
-            f"{', '.join(paper['authors'])}"
+            "No papers were found for this query."
         )
-        print(f"PDF: {paper['pdf_url']}")
-
-
-def print_analysis(analysis: dict | None) -> None:
-    if analysis is None:
-        print("\nNo paper analysis was generated.")
         return
 
-    print("\nPaper Analysis:")
-
-    print(
-        "Reader Model: "
-        f"{analysis['model_name']}"
+    selected_index = select_paper(
+        papers
     )
 
-    print(
-        "Elapsed Time: "
-        f"{analysis['elapsed_seconds']:.3f} seconds"
+    selected_title = papers[
+        selected_index
+    ].get(
+        "title",
+        "Untitled paper",
     )
 
+    print()
     print(
-        "Input Tokens: "
-        f"{analysis['input_tokens']}"
+        f"Selected: {selected_title}"
+    )
+    print()
+    print("Starting paper analysis...")
+
+    result = workflow.analyze_selected_paper(
+        topic=search_result["topic"],
+        plan=plan,
+        papers=papers,
+        selected_index=selected_index,
+        max_pages=MAX_PAGES,
     )
 
-    print(
-        "Output Tokens: "
-        f"{analysis['output_tokens']}"
+    print_result(
+        result
     )
-
-    print(
-        "Estimated Cost: "
-        f"${analysis['estimated_cost_usd']:.6f}"
-    )
-
-    print("\nResearch Problem:")
-    print(analysis["research_problem"])
-
-    print("\nMethodology:")
-    print(analysis["methodology"])
-
-    print("\nDatasets and Environments:")
-    print(analysis["datasets"])
-
-    print("\nMain Contributions:")
-
-    for contribution in analysis[
-        "main_contributions"
-    ]:
-        print(f"* {contribution}")
-
-    print("\nLimitations:")
-    print(analysis["limitations"])
-
-
-def print_review(review: dict | None) -> None:
-    if review is None:
-        print("\nNo review result was generated.")
-        return
-
-    print("\nReview Result:")
-    print(f"Approved: {review['approved']}")
-    print(f"Score: {review['score']:.2f}")
-    print(f"Feedback: {review['feedback']}")
-
-    issues = review.get("issues", [])
-
-    if issues:
-        print("\nDetected Issues:")
-
-        for issue in issues:
-            print(f"* {issue}")
 
 
 def main() -> None:
-    print("AutoResearch Agent")
-    print("==================")
+    """
+    Application entry point.
+    """
+    try:
+        run_application()
 
-    print(
-        "\nEnter an arXiv research query."
-    )
-
-    print(
-        "Press Enter to use the default "
-        "vision-language robot navigation query."
-    )
-
-    user_topic = input("\nResearch topic:\n> ").strip()
-
-    topic = user_topic or DEFAULT_TOPIC
-
-    workflow = ResearchWorkflow(
-        reader_mode="auto",
-        max_reader_retries=2,
-    )
-
-    result = workflow.run(
-        topic=topic,
-        max_results=3,
-        max_pages=5,
-    )
-
-    print_research_plan(
-        result["plan"]
-    )
-
-    print_papers(
-        result["papers"]
-    )
-
-    selected_paper = result[
-        "selected_paper"
-    ]
-
-    if selected_paper is None:
-        return
-
-    print("\nSelected Paper:")
-    print(selected_paper["title"])
-
-    print("\nSaved PDF:")
-    print(result["pdf_path"])
-
-    print_analysis(
-        result["analysis"]
-    )
-
-    print_review(
-        result["review"]
-    )
-    
-    pipeline_result = result.get(
-        "reader_pipeline"
-    )
-
-    if pipeline_result is not None:
-        print("\nReader Pipeline:")
+    except KeyboardInterrupt:
+        print()
+        print()
         print(
-            "Approved: "
-            f"{pipeline_result['approved']}"
+            "Operation cancelled by the user."
+        )
+
+    except EOFError:
+        print()
+        print()
+        print(
+            "Input stream was closed."
+        )
+
+    except ValueError as error:
+        print()
+        print()
+        print(
+            f"Invalid input: {error}"
+        )
+
+    except IndexError as error:
+        print()
+        print()
+        print(
+            f"Paper selection error: {error}"
+        )
+
+    except FileNotFoundError as error:
+        print()
+        print()
+        print(
+            f"File error: {error}"
+        )
+
+    except ConnectionError as error:
+        print()
+        print()
+        print(
+            f"Network error: {error}"
+        )
+
+    except Exception as error:
+        print()
+        print()
+        print(
+            "The research workflow failed."
         )
         print(
-            "Attempts: "
-            f"{pipeline_result['attempt_count']}"
+            f"Error type: "
+            f"{type(error).__name__}"
         )
         print(
-            "Retries: "
-            f"{pipeline_result['retry_count']}"
+            f"Details: {error}"
         )
 
-        statistics = pipeline_result.get(
-            "statistics",
-            {},
-        )
-
-        print(
-            "Total Tokens: "
-            f"{statistics.get('total_tokens', 0)}"
-        )
-
-        print(
-            "Pipeline Time: "
-            f"{statistics.get('total_elapsed_seconds', 0.0):.3f} "
-            "seconds"
-        )
-
-    if result.get("used_fallback"):
-        print(
-            "\nWarning: The workflow used "
-            "the Rule-Based Reader fallback."
-        )
 
 if __name__ == "__main__":
     main()

@@ -44,7 +44,6 @@ class ResearchWorkflow:
             valid_modes = ", ".join(
                 sorted(self.VALID_READER_MODES)
             )
-
             raise ValueError(
                 f"Invalid reader mode: {reader_mode}. "
                 f"Valid modes are: {valid_modes}."
@@ -61,7 +60,6 @@ class ResearchWorkflow:
 
         self.planner = PlannerAgent()
         self.researcher = ResearcherAgent()
-
         self.rule_reader = ReaderAgent()
         self.rule_reviewer = ReviewerAgent()
 
@@ -83,7 +81,6 @@ class ResearchWorkflow:
                     reflection_agent=reflection_agent,
                     max_retries=self.max_reader_retries,
                 )
-
             except Exception as error:
                 self.pipeline_initialization_error = error
 
@@ -96,7 +93,6 @@ class ResearchWorkflow:
                     "ReaderPipeline initialization failed: "
                     f"{error}"
                 )
-
                 print(
                     "The workflow will use the "
                     "rule-based reader."
@@ -106,6 +102,9 @@ class ResearchWorkflow:
     def create_safe_filename(
         title: str,
     ) -> str:
+        """
+        Convert a paper title into a safe PDF filename.
+        """
         safe_characters = []
 
         for character in title:
@@ -133,6 +132,177 @@ class ResearchWorkflow:
 
         return f"{safe_title[:80]}.pdf"
 
+    def search(
+        self,
+        topic: str,
+        max_results: int = 5,
+    ) -> dict[str, Any]:
+        """
+        Create a research plan and search for relevant papers.
+
+        This method only performs planning and paper search.
+        It does not download or analyze a paper.
+        """
+        cleaned_topic = topic.strip()
+
+        if not cleaned_topic:
+            raise ValueError(
+                "Research topic cannot be empty."
+            )
+
+        if max_results < 1:
+            raise ValueError(
+                "max_results must be at least 1."
+            )
+
+        print("Creating research plan...")
+        plan = self.planner.plan(cleaned_topic)
+
+        print("Searching arXiv papers...")
+        papers = self.researcher.search_papers(
+            research_topic=cleaned_topic,
+            max_results=max_results,
+        )
+
+        return {
+            "topic": cleaned_topic,
+            "plan": plan,
+            "papers": papers,
+        }
+
+    def analyze_selected_paper(
+        self,
+        topic: str,
+        plan: object,
+        papers: list[dict[str, Any]],
+        selected_index: int,
+        max_pages: int = 5,
+    ) -> dict[str, Any]:
+        """
+        Download and analyze one selected paper.
+
+        selected_index uses zero-based indexing.
+
+        For example:
+            selected_index=0 selects the first paper.
+            selected_index=1 selects the second paper.
+        """
+        cleaned_topic = topic.strip()
+
+        if not cleaned_topic:
+            raise ValueError(
+                "Research topic cannot be empty."
+            )
+
+        if max_pages < 1:
+            raise ValueError(
+                "max_pages must be at least 1."
+            )
+
+        if not papers:
+            raise ValueError(
+                "No papers are available for analysis."
+            )
+
+        if selected_index < 0:
+            raise IndexError(
+                "Selected paper index is out of range."
+            )
+
+        if selected_index >= len(papers):
+            raise IndexError(
+                "Selected paper index is out of range."
+            )
+
+        selected_paper = papers[selected_index]
+
+        required_fields = {
+            "title",
+            "summary",
+            "pdf_url",
+        }
+
+        missing_fields = [
+            field
+            for field in required_fields
+            if not selected_paper.get(field)
+        ]
+
+        if missing_fields:
+            missing_text = ", ".join(
+                sorted(missing_fields)
+            )
+            raise ValueError(
+                "Selected paper is missing required fields: "
+                f"{missing_text}."
+            )
+
+        result: dict[str, Any] = {
+            "topic": cleaned_topic,
+            "reader_mode": self.reader_mode,
+            "max_reader_retries": self.max_reader_retries,
+            "plan": plan,
+            "papers": papers,
+            "selected_index": selected_index,
+            "selected_paper": selected_paper,
+            "pdf_path": None,
+            "extracted_text": "",
+            "analysis": None,
+            "review": None,
+            "reader_pipeline": None,
+            "used_fallback": False,
+        }
+
+        filename = self.create_safe_filename(
+            selected_paper["title"]
+        )
+
+        print(
+            "Downloading paper: "
+            f"{selected_paper['title']}"
+        )
+
+        pdf_path = download_pdf(
+            pdf_url=selected_paper["pdf_url"],
+            filename=filename,
+        )
+
+        print(
+            f"Reading the first {max_pages} pages..."
+        )
+
+        extracted_text = extract_text_from_pdf(
+            pdf_path=pdf_path,
+            max_pages=max_pages,
+        )
+
+        paper_result = self.analyze_paper(
+            title=selected_paper["title"],
+            abstract=selected_paper["summary"],
+            extracted_text=extracted_text,
+        )
+
+        result["pdf_path"] = str(
+            Path(pdf_path)
+        )
+        result["extracted_text"] = extracted_text
+        result["analysis"] = paper_result["analysis"]
+        result["review"] = paper_result["review"]
+        result["reader_pipeline"] = paper_result.get(
+            "pipeline_result"
+        )
+        result["used_fallback"] = paper_result.get(
+            "used_fallback",
+            False,
+        )
+
+        if "pipeline_error" in paper_result:
+            result["pipeline_error"] = paper_result[
+                "pipeline_error"
+            ]
+
+        return result
+
     def analyze_paper(
         self,
         title: str,
@@ -142,7 +312,6 @@ class ResearchWorkflow:
         """
         Analyze one paper using the configured reader mode.
         """
-
         if self.reader_mode == "rule":
             return self._run_rule_reader(
                 title=title,
@@ -181,7 +350,6 @@ class ResearchWorkflow:
             final_analysis = pipeline_result.get(
                 "final_analysis"
             )
-
             final_review = pipeline_result.get(
                 "final_review"
             )
@@ -213,7 +381,6 @@ class ResearchWorkflow:
                 "ReaderPipeline failed: "
                 f"{error}"
             )
-
             print(
                 "Falling back to Rule-Based Reader..."
             )
@@ -223,8 +390,9 @@ class ResearchWorkflow:
                 abstract=abstract,
                 extracted_text=extracted_text,
             )
-
-            fallback_result["pipeline_error"] = str(error)
+            fallback_result["pipeline_error"] = str(
+                error
+            )
 
             return fallback_result
 
@@ -234,6 +402,9 @@ class ResearchWorkflow:
         abstract: str,
         extracted_text: str,
     ) -> dict[str, Any]:
+        """
+        Run the deterministic reader and reviewer.
+        """
         print(
             "Analyzing paper with Rule-Based Reader..."
         )
@@ -268,126 +439,39 @@ class ResearchWorkflow:
         max_pages: int = 5,
     ) -> dict[str, Any]:
         """
-        Run the complete research workflow.
+        Run the legacy workflow.
+
+        This method keeps compatibility with existing code and tests.
+        It automatically analyzes the first search result.
         """
-
-        if not topic.strip():
-            raise ValueError(
-                "Research topic cannot be empty."
-            )
-
-        if max_results < 1:
-            raise ValueError(
-                "max_results must be at least 1."
-            )
-
-        if max_pages < 1:
-            raise ValueError(
-                "max_pages must be at least 1."
-            )
-
-        print("Creating research plan...")
-
-        plan = self.planner.plan(
-            topic
-        )
-
-        print("Searching arXiv papers...")
-
-        papers = self.researcher.search_papers(
-            research_topic=topic,
+        search_result = self.search(
+            topic=topic,
             max_results=max_results,
         )
 
-        result: dict[str, Any] = {
-            "topic": topic,
-            "reader_mode": self.reader_mode,
-            "max_reader_retries": (
-                self.max_reader_retries
-            ),
-            "plan": plan,
-            "papers": papers,
-            "selected_paper": None,
-            "pdf_path": None,
-            "extracted_text": "",
-            "analysis": None,
-            "review": None,
-            "reader_pipeline": None,
-            "used_fallback": False,
-        }
+        papers = search_result["papers"]
 
         if not papers:
-            return result
+            return {
+                "topic": search_result["topic"],
+                "reader_mode": self.reader_mode,
+                "max_reader_retries": self.max_reader_retries,
+                "plan": search_result["plan"],
+                "papers": [],
+                "selected_index": None,
+                "selected_paper": None,
+                "pdf_path": None,
+                "extracted_text": "",
+                "analysis": None,
+                "review": None,
+                "reader_pipeline": None,
+                "used_fallback": False,
+            }
 
-        search_result = workflow.search(
-            topic=topic,
-            max_results=5,
-        )
-
-        print_research_plan(search_result["plan"])
-        print_papers(search_result["papers"])
-
-        selected_index = select_paper(search_result["papers"])
-
-        result = workflow.analyze_selected_paper(
-            topic=topic,
+        return self.analyze_selected_paper(
+            topic=search_result["topic"],
             plan=search_result["plan"],
-            papers=search_result["papers"],
-            selected_index=selected_index,
-            max_pages=5,
-        )
-
-        filename = self.create_safe_filename(
-            selected_paper["title"]
-        )
-
-        print(
-            "Downloading paper: "
-            f"{selected_paper['title']}"
-        )
-
-        pdf_path = download_pdf(
-            pdf_url=selected_paper["pdf_url"],
-            filename=filename,
-        )
-
-        print(
-            f"Reading the first {max_pages} pages..."
-        )
-
-        extracted_text = extract_text_from_pdf(
-            pdf_path=pdf_path,
+            papers=papers,
+            selected_index=0,
             max_pages=max_pages,
         )
-
-        paper_result = self.analyze_paper(
-            title=selected_paper["title"],
-            abstract=selected_paper["summary"],
-            extracted_text=extracted_text,
-        )
-
-        result["selected_paper"] = selected_paper
-        result["pdf_path"] = str(
-            Path(pdf_path)
-        )
-        result["extracted_text"] = extracted_text
-        result["analysis"] = paper_result[
-            "analysis"
-        ]
-        result["review"] = paper_result[
-            "review"
-        ]
-        result["reader_pipeline"] = paper_result.get(
-            "pipeline_result"
-        )
-        result["used_fallback"] = paper_result.get(
-            "used_fallback",
-            False,
-        )
-
-        if "pipeline_error" in paper_result:
-            result["pipeline_error"] = paper_result[
-                "pipeline_error"
-            ]
-
-        return result
