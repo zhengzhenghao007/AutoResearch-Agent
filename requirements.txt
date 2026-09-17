@@ -8,3 +8,5 @@ streamlit
 fastapi
 uvicorn[standard]
 python-multipart
+requests
+pydantic>=2,<3

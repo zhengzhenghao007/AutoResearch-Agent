@@ -11,6 +11,7 @@ from backend.app.api.analysis import (
 from backend.app.api.papers import (
     router as papers_router,
 )
+from backend.app.api.research import router as research_router
 
 
 app = FastAPI(
@@ -40,6 +41,7 @@ app.include_router(
 app.include_router(
     analysis_router
 )
+app.include_router(research_router)
 
 
 @app.get("/")
