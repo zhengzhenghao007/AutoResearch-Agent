@@ -1,0 +1,190 @@
+{
+  "langchain-ai/open_deep_research": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/langchain-ai/open_deep_research/1b7d2e80db9faa586165c60e09096dbbfd483a64/README.md",
+      "sha256": "0fc75629079c025b0200e6032a038edf9c91c332d4ce925cbc6165910008267f",
+      "characters_reviewed": 10224
+    },
+    {
+      "path": "src/open_deep_research/deep_researcher.py",
+      "url": "https://raw.githubusercontent.com/langchain-ai/open_deep_research/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/deep_researcher.py",
+      "sha256": "af128d5d8773008d021b6ef7562e9fb90a45f7eb5e886483d1e6e835223275e0",
+      "characters_reviewed": 30117
+    },
+    {
+      "path": "src/open_deep_research/state.py",
+      "url": "https://raw.githubusercontent.com/langchain-ai/open_deep_research/1b7d2e80db9faa586165c60e09096dbbfd483a64/src/open_deep_research/state.py",
+      "sha256": "7a03f4a1d5132573ed306d403fd3478fe8916d955f3caa44a8d365877ac35d0e",
+      "characters_reviewed": 3273
+    }
+  ],
+  "langchain-ai/local-deep-researcher": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/langchain-ai/local-deep-researcher/a53b13c7022bb1352dc1ca994d07ade3cd3bd62e/README.md",
+      "sha256": "92e6559fa780f8efe83108b4a24c31572b893331c2f54dddc7ebb25e84bc59f0",
+      "characters_reviewed": 10481
+    },
+    {
+      "path": "src/ollama_deep_researcher/graph.py",
+      "url": "https://raw.githubusercontent.com/langchain-ai/local-deep-researcher/a53b13c7022bb1352dc1ca994d07ade3cd3bd62e/src/ollama_deep_researcher/graph.py",
+      "sha256": "4dd1b61c3affa286311d70a6cd51b82b21227c2919771265c4c571863b764b2c",
+      "characters_reviewed": 16131
+    }
+  ],
+  "assafelovic/gpt-researcher": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/assafelovic/gpt-researcher/6f998577d547b1e54ec662dac63583aa11e3b84b/README.md",
+      "sha256": "d79bbcd7196317af10b6cc84baf30bb84ad0fc67d16dd61552fc139461548507",
+      "characters_reviewed": 17684
+    },
+    {
+      "path": "gpt_researcher/agent.py",
+      "url": "https://raw.githubusercontent.com/assafelovic/gpt-researcher/6f998577d547b1e54ec662dac63583aa11e3b84b/gpt_researcher/agent.py",
+      "sha256": "845d057933aac49a1a331a8bd9a3e6d7a74dfee9066087792f9741c277a6b1e0",
+      "characters_reviewed": 31309
+    },
+    {
+      "path": "gpt_researcher/retrievers/base.py",
+      "url": "https://raw.githubusercontent.com/assafelovic/gpt-researcher/6f998577d547b1e54ec662dac63583aa11e3b84b/gpt_researcher/retrievers/base.py",
+      "sha256": "8c34a339b0ae03eac8eaa55090ca196239be3523a09f0ab99bd14d0f53b990f1",
+      "characters_reviewed": 2663
+    }
+  ],
+  "Future-House/paper-qa": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/Future-House/paper-qa/57e89f7223b0960d5ee5ea048c69e3c47e088572/README.md",
+      "sha256": "1ebe76557cd4d5f9bbe60efa47d8702c5723e3b2a9451ddc7bbae5c086b0bfb7",
+      "characters_reviewed": 60462
+    },
+    {
+      "path": "src/paperqa/types.py",
+      "url": "https://raw.githubusercontent.com/Future-House/paper-qa/57e89f7223b0960d5ee5ea048c69e3c47e088572/src/paperqa/types.py",
+      "sha256": "148be44022500d5f2acc04cb851c1c078f991d6ede34d0187bb5db5d5850aff1",
+      "characters_reviewed": 54380
+    },
+    {
+      "path": "src/paperqa/settings.py",
+      "url": "https://raw.githubusercontent.com/Future-House/paper-qa/57e89f7223b0960d5ee5ea048c69e3c47e088572/src/paperqa/settings.py",
+      "sha256": "83fee9c186836b6ff590b106b31e4d315f875a926dbb427d322fc7d51c9f1489",
+      "characters_reviewed": 51063
+    }
+  ],
+  "stanford-oval/storm": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/stanford-oval/storm/fb951af7744dab086e34962e9bc6fe878e145f83/README.md",
+      "sha256": "711016d02ae72a43ae96198ede47ee0b36ab10029b323a76eb2d3cd87413e2a2",
+      "characters_reviewed": 20081
+    },
+    {
+      "path": "knowledge_storm/storm_wiki/engine.py",
+      "url": "https://raw.githubusercontent.com/stanford-oval/storm/fb951af7744dab086e34962e9bc6fe878e145f83/knowledge_storm/storm_wiki/engine.py",
+      "sha256": "80dc4a50dbb793b28f11563909dae2a72104228bea22484b01585f362aceb011",
+      "characters_reviewed": 17988
+    },
+    {
+      "path": "knowledge_storm/interface.py",
+      "url": "https://raw.githubusercontent.com/stanford-oval/storm/fb951af7744dab086e34962e9bc6fe878e145f83/knowledge_storm/interface.py",
+      "sha256": "d5593631bda5f3c6520181a46d44b2c4b02fbbc443dd8720a4f8e587a533d4f6",
+      "characters_reviewed": 21021
+    }
+  ],
+  "HKUDS/AI-Researcher": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/HKUDS/AI-Researcher/f9a6f8480860c193afff600eeffe3defcee8a978/README.md",
+      "sha256": "cd27ac5ee215541fb7f42461dc2c5cb64aaf70a4a5767ee3714f92c922c6f242",
+      "characters_reviewed": 65178
+    },
+    {
+      "path": "research_agent/inno/core.py",
+      "url": "https://raw.githubusercontent.com/HKUDS/AI-Researcher/f9a6f8480860c193afff600eeffe3defcee8a978/research_agent/inno/core.py",
+      "sha256": "d33aaa15443cd81e0a2e3020b9ef5cb9082240743e62930d79c34efdd296a8ab",
+      "characters_reviewed": 26196
+    },
+    {
+      "path": "research_agent/inno/registry.py",
+      "url": "https://raw.githubusercontent.com/HKUDS/AI-Researcher/f9a6f8480860c193afff600eeffe3defcee8a978/research_agent/inno/registry.py",
+      "sha256": "effff0e46db4d9c7cde37e2eebeac0cd46ddba005f36d5fadcae5d68f0fb31c5",
+      "characters_reviewed": 3510
+    }
+  ],
+  "SakanaAI/AI-Scientist": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/SakanaAI/AI-Scientist/1de1dbc1f4ee2c5f61e9c94348d55eb51d7fa2eb/README.md",
+      "sha256": "8300593c7febe85681e6e054c88423934efc838fc3054d857f3b0665f52b4c7b",
+      "characters_reviewed": 19736
+    },
+    {
+      "path": "ai_scientist/perform_experiments.py",
+      "url": "https://raw.githubusercontent.com/SakanaAI/AI-Scientist/1de1dbc1f4ee2c5f61e9c94348d55eb51d7fa2eb/ai_scientist/perform_experiments.py",
+      "sha256": "85361e35a9575a88a242e0a338143b2d2e8a07f917c996c293458329abcb87bf",
+      "characters_reviewed": 6143
+    },
+    {
+      "path": "ai_scientist/perform_review.py",
+      "url": "https://raw.githubusercontent.com/SakanaAI/AI-Scientist/1de1dbc1f4ee2c5f61e9c94348d55eb51d7fa2eb/ai_scientist/perform_review.py",
+      "sha256": "903380395f0f28993e432ab2abd59f300010fc8e9057b1aedeb54c4396dca004",
+      "characters_reviewed": 18580
+    }
+  ],
+  "SakanaAI/AI-Scientist-v2": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/SakanaAI/AI-Scientist-v2/96bd51617cfdbb494a9fc283af00fe090edfae48/README.md",
+      "sha256": "ed4ae4b9353641dff469679f14cbffd6547f7a6137b9d5b397f3be9a367b4e82",
+      "characters_reviewed": 13569
+    },
+    {
+      "path": "ai_scientist/treesearch/agent_manager.py",
+      "url": "https://raw.githubusercontent.com/SakanaAI/AI-Scientist-v2/96bd51617cfdbb494a9fc283af00fe090edfae48/ai_scientist/treesearch/agent_manager.py",
+      "sha256": "3abbc08428be8345baa106045bcbc82fcff115634579b11436a8181707208c89",
+      "characters_reviewed": 51718
+    }
+  ],
+  "SciPhi-AI/R2R": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/SciPhi-AI/R2R/9c5a94d151f90876bd7eb860f300a8fd662dc481/README.md",
+      "sha256": "8ec1078c345ea4fdc992b3b93f3a556db0cb2ad6e36834adade84b0d1f21bf5a",
+      "characters_reviewed": 15
+    },
+    {
+      "path": "py/core/main/services/retrieval_service.py",
+      "url": "https://raw.githubusercontent.com/SciPhi-AI/R2R/9c5a94d151f90876bd7eb860f300a8fd662dc481/py/core/main/services/retrieval_service.py",
+      "sha256": "2b49c66d8959c8c996f62c1580c2c08eb33b9f946adb4f253c7d5ad52946fb25",
+      "characters_reviewed": 85095
+    },
+    {
+      "path": "py/README.md",
+      "url": "https://raw.githubusercontent.com/SciPhi-AI/R2R/9c5a94d151f90876bd7eb860f300a8fd662dc481/py/README.md",
+      "sha256": "74e0977922cf0633922a3eac12dbd6ea05ee4da2b8e43d6e49213a824973740d",
+      "characters_reviewed": 4672
+    }
+  ],
+  "infiniflow/ragflow": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/infiniflow/ragflow/aff4273476ee1662fe63107a1c9b8e50446ce897/README.md",
+      "sha256": "e321e3b65b92b34121e96d147fe9145e1e428ec1453e3cbbf4426fab09d701ad",
+      "characters_reviewed": 17456
+    },
+    {
+      "path": "agent/tools/arxiv.py",
+      "url": "https://raw.githubusercontent.com/infiniflow/ragflow/aff4273476ee1662fe63107a1c9b8e50446ce897/agent/tools/arxiv.py",
+      "sha256": "eb6b07995a09b476a9319a74a5336af34e53f1c34de5e82ff7e4e8f0aeebaf64",
+      "characters_reviewed": 3972
+    },
+    {
+      "path": "agent/canvas.py",
+      "url": "https://raw.githubusercontent.com/infiniflow/ragflow/aff4273476ee1662fe63107a1c9b8e50446ce897/agent/canvas.py",
+      "sha256": "45dba76bf4adb9ebfdc054532ced57d2ec31f0673691e501aeefc3ca73cc7c37",
+      "characters_reviewed": 50638
+    }
+  ]
+}

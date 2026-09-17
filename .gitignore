@@ -18,3 +18,4 @@ venv/
 
 # Downloaded papers
 data/papers/
+data/research_runs/
