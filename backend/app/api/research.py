@@ -1,9 +1,9 @@
 """Local evidence workspace API. Existing /api/papers contracts stay intact."""
 from typing import Annotated
 import requests
-from fastapi import APIRouter, Depends, File, UploadFile, Form, HTTPException
+from fastapi import APIRouter, Depends, File, UploadFile, Form, HTTPException, Query
 from pydantic import Field
-from schemas.research import Contract, ResearchRun
+from schemas.research import Contract, ResearchRun, ResearchHistory
 from workflow.evidence_workflow import EvidenceWorkflow
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
@@ -36,6 +36,13 @@ def invoke(operation):
 @router.post('/search', response_model=ResearchRun)
 def search(request: SearchRequest, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: flow.search(request.topic, request.max_results))
+
+
+@router.get('/runs', response_model=ResearchHistory)
+def history(flow: Annotated[EvidenceWorkflow, Depends(get_workflow)],
+            page: int = Query(default=1, ge=1),
+            page_size: int = Query(default=10, ge=1, le=50)):
+    return invoke(lambda: flow.store.history(page, page_size))
 
 
 @router.get('/runs/{run_id}', response_model=ResearchRun)

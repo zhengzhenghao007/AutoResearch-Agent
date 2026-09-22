@@ -1,0 +1,14 @@
+# Offline test/API import dependencies, pinned to the verified baseline.
+# Optional UI, formatting and agent-framework packages stay in their existing files.
+arxiv==4.0.0
+fastapi==0.139.2
+httpx==0.28.1
+langchain-openai==1.3.5
+pydantic==2.13.4
+pypdf==6.14.2
+pytest==9.1.1
+pytest-socket==0.7.0
+python-dotenv==1.2.2
+python-multipart==0.0.32
+requests==2.33.1
+uvicorn==0.51.0

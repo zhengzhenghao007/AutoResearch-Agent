@@ -8,7 +8,7 @@ The long-term goal is to build an autonomous research workflow similar to OpenAI
 
 ## Evidence-first MVP (2026-09)
 
-The new workflow is additive: the existing Streamlit UI and `/api/papers/search` and `/api/papers/analyze` remain available. Their legacy review scores are **not** provenance certification. The new evidence workflow is available through the CLI and `/api/research`; the existing frontend has not yet been connected to these new endpoints.
+The new workflow is additive: the existing Streamlit UI and `/api/papers/search` and `/api/papers/analyze` remain available. Their legacy review scores are **not** provenance certification. The new evidence workflow is available through the CLI and `/api/research`; the Next.js evidence workspace now connects to these endpoints alongside the legacy interface.
 
 Read the [10-project engineering survey](docs/research_agent_landscape.md), [current-code audit](docs/current_architecture_audit.md), [architecture and data contracts](docs/architecture.md), and [implementation roadmap](docs/roadmap.md).
 
@@ -46,6 +46,7 @@ Open `http://127.0.0.1:8000/docs` for interactive request schemas:
 | POST | `/api/research/search` | JSON `topic`, optional `max_results` (1–20) |
 | POST | `/api/research/runs/{run_id}/analyze` | JSON `selected_ids` from that run |
 | POST | `/api/research/upload` | multipart `file`, optional `run_id` |
+| GET | `/api/research/runs` | `page` (default 1), `page_size` (1–50, default 10); summaries and total |
 | GET | `/api/research/runs/{run_id}` | persisted research record |
 
 The API uses rule extraction. Explicit LLM mode is currently a CLI capability. Uploads accept PDF bytes, never server filesystem paths. Parsing runs in a separate process with a 45-second timeout, a 20 MiB input limit, 50-page default and one-million-character extracted-text cap. Encrypted or unreadable/scanned PDFs fail explicitly; OCR is not implemented. Downloads accept canonical HTTPS arXiv PDF URLs only and reject redirects. The server is a **local single-user development service**, with no authentication, multi-writer transactions, or OS-enforced parser memory quota. Do not expose it as an untrusted public upload service.
@@ -58,7 +59,42 @@ The API uses rule extraction. Explicit LLM mode is currently a CLI capability. U
 
 If Windows denies access to an old pytest temporary directory, use a fresh `--basetemp` path. Four legacy `test_*.py` provider demos run code at import time; they are excluded by default. `--run-live` explicitly opts into those demos and requires working provider credentials/network; they are not counted as deterministic unit tests. The offline suite tests real generated PDFs, fake network/provider adapters, citations, missing evidence, persistence and API behavior.
 
-Next: human-labelled extraction evaluation, structured user experimental inputs, semantic claim support review, and an evidence-inspection UI. Full paper writing and automatic experiment execution remain outside this MVP.
+Next: actual human review of the evaluation corpus, structured user experimental inputs, and semantic claim support review. Full paper writing and automatic experiment execution remain outside this MVP.
+
+### Evidence workspace
+
+Start the API above, then in a second terminal:
+
+```powershell
+cd frontend
+npm ci
+npm run dev
+```
+
+Open http://localhost:3000. Search creates a record; select candidates explicitly before choosing **Analyze selected papers**. Add multiple PDFs to the same record for comparison, or choose **New record** first. History reopens saved records and the `?run=` URL survives refresh. Evidence and claim links lead to quotations and extracted pages; canonical arXiv sources also link to the original PDF page. Suggestions remain separate from reported claims. Source support means literal provenance, not scientific validity.
+
+`NEXT_PUBLIC_API_BASE_URL` defaults to `http://127.0.0.1:8000`; set it before building if needed. A request timeout does not cancel server work: refresh history and reopen the record before retrying. The legacy interface remains below the evidence workspace.
+
+### Reproducible checks and evaluation
+
+```powershell
+python -m pip install -r requirements-ci.txt
+$env:PYTHON_DOTENV_DISABLED='1'
+python -m pytest tests -q -p no:cacheprovider --allow-hosts=127.0.0.1,::1
+python -m evaluation.evaluate_evidence
+cd frontend
+npm ci
+npm test
+npm run lint
+npm run typecheck
+npm run build
+```
+
+Windows allows loopback solely for the async test event loop; Linux CI uses `--disable-socket --allow-unix-socket` and no provider keys. CI runs on Python 3.11/3.12 and Node 22 for pushes and pull requests. Required status checks must be enabled separately in repository branch protection. Python direct dependencies are pinned in `requirements-ci.txt`; transitive dependencies are resolved by pip. Frontend installation uses its committed lockfile. Upgrade dependencies with these checks.
+
+The [redistributable synthetic corpus](tests/fixtures/evidence/README.md) tests text extraction, empty text/no OCR, truncation, missing/planned experiments and rejected quotes. All six records are `pending_human_review`: the evaluator reports `reviewed_count: 0` and `metrics: null`. Only records with actual human-review provenance enter category precision/recall/missingness and quotation/support metrics. Synthetic regressions are not a scientific accuracy benchmark.
+
+For isolated browser QA, run `python -m uvicorn --app-dir tests ui_fixture_server:app --port 8000` instead of the normal API. This replaces only the external search/download source with clearly labelled synthetic papers, uses real PDF processing and temporary storage, and never changes production research records.
 
 ---
 

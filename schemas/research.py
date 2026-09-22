@@ -90,3 +90,20 @@ class ResearchRun(Contract):
     generated_claims: list[Claim] = Field(default_factory=list)
     artifacts: list[Artifact] = Field(default_factory=list)
     review: Review = Field(default_factory=lambda: Review(approved=False, issues=['No papers processed']))
+
+
+class ResearchRunSummary(Contract):
+    id: str
+    topic: str
+    candidate_count: int
+    selected_count: int
+    paper_count: int
+    updated_at: datetime
+    source_support_passed: bool
+
+
+class ResearchHistory(Contract):
+    items: list[ResearchRunSummary]
+    total: int
+    page: int
+    page_size: int
