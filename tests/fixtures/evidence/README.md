@@ -1,18 +1,22 @@
 # Synthetic evidence regression corpus
 
-These six tiny PDFs contain original AI-authored text, not published research.
+These seven tiny PDFs contain original synthetic text or generated raster pixels, not published research.
 They and their annotations are dedicated to the public domain under CC0-1.0
-(https://creativecommons.org/publicdomain/zero/1.0/). No third-party paper text,
-images, or embedded fonts are redistributed. `generate.py` uses the existing
+(https://creativecommons.org/publicdomain/zero/1.0/). No third-party paper text, images, or embedded fonts are redistributed. The raster-only page uses original grayscale bars. `generate.py` uses the existing
 test PDF helper's construction technique; each manifest record records its
 source, license, provenance, and SHA-256. Regenerate with
-`python tests/fixtures/evidence/generate.py` from the repository root. This
-resets every annotation to pending; never use it to overwrite real reviews.
+`python tests/fixtures/evidence/generate.py --output-dir .verification/new-corpus`
+from the repository root, choosing a new output directory each time. The generator
+refuses to overwrite any existing manifest or generated PDF before writing anything.
+New output has pending labels; compare it separately and preserve existing human
+reviews rather than replacing the reviewed corpus. The default output directory
+is the shipped corpus, so running without an explicit new directory fails safely.
 
-Cases cover normal text, a blank page with no extractable text, bounded page
+Cases cover normal text, a blank page, a nonblank raster-only page, bounded page
 truncation, an essay without experiments, planned experiments, and a fabricated
-quotation injected into otherwise valid evidence. The empty-text case exercises
-the parser's no-OCR failure; it is not an image-based scanning/OCR benchmark.
+quotation injected into otherwise valid evidence. The blank and image-only cases exercise the parser's explicit no-OCR failure.
+The image-only PDF embeds pixel data and no text layer; it simulates a scanned
+page, but is not a real scanned-paper or OCR-accuracy benchmark.
 The PDF text is intentionally short and does not represent real paper layout.
 
 Run `python -m evaluation.evaluate_evidence` from the repository root. No network

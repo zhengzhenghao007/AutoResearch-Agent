@@ -25,7 +25,7 @@ def test_pending_corpus_has_no_scientific_metrics_and_runs_regressions():
     result = api().evaluate(ROOT / 'manifest.json')
     assert result['reviewed_count'] == 0
     assert result['metrics'] is None
-    assert result['regressions']['passed'] == 6
+    assert result['regressions']['passed'] == 7
     assert result['regressions']['failed'] == []
 
 
@@ -121,5 +121,5 @@ def test_cli_fails_when_synthetic_regression_expectation_is_not_met(tmp_path):
                             cwd=Path(__file__).resolve().parents[1])
     assert result.returncode == 1
     report = json.loads(result.stdout)
-    assert report['regressions'] == {'passed': 5, 'failed': ['normal']}
+    assert report['regressions'] == {'passed': 6, 'failed': ['normal']}
     assert report['metrics'] is None

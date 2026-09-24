@@ -52,6 +52,23 @@
       "reject_quote": null
     },
     {
+      "id": "image_only",
+      "file": "image_only.pdf",
+      "sha256": "b6f7c0c52a5e8559b3f79291a5862bab3e174248efab518fddc45ad48b3b2738",
+      "source": "original-synthetic:image_only",
+      "license": "CC0-1.0",
+      "provenance": "Original algorithmically generated grayscale raster bars simulating an image-only scan; no text layer, external image, or published research content.",
+      "status": "pending_human_review",
+      "reviewer": null,
+      "reviewed_at": null,
+      "max_pages": 50,
+      "annotations": [],
+      "expected_categories": [],
+      "expected_truncated": false,
+      "expected_error": true,
+      "reject_quote": null
+    },
+    {
       "id": "truncated",
       "file": "truncated.pdf",
       "sha256": "3300e2664d99d4027f1a9e7e8c4f51b16113cbb853deb8bb27c92a2545713636",
