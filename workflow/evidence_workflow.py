@@ -3,6 +3,7 @@ import hashlib
 from uuid import uuid4
 from schemas.research import Candidate, ResearchRun, Review
 from services.paper_processing import PaperProcessor
+from services.arxiv_identity import canonical_arxiv_pdf_url
 from services.evidence_extraction import EvidenceExtractor
 from services.evidence_review import review_paper
 from services.literature_synthesis import build_suggestions, synthesize
@@ -34,10 +35,7 @@ class EvidenceWorkflow:
             raise ValueError('max_results must be 1..20')
         seen = set()
         for item in self.search_source(topic, max_results=max_results):
-            url = item['pdf_url']
-            # arXiv feeds sometimes supply HTTP even though HTTPS is supported.
-            if url.startswith('http://arxiv.org/'):
-                url = 'https://' + url[len('http://'):]
+            url = canonical_arxiv_pdf_url(item['pdf_url'])
             identity = hashlib.sha256(url.encode()).hexdigest()[:16]
             if identity not in seen:
                 run.candidates.append(Candidate(id=identity, title=item['title'], pdf_url=url, summary=item.get('summary', ''), authors=item.get('authors', [])))
