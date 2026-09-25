@@ -94,3 +94,19 @@ Ten new tests cover equivalence, legacy identifiers, revision separation and
 unsafe URL boundaries. Independent review found no blockers. ChatGPT connection
 replacement requires a permanent-deletion confirmation in its UI, so the old
 connector was retained and external review is still pending.
+
+## External review completed (2026-09-26)
+
+The project connector was replaced and paired with the same read-only scope.
+ChatGPT verified AutoResearch-Agent and reviewed implementation HEAD 8e21e82,
+then returned C2C task c2c_a71f iteration 5 STATE: DONE for implementation only.
+It independently read execution outputs and current code, finding no blockers
+in P0/P1, offline review packets, or conservative arXiv normalization. The
+connector cannot compare arbitrary Git refs; review used the previously read
+da2a6b3 baseline, recorded changed files, and current contents. This supersedes
+the earlier connection-related review limitations recorded above.
+
+The 100 Python tests and 17 frontend tests are recorded checks, not a human
+scientific evaluation. All seven shipped samples remain pending human review;
+representative literature evaluation and the merge gate remain outstanding.
+The PR stays draft and is not merged.
