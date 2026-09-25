@@ -79,3 +79,18 @@ original regressions passed with reviewed_count 0 and metrics null. Independent
 code review found no blockers in identity binding, escaping, provenance,
 quotation validation, preservation, or staged publication. Frontend code was
 unchanged by this follow-up; remote CI rechecks the complete branch.
+
+## arXiv candidate normalization (2026-09-26)
+
+New searches normalize recognized arXiv HTTP/HTTPS abstract/PDF links and an
+optional .pdf suffix before candidate identity hashing. Equivalent links retain
+the first candidate's metadata. Explicit revisions and unversioned links remain
+separate, because this offline step cannot resolve which revision an unversioned
+URL currently serves. Existing stored runs and content-hash source identities
+remain unchanged. Unknown/unsafe URLs are left intact for the existing downloader
+to reject. This is an initial P2 increment, not a complete citation registry.
+
+Ten new tests cover equivalence, legacy identifiers, revision separation and
+unsafe URL boundaries. Independent review found no blockers. ChatGPT connection
+replacement requires a permanent-deletion confirmation in its UI, so the old
+connector was retained and external review is still pending.
