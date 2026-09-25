@@ -373,3 +373,21 @@ The objective is to create an AI research assistant capable of supporting the co
 # License
 
 MIT License
+
+## Read-only citation registry (P2 increment)
+
+Export provenance for already processed papers through
+`GET /api/research/runs/{run_id}/citations`, or locally:
+
+```powershell
+python research_cli.py citations RUN_ID
+```
+
+The CLI writes JSON to stdout; use shell redirection to save it. The registry
+preserves source IDs, content hashes, original URIs, exact page quotations and
+both paper claims and generated suggestions that reference those quotations.
+The claim type remains explicit. Search-only candidates are excluded. Repeated
+exports of the same validated snapshot are deterministic and do not modify it.
+An exact arXiv revision is included only when the stored URI contains one;
+unversioned links yield null. No DOI, authors, BibTeX, or revision is inferred.
+This is a provenance export, not verification of scientific truth.
