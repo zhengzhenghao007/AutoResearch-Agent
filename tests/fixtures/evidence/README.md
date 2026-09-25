@@ -62,3 +62,45 @@ scientific truth, entailment of generated prose, or validity of experiments.
 There are no confidence intervals, representative-domain guarantees, or model
 performance claims. The manifest's expected categories are regression checks
 only and are not silently promoted to human ground truth.
+
+## Offline review packet
+
+Export a new self-contained packet from the repository root:
+
+```powershell
+python -m evaluation.review_packet export tests/fixtures/evidence/manifest.json .verification/review-packet
+```
+
+Open `.verification/review-packet/index.html` in a browser. It contains original
+PDF links, extracted page text, source/license/hash information, the selected
+page scope, and explicit truncation or no-readable-text notices. It requires no
+server or network. Existing annotations are clearly labelled as draft/reference
+material; `reviews.json` always starts with blank, incomplete human review rows.
+
+A real reviewer edits `reviews.json`. For each fully reviewed record, set
+`completed` to true, provide their real `reviewer` identifier and ISO
+`reviewed_at` date, and exhaustively enter `annotations` with `page`, literal
+`quote`, `category`, and boolean `supported`. Categories are defined by the
+existing evidence contract and shown in the packet. Leave unfinished rows
+unchanged. Empty annotations are valid when no eligible evidence exists; an
+image-only PDF still requires visual inspection of the linked original, since
+this tool does not provide OCR. Completion records an attestation, not proof of
+reviewer identity or scientific correctness.
+
+Import into a different, nonexistent directory:
+
+```powershell
+python -m evaluation.review_packet import tests/fixtures/evidence/manifest.json .verification/review-packet/reviews.json .verification/reviewed-corpus
+python -m evaluation.evaluate_evidence .verification/reviewed-corpus/manifest.json
+```
+
+Import verifies the exact source manifest hash, all record identities, PDF
+hashes, page limits, reviewer/date metadata, and every completed quotation's
+location. At least one completed row is required. Only completed rows replace
+review metadata and annotations; incomplete rows preserve the source record.
+Regression expectations remain unchanged. The new corpus includes copied PDFs
+and `import_audit.json`, binding the source manifest and review file hashes.
+Neither command overwrites an existing output directory, and the source corpus
+is never modified. If source bytes change after export, create a new packet and
+review that version. The exporter does not promote automatic labels to human
+labels, and no actual human review is supplied by this implementation.

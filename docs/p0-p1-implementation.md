@@ -55,3 +55,27 @@ These are application-flow checks with synthetic materials, not human scientific
 ## External review limitation
 
 ChatGPT independently reviewed the implementation and Python output during iteration 1, finding no core P0/P1 functional defect. It requested the frontend logs and questioned the Next update; it subsequently accepted the security-update rationale. Final connector reads failed despite repair and re-pairing, so ChatGPT did not issue a final DONE. All frontend outputs were recorded, the separate local code review finding was fixed and tested, and the verified development branch is published without merging. This limitation must not be represented as completed external sign-off.
+
+## Offline human-review tooling (2026-09-24)
+
+This follow-up closes a tooling gap in P0 without declaring the human-evaluation
+gate complete. Export produces a self-contained HTML page, copied PDFs, and
+blank review rows. Import binds the exact manifest/PDF hashes and page scope,
+validates reviewer/date and literal quote locations, and writes a separate
+corpus with an audit file. Both operations reject existing output directories;
+validation precedes staged publication. The original corpus and its regression
+expectations remain intact. See tests/fixtures/evidence/README.md for commands.
+
+Implementation follows failing contract tests, module implementation, full
+Python regression checks, and independent review. Tests use simulated reviewer
+metadata only in temporary directories. The shipped seven records remain
+pending_human_review; obtaining real reviewers and representative licensed
+papers remains outstanding. ChatGPT connection diagnostics currently cannot
+confirm this workspace, so external sign-off remains pending.
+
+Verification completed 2026-09-25: 90 Python tests passed (one existing dependency
+deprecation warning), the CLI exported a usable seven-PDF packet, and all seven
+original regressions passed with reviewed_count 0 and metrics null. Independent
+code review found no blockers in identity binding, escaping, provenance,
+quotation validation, preservation, or staged publication. Frontend code was
+unchanged by this follow-up; remote CI rechecks the complete branch.
