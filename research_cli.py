@@ -5,6 +5,7 @@ from pathlib import Path
 from services.evidence_extraction import EvidenceExtractor
 from services.research_store import ResearchStore
 from workflow.evidence_workflow import EvidenceWorkflow
+from services.citation_registry import build_citation_registry
 
 
 def main():
@@ -23,6 +24,8 @@ def main():
     upload.add_argument('--run-id')
     show = commands.add_parser('show')
     show.add_argument('run_id')
+    citations = commands.add_parser('citations')
+    citations.add_argument('run_id')
     args = parser.parse_args()
     flow = EvidenceWorkflow(store=ResearchStore(args.store), extractor=EvidenceExtractor(args.mode))
     try:
@@ -34,6 +37,8 @@ def main():
             with args.path.open('rb') as stream:
                 data = stream.read(flow.processor.max_bytes + 1)
             result = flow.import_pdf(data, args.path.name, args.run_id)
+        elif args.command == 'citations':
+            result = build_citation_registry(flow.store.load(args.run_id))
         else:
             result = flow.store.load(args.run_id)
         print(result.model_dump_json(indent=2))

@@ -5,6 +5,8 @@ from fastapi import APIRouter, Depends, File, UploadFile, Form, HTTPException, Q
 from pydantic import Field
 from schemas.research import Contract, ResearchRun, ResearchHistory
 from workflow.evidence_workflow import EvidenceWorkflow
+from schemas.citation_registry import CitationRegistry
+from services.citation_registry import build_citation_registry
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -66,3 +68,8 @@ def upload(flow: Annotated[EvidenceWorkflow, Depends(get_workflow)], file: Uploa
         return invoke(lambda: flow.import_pdf(data, title or 'Uploaded paper', run_id))
     finally:
         file.file.close()
+
+
+@router.get('/runs/{run_id}/citations', response_model=CitationRegistry)
+def citations(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_citation_registry(flow.store.load(run_id)))
