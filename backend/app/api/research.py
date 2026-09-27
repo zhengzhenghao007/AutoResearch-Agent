@@ -3,7 +3,7 @@ from typing import Annotated
 import requests
 from fastapi import APIRouter, Depends, File, UploadFile, Form, HTTPException, Query
 from pydantic import Field
-from schemas.research import Contract, ResearchRun, ResearchHistory
+from schemas.research import CandidateDecisionRequest, Contract, ResearchRun, ResearchHistory
 from workflow.evidence_workflow import EvidenceWorkflow
 from schemas.citation_registry import CitationRegistry
 from services.citation_registry import build_citation_registry
@@ -55,6 +55,13 @@ def get_run(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)
 @router.post('/runs/{run_id}/analyze', response_model=ResearchRun)
 def analyze(run_id: str, request: SelectionRequest, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: flow.analyze(run_id, request.selected_ids))
+
+
+@router.post('/runs/{run_id}/candidate-decisions', response_model=ResearchRun)
+def candidate_decision(run_id: str, request: CandidateDecisionRequest,
+                       flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: flow.record_candidate_decision(
+        run_id, request.candidate_id, request.decision, request.reason))
 
 
 @router.post('/upload', response_model=ResearchRun)

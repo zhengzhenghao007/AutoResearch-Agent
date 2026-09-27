@@ -26,6 +26,11 @@ def main():
     show.add_argument('run_id')
     citations = commands.add_parser('citations')
     citations.add_argument('run_id')
+    decision = commands.add_parser('candidate-decision', help='Append a screening annotation; analysis selection is unchanged')
+    decision.add_argument('run_id')
+    decision.add_argument('candidate_id')
+    decision.add_argument('decision', choices=['include', 'exclude'])
+    decision.add_argument('--reason', required=True)
     args = parser.parse_args()
     flow = EvidenceWorkflow(store=ResearchStore(args.store), extractor=EvidenceExtractor(args.mode))
     try:
@@ -39,6 +44,8 @@ def main():
             result = flow.import_pdf(data, args.path.name, args.run_id)
         elif args.command == 'citations':
             result = build_citation_registry(flow.store.load(args.run_id))
+        elif args.command == 'candidate-decision':
+            result = flow.record_candidate_decision(args.run_id, args.candidate_id, args.decision, args.reason)
         else:
             result = flow.store.load(args.run_id)
         print(result.model_dump_json(indent=2))

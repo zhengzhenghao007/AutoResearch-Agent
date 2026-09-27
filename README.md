@@ -376,6 +376,13 @@ MIT License
 
 ## Read-only citation registry (P2 increment)
 
+Candidate screening annotations are also available through
+`POST /api/research/runs/{run_id}/candidate-decisions` and
+`python research_cli.py candidate-decision RUN_ID CANDIDATE_ID include --reason "Relevant method"`.
+Each revision appends a reason and timestamp to the run's history. These are
+annotations: analysis still uses explicitly selected IDs. See
+[candidate screening history](docs/p2-candidate-decisions.md) for semantics and compatibility.
+
 Export provenance for already processed papers through
 `GET /api/research/runs/{run_id}/citations`, or locally:
 
