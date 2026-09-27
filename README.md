@@ -376,6 +376,12 @@ MIT License
 
 ## Read-only citation registry (P2 increment)
 
+Record unverified user-provided DOI associations with
+`python research_cli.py source-doi RUN_ID SOURCE_ID set --doi 10.1234/example --reason "Publisher page"`.
+Use `source-identities RUN_ID` to inspect current state and duplicate assignments.
+Setting or clearing a DOI preserves history and does not change citation/BibTeX
+exports. See [DOI annotations](docs/p2-doi-annotations.md) for API and supported syntax.
+
 For a conservative BibTeX bibliography, run `python research_cli.py bibtex RUN_ID`
 or use `GET /api/research/runs/{run_id}/bibtex`. Explicit arXiv revisions are
 preserved; unknown authors, DOI and year remain absent. Uploads and unrecognized

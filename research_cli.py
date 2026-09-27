@@ -7,6 +7,7 @@ from services.research_store import ResearchStore
 from workflow.evidence_workflow import EvidenceWorkflow
 from services.citation_registry import build_citation_registry
 from services.bibtex_export import build_bibtex_export
+from services.source_identity import build_source_identities
 
 
 def main():
@@ -29,6 +30,14 @@ def main():
     citations.add_argument('run_id')
     bibtex = commands.add_parser('bibtex', help='Export BibTeX; skipped-source diagnostics go to stderr')
     bibtex.add_argument('run_id')
+    identities = commands.add_parser('source-identities', help='Read user-supplied DOI state and conflicts')
+    identities.add_argument('run_id')
+    source_doi = commands.add_parser('source-doi', help='Append unverified DOI annotation history')
+    source_doi.add_argument('run_id')
+    source_doi.add_argument('source_id')
+    source_doi.add_argument('action', choices=['set', 'clear'])
+    source_doi.add_argument('--doi')
+    source_doi.add_argument('--reason', required=True)
     decision = commands.add_parser('candidate-decision', help='Append a screening annotation; analysis selection is unchanged')
     decision.add_argument('run_id')
     decision.add_argument('candidate_id')
@@ -47,6 +56,10 @@ def main():
             result = flow.import_pdf(data, args.path.name, args.run_id)
         elif args.command == 'citations':
             result = build_citation_registry(flow.store.load(args.run_id))
+        elif args.command == 'source-identities':
+            result = build_source_identities(flow.store.load(args.run_id))
+        elif args.command == 'source-doi':
+            result = flow.record_source_identity(args.run_id, args.source_id, args.action, args.doi, args.reason)
         elif args.command == 'bibtex':
             result = build_bibtex_export(flow.store.load(args.run_id))
             for skipped in result.skipped_sources:

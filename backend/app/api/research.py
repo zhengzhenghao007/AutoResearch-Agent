@@ -9,6 +9,8 @@ from schemas.citation_registry import CitationRegistry
 from services.citation_registry import build_citation_registry
 from schemas.bibtex_export import BibtexExport
 from services.bibtex_export import build_bibtex_export
+from schemas.source_identity import SourceIdentityRequest, SourceIdentities
+from services.source_identity import build_source_identities
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -87,3 +89,14 @@ def citations(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflo
 @router.get('/runs/{run_id}/bibtex', response_model=BibtexExport)
 def bibtex(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: build_bibtex_export(flow.store.load(run_id)))
+
+
+@router.get('/runs/{run_id}/source-identities', response_model=SourceIdentities)
+def source_identities(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_source_identities(flow.store.load(run_id)))
+
+
+@router.post('/runs/{run_id}/source-identities', response_model=ResearchRun)
+def record_source_identity(run_id: str, request: SourceIdentityRequest,
+                           flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: flow.record_source_identity(run_id, **request.model_dump()))
