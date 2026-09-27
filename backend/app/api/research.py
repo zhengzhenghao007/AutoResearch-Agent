@@ -7,6 +7,8 @@ from schemas.research import CandidateDecisionRequest, Contract, ResearchRun, Re
 from workflow.evidence_workflow import EvidenceWorkflow
 from schemas.citation_registry import CitationRegistry
 from services.citation_registry import build_citation_registry
+from schemas.bibtex_export import BibtexExport
+from services.bibtex_export import build_bibtex_export
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -80,3 +82,8 @@ def upload(flow: Annotated[EvidenceWorkflow, Depends(get_workflow)], file: Uploa
 @router.get('/runs/{run_id}/citations', response_model=CitationRegistry)
 def citations(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: build_citation_registry(flow.store.load(run_id)))
+
+
+@router.get('/runs/{run_id}/bibtex', response_model=BibtexExport)
+def bibtex(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_bibtex_export(flow.store.load(run_id)))

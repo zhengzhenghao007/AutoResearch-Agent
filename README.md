@@ -376,6 +376,11 @@ MIT License
 
 ## Read-only citation registry (P2 increment)
 
+For a conservative BibTeX bibliography, run `python research_cli.py bibtex RUN_ID`
+or use `GET /api/research/runs/{run_id}/bibtex`. Explicit arXiv revisions are
+preserved; unknown authors, DOI and year remain absent. Uploads and unrecognized
+source URIs are explicitly skipped. See [BibTeX export](docs/p2-bibtex-export.md).
+
 Candidate screening annotations are also available through
 `POST /api/research/runs/{run_id}/candidate-decisions` and
 `python research_cli.py candidate-decision RUN_ID CANDIDATE_ID include --reason "Relevant method"`.
