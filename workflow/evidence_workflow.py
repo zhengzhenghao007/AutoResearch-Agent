@@ -1,7 +1,7 @@
 """Additive research loop, independent of the legacy ReaderPipeline."""
 import hashlib
 from uuid import uuid4
-from schemas.research import Candidate, ResearchRun, Review
+from schemas.research import Candidate, CandidateDecision, ResearchRun, Review
 from services.paper_processing import PaperProcessor
 from services.arxiv_identity import canonical_arxiv_pdf_url
 from services.evidence_extraction import EvidenceExtractor
@@ -40,6 +40,16 @@ class EvidenceWorkflow:
             if identity not in seen:
                 run.candidates.append(Candidate(id=identity, title=item['title'], pdf_url=url, summary=item.get('summary', ''), authors=item.get('authors', [])))
                 seen.add(identity)
+        self.store.save(run)
+        return run
+
+    def record_candidate_decision(self, run_id, candidate_id, decision, reason):
+        """Append user-supplied screening rationale without changing analysis selection."""
+        run = self.store.load(run_id)
+        event = CandidateDecision(candidate_id=candidate_id, decision=decision, reason=reason)
+        if event.candidate_id not in {candidate.id for candidate in run.candidates}:
+            raise ValueError('Candidate is not in this research run')
+        run.candidate_decisions.append(event)
         self.store.save(run)
         return run
 

@@ -8,6 +8,8 @@ def validate_run(run: ResearchRun) -> None:
     candidate_ids = [c.id for c in run.candidates]
     if len(candidate_ids) != len(set(candidate_ids)):
         raise ValueError('Duplicate candidate IDs')
+    if any(event.candidate_id not in candidate_ids for event in run.candidate_decisions):
+        raise ValueError('Invalid candidate decision reference')
     if len(run.selected_ids) != len(set(run.selected_ids)) or not set(run.selected_ids) <= set(candidate_ids):
         raise ValueError('Invalid selected candidate references')
     source_ids, evidence_ids, claim_ids = set(), set(), set()

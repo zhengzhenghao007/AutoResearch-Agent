@@ -1,7 +1,7 @@
 """Versioned evidence contracts. A citation is support, not proof of truth."""
 from datetime import datetime, timezone
 from typing import Literal
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
 Category = Literal['problem', 'method', 'dataset', 'experiment', 'result', 'limitation', 'future_work']
 CATEGORIES = ('problem', 'method', 'dataset', 'experiment', 'result', 'limitation', 'future_work')
@@ -71,6 +71,16 @@ class Candidate(Contract):
     authors: list[str] = Field(default_factory=list)
 
 
+class CandidateDecisionRequest(Contract):
+    candidate_id: str = Field(min_length=1)
+    decision: Literal['include', 'exclude']
+    reason: str = Field(min_length=1, max_length=2000)
+
+
+class CandidateDecision(CandidateDecisionRequest):
+    decided_at: AwareDatetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
 class Artifact(Contract):
     kind: Literal['literature_summary', 'method_comparison', 'research_ideas', 'coverage_gaps']
     title: str
@@ -86,6 +96,7 @@ class ResearchRun(Contract):
     plan: list[str]
     candidates: list[Candidate] = Field(default_factory=list)
     selected_ids: list[str] = Field(default_factory=list)
+    candidate_decisions: list[CandidateDecision] = Field(default_factory=list)
     papers: list[PaperEvidence] = Field(default_factory=list)
     generated_claims: list[Claim] = Field(default_factory=list)
     artifacts: list[Artifact] = Field(default_factory=list)
