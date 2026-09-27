@@ -6,6 +6,7 @@ from services.evidence_extraction import EvidenceExtractor
 from services.research_store import ResearchStore
 from workflow.evidence_workflow import EvidenceWorkflow
 from services.citation_registry import build_citation_registry
+from services.bibtex_export import build_bibtex_export
 
 
 def main():
@@ -26,6 +27,8 @@ def main():
     show.add_argument('run_id')
     citations = commands.add_parser('citations')
     citations.add_argument('run_id')
+    bibtex = commands.add_parser('bibtex', help='Export BibTeX; skipped-source diagnostics go to stderr')
+    bibtex.add_argument('run_id')
     decision = commands.add_parser('candidate-decision', help='Append a screening annotation; analysis selection is unchanged')
     decision.add_argument('run_id')
     decision.add_argument('candidate_id')
@@ -44,6 +47,14 @@ def main():
             result = flow.import_pdf(data, args.path.name, args.run_id)
         elif args.command == 'citations':
             result = build_citation_registry(flow.store.load(args.run_id))
+        elif args.command == 'bibtex':
+            result = build_bibtex_export(flow.store.load(args.run_id))
+            for skipped in result.skipped_sources:
+                print(f'Skipped source {skipped.source_id}: {skipped.reason}', file=sys.stderr)
+            if hasattr(sys.stdout, 'reconfigure'):
+                sys.stdout.reconfigure(encoding='utf-8', newline='\n')
+            print(result.bibtex, end='')
+            return 0
         elif args.command == 'candidate-decision':
             result = flow.record_candidate_decision(args.run_id, args.candidate_id, args.decision, args.reason)
         else:
