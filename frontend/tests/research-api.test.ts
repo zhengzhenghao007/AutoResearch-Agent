@@ -1,6 +1,24 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import { researchApi, REQUEST_TIMEOUT_MS } from '@/lib/research-api';
 afterEach(() => {vi.unstubAllGlobals();vi.useRealTimers();});
+test('screening posts only annotation fields to the encoded route',async()=>{
+  const payload={id:'record',candidate_decisions:[]};
+  const fetcher=vi.fn().mockResolvedValue(new Response(JSON.stringify(payload)));
+  vi.stubGlobal('fetch',fetcher);
+  const body={candidate_id:'paper',decision:'exclude' as const,reason:'Different protocol'};
+  expect(await researchApi.candidateDecision('a/b',body)).toEqual(payload);
+  expect(fetcher.mock.calls[0][0]).toContain('/runs/a%2Fb/candidate-decisions');
+  expect(fetcher.mock.calls[0][1].method).toBe('POST');
+  expect(JSON.parse(fetcher.mock.calls[0][1].body)).toEqual(body);
+});
+test('screening timeout never retries a non-idempotent annotation',async()=>{
+  vi.useFakeTimers();
+  const fetcher=vi.fn((_url: string,init: RequestInit)=>new Promise((_resolve,reject)=>init.signal?.addEventListener('abort',()=>reject(new DOMException('Aborted','AbortError')))));
+  vi.stubGlobal('fetch',fetcher);
+  const result=expect(researchApi.candidateDecision('record',{candidate_id:'a',decision:'include',reason:'Relevant'})).rejects.toThrow('server may still be processing');
+  await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS);await result;
+  expect(fetcher).toHaveBeenCalledTimes(1);
+});
 test('export reads use encoded routes and preserve backend payloads', async () => {
   const payload={run_id:'a/b',bibtex:'exact\n',skipped_sources:[]};
   const fetcher=vi.fn().mockResolvedValue(new Response(JSON.stringify(payload)));
