@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import EvidenceWorkspace from '@/components/EvidenceWorkspace';
 import { researchApi } from '@/lib/research-api';
 import type { ResearchRun } from '@/types/research';
-vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn() } }));
+vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn(), candidateDecision:vi.fn() } }));
 const run: ResearchRun = {schema_version:1,id:'a'.repeat(32),topic:'Navigation',plan:['Read sources'],candidates:[{id:'a',title:'Paper A',pdf_url:'https://arxiv.org/pdf/2401.12345',authors:[],summary:''},{id:'b',title:'Paper B',pdf_url:'',authors:[],summary:''}],selected_ids:[],papers:[],generated_claims:[],artifacts:[],review:{approved:false,issues:[],scope:'Literal support only'}};
 beforeEach(() => {
   vi.resetAllMocks(); window.history.replaceState({}, '', '/');
@@ -15,6 +15,70 @@ beforeEach(() => {
   vi.mocked(researchApi.upload).mockResolvedValue(run);
 });
 async function search() { await userEvent.type(screen.getByLabelText('Research topic'), 'Navigation'); await userEvent.click(screen.getByRole('button',{name:'Find papers'})); await screen.findByLabelText('Select Paper A'); }
+function screening() { return within(screen.getByRole('group',{name:'Screening for Paper A'})); }
+test('failed analysis preserves the unfinished screening draft',async()=>{
+  render(<EvidenceWorkspace/>);await search();
+  await userEvent.type(screening().getByLabelText('Screening reason'),'Draft reason');
+  await userEvent.selectOptions(screening().getByLabelText('Screening decision'),'exclude');
+  await userEvent.click(screen.getByLabelText('Select Paper A'));
+  vi.mocked(researchApi.analyze).mockRejectedValueOnce(new Error('Analysis unavailable'));
+  await userEvent.click(screen.getByRole('button',{name:'Analyze selected papers'}));
+  await screen.findByText('Analysis unavailable');
+  expect(screening().getByLabelText('Screening reason')).toHaveValue('Draft reason');
+  expect(screening().getByLabelText('Screening decision')).toHaveValue('exclude');
+});
+async function recordReason(reason='Relevant protocol') {
+  await userEvent.type(screening().getByLabelText('Screening reason'),reason);
+  await userEvent.click(screening().getByRole('button',{name:'Record screening decision'}));
+}
+test('screening preserves unsaved selection and ordered revisions and clears exports',async()=>{
+  render(<EvidenceWorkspace/>); await search();
+  expect(screening().getByText('No screening annotation.')).toBeInTheDocument();
+  vi.mocked(researchApi.citations).mockResolvedValue({schema_version:1,run_id:run.id,topic:run.topic,sources:[]});
+  await userEvent.click(screen.getByRole('button',{name:'Load citation JSON'}));
+  await screen.findByRole('button',{name:'Download citation JSON'});
+  const first={candidate_id:'a',decision:'include' as const,reason:'Relevant protocol',decided_at:'2026-09-28T01:00:00Z'};
+  vi.mocked(researchApi.candidateDecision).mockResolvedValueOnce({...run,candidate_decisions:[first]});
+  await recordReason();
+  expect(researchApi.candidateDecision).toHaveBeenCalledWith(run.id,{candidate_id:'a',decision:'include',reason:'Relevant protocol'});
+  expect(screen.getByLabelText('Select Paper A')).not.toBeChecked();
+  expect(screen.queryByRole('button',{name:'Download citation JSON'})).not.toBeInTheDocument();
+  await userEvent.click(screen.getByLabelText('Select Paper A'));
+  await userEvent.selectOptions(screening().getByLabelText('Screening decision'),'exclude');
+  vi.mocked(researchApi.candidateDecision).mockResolvedValueOnce({...run,candidate_decisions:[first,{...first,decision:'exclude',reason:'Different protocol'}]});
+  await recordReason('Different protocol');
+  expect(screen.getByLabelText('Select Paper A')).toBeChecked();
+  await userEvent.click(screening().getByText('Screening history (2)'));
+  const entries=screening().getAllByRole('listitem');
+  expect(entries[0]).toHaveTextContent('Relevant protocol'); expect(entries[1]).toHaveTextContent('Different protocol');
+  await userEvent.click(screen.getByRole('button',{name:'Analyze selected papers'}));
+  expect(researchApi.analyze).toHaveBeenCalledWith(run.id,['a']);
+});
+test('screening failure preserves input without optimistic history or retries',async()=>{
+  render(<EvidenceWorkspace/>); await search(); await userEvent.click(screen.getByLabelText('Select Paper A'));
+  vi.mocked(researchApi.candidateDecision).mockRejectedValueOnce(new Error('Connection lost. Reopen the record to check its state.'));
+  await recordReason('  <b>Unverified</b>  ');
+  expect(screening().getByRole('alert')).toHaveTextContent('Connection lost');
+  expect(screening().getByLabelText('Screening reason')).toHaveValue('  <b>Unverified</b>  ');
+  expect(screen.getByLabelText('Select Paper A')).toBeChecked();
+  expect(screening().getByText('No screening annotation.')).toBeInTheDocument();
+  expect(researchApi.candidateDecision).toHaveBeenCalledTimes(1);
+});
+test('screening serializes writes and ignores completion after navigation',async()=>{
+  let resolve!: (value: ResearchRun)=>void;
+  vi.mocked(researchApi.candidateDecision).mockReturnValueOnce(new Promise(r=>{resolve=r;}));
+  render(<EvidenceWorkspace/>); await search(); await recordReason();
+  expect(screen.getByRole('button',{name:'Find papers'})).toBeDisabled();
+  expect(screen.getByRole('button',{name:'New record'})).toBeDisabled();
+  expect(within(screen.getByRole('group',{name:'Screening for Paper B'})).getByLabelText('Screening reason')).toBeDisabled();
+  const other={...run,id:'b'.repeat(32),topic:'Different record'};
+  vi.mocked(researchApi.get).mockResolvedValueOnce(other);
+  await act(async()=>{window.history.replaceState({},'',`/?run=${other.id}`);window.dispatchEvent(new PopStateEvent('popstate'));});
+  await screen.findByRole('heading',{name:'Different record'});
+  await act(async()=>resolve({...run,candidate_decisions:[{candidate_id:'a',decision:'include',reason:'Stale',decided_at:''}]}));
+  expect(screen.getByRole('heading',{name:'Different record'})).toBeInTheDocument();
+  expect(screen.queryByText('Stale')).not.toBeInTheDocument();
+});
 test('exports exist only for a current run and reset after same-run analysis',async()=>{
   vi.mocked(researchApi.citations).mockResolvedValue({schema_version:1,run_id:run.id,topic:run.topic,sources:[]});
   render(<EvidenceWorkspace/>);

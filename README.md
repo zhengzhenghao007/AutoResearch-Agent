@@ -416,3 +416,6 @@ exports of the same validated snapshot are deterministic and do not modify it.
 An exact arXiv revision is included only when the stored URI contains one;
 unversioned links yield null. No DOI, authors, BibTeX, or revision is inferred.
 This is a provenance export, not verification of scientific truth.
+
+### Candidate screening in the workspace
+Each candidate card records Include/Exclude plus a required reason, and displays the latest annotation and ordered history. These annotations never change the checkboxes used for analysis. Saving preserves unsaved selections, topic and upload input. Writes are serialized in the page; failures retain the reason and never retry automatically. After a connection loss, reopen the record to check whether the decision was saved before submitting again. These user annotations do not constitute scientific evaluation.
