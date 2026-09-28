@@ -62,3 +62,13 @@ test('a new PDF record omits run_id',async()=>{
   const fetcher=vi.fn().mockResolvedValue(new Response('{}'));vi.stubGlobal('fetch',fetcher);
   await researchApi.upload(new File(['pdf'],'new.pdf'));expect(fetcher.mock.calls[0][1].body.has('run_id')).toBe(false);
 });
+
+test('DOI routes preserve server views and omit DOI on clear',async()=>{
+  const fetcher=vi.fn().mockImplementation(()=>Promise.resolve(new Response(JSON.stringify({run_id:'a/b',sources:[],conflicts:[]}))));vi.stubGlobal('fetch',fetcher);
+  expect(await researchApi.sourceIdentities('a/b')).toEqual({run_id:'a/b',sources:[],conflicts:[]});
+  await researchApi.sourceIdentity('a/b',{source_id:'s',action:'set',doi:'10.1234/test',reason:'Printed'});
+  await researchApi.sourceIdentity('a/b',{source_id:'s',action:'clear',reason:'Incorrect'});
+  expect(fetcher.mock.calls[0][0]).toContain('/runs/a%2Fb/source-identities');
+  expect(JSON.parse(fetcher.mock.calls[1][1].body)).toEqual({source_id:'s',action:'set',doi:'10.1234/test',reason:'Printed'});
+  expect(JSON.parse(fetcher.mock.calls[2][1].body)).toEqual({source_id:'s',action:'clear',reason:'Incorrect'});
+});
