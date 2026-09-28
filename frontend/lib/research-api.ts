@@ -1,4 +1,5 @@
 import type { ResearchHistory, ResearchRun } from '@/types/research';
+import type { CitationRegistry, BibtexExport } from '@/types/citations';
 const base = (process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
 export const REQUEST_TIMEOUT_MS = 120_000;
 
@@ -33,6 +34,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  citations: (id: string) => request<CitationRegistry>(`/runs/${encodeURIComponent(id)}/citations`),
+  bibtex: (id: string) => request<BibtexExport>(`/runs/${encodeURIComponent(id)}/bibtex`),
   list: (page = 1) => request<ResearchHistory>(`/runs?page=${page}&page_size=10`),
   get: (id: string) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}`),
   search: (topic: string) => request<ResearchRun>('/search', json({topic,max_results:5})),

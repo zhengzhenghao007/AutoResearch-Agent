@@ -376,6 +376,13 @@ MIT License
 
 ## Read-only citation registry (P2 increment)
 
+The evidence workspace now includes **Export references** for an opened record.
+Load citation JSON or BibTeX to inspect it, then download the fetched response.
+BibTeX lists sources skipped for missing bibliographic identity. Switching records
+or starting an analysis/upload clears previous exports; load them again afterwards.
+Export reads do not disable research actions. Exported provenance is not scientific
+verification and does not apply screening decisions as an automatic filter.
+
 Record unverified user-provided DOI associations with
 `python research_cli.py source-doi RUN_ID SOURCE_ID set --doi 10.1234/example --reason "Publisher page"`.
 Use `source-identities RUN_ID` to inspect current state and duplicate assignments.

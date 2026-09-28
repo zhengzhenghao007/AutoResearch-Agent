@@ -1,6 +1,16 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import { researchApi, REQUEST_TIMEOUT_MS } from '@/lib/research-api';
 afterEach(() => {vi.unstubAllGlobals();vi.useRealTimers();});
+test('export reads use encoded routes and preserve backend payloads', async () => {
+  const payload={run_id:'a/b',bibtex:'exact\n',skipped_sources:[]};
+  const fetcher=vi.fn().mockResolvedValue(new Response(JSON.stringify(payload)));
+  vi.stubGlobal('fetch',fetcher);
+  expect(await researchApi.bibtex('a/b')).toEqual(payload);
+  expect(fetcher.mock.calls[0][0]).toContain('/runs/a%2Fb/bibtex');
+  fetcher.mockResolvedValue(new Response(JSON.stringify({detail:'Corrupt snapshot'}),{status:400}));
+  await expect(researchApi.citations('a/b')).rejects.toThrow('Corrupt snapshot');
+  expect(fetcher.mock.calls[1][0]).toContain('/runs/a%2Fb/citations');
+});
 test('uploads multipart with the existing record id and no forced content type', async () => {
   const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify({ id: 'record' })));
   vi.stubGlobal('fetch', fetcher);
