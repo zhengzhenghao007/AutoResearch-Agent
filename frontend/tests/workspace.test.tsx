@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import EvidenceWorkspace from '@/components/EvidenceWorkspace';
 import { researchApi } from '@/lib/research-api';
 import type { ResearchRun } from '@/types/research';
-vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn() } }));
+vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn() } }));
 const run: ResearchRun = {schema_version:1,id:'a'.repeat(32),topic:'Navigation',plan:['Read sources'],candidates:[{id:'a',title:'Paper A',pdf_url:'https://arxiv.org/pdf/2401.12345',authors:[],summary:''},{id:'b',title:'Paper B',pdf_url:'',authors:[],summary:''}],selected_ids:[],papers:[],generated_claims:[],artifacts:[],review:{approved:false,issues:[],scope:'Literal support only'}};
 beforeEach(() => {
   vi.resetAllMocks(); window.history.replaceState({}, '', '/');
@@ -15,6 +15,19 @@ beforeEach(() => {
   vi.mocked(researchApi.upload).mockResolvedValue(run);
 });
 async function search() { await userEvent.type(screen.getByLabelText('Research topic'), 'Navigation'); await userEvent.click(screen.getByRole('button',{name:'Find papers'})); await screen.findByLabelText('Select Paper A'); }
+test('exports exist only for a current run and reset after same-run analysis',async()=>{
+  vi.mocked(researchApi.citations).mockResolvedValue({schema_version:1,run_id:run.id,topic:run.topic,sources:[]});
+  render(<EvidenceWorkspace/>);
+  expect(screen.queryByRole('region',{name:'Research exports'})).not.toBeInTheDocument();
+  await search();
+  await userEvent.click(screen.getByRole('button',{name:'Load citation JSON'}));
+  await screen.findByRole('button',{name:'Download citation JSON'});
+  expect(screen.getByRole('button',{name:'Find papers'})).toBeEnabled();
+  await userEvent.click(screen.getByLabelText('Select Paper A'));
+  await userEvent.click(screen.getByRole('button',{name:'Analyze selected papers'}));
+  await screen.findByRole('button',{name:'Load citation JSON'});
+  expect(screen.queryByRole('button',{name:'Download citation JSON'})).not.toBeInTheDocument();
+});
 test('requires explicit selection and sends both checked IDs', async () => {
   render(<EvidenceWorkspace/>); await search();
   expect(researchApi.analyze).not.toHaveBeenCalled();
