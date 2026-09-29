@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import EvidenceWorkspace from '@/components/EvidenceWorkspace';
 import { researchApi } from '@/lib/research-api';
 import type { ResearchRun } from '@/types/research';
-vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn(), candidateDecision:vi.fn() } }));
+vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn(), candidateDecision:vi.fn(), sourceIdentities:vi.fn(), sourceIdentity:vi.fn() } }));
 const run: ResearchRun = {schema_version:1,id:'a'.repeat(32),topic:'Navigation',plan:['Read sources'],candidates:[{id:'a',title:'Paper A',pdf_url:'https://arxiv.org/pdf/2401.12345',authors:[],summary:''},{id:'b',title:'Paper B',pdf_url:'',authors:[],summary:''}],selected_ids:[],papers:[],generated_claims:[],artifacts:[],review:{approved:false,issues:[],scope:'Literal support only'}};
 beforeEach(() => {
   vi.resetAllMocks(); window.history.replaceState({}, '', '/');
@@ -181,4 +181,38 @@ test.each(['restored','created'])('hash navigation preserves unsaved state in a 
     expect((screen.getByLabelText('PDF file') as HTMLInputElement).files?.[0]).toBe(file);
     expect(researchApi.get).toHaveBeenCalledTimes(fetches);
   }
+});
+
+test('DOI and screening saves preserve each other drafts and unsaved workspace inputs',async()=>{
+  const source={id:'s',title:'Source A',uri:'upload:test',sha256:'0'.repeat(64)};
+  vi.mocked(researchApi.sourceIdentities).mockResolvedValue({run_id:run.id,sources:[{source,active:true,doi:null,provenance:null}],conflicts:[]});
+  vi.mocked(researchApi.sourceIdentity).mockResolvedValue(run);
+  vi.mocked(researchApi.candidateDecision).mockResolvedValue(run);
+  render(<EvidenceWorkspace/>);await search();await userEvent.click(screen.getByRole('button',{name:'Load DOI annotations'}));
+  await screen.findByLabelText('DOI reason');
+  await userEvent.type(screen.getByLabelText('DOI'),'10.1234/test');await userEvent.type(screen.getByLabelText('DOI reason'),'Unsent DOI reason');
+  await recordReason();
+  await waitFor(()=>expect(screen.getByLabelText('DOI reason')).toBeEnabled());
+  expect(screen.getByLabelText('DOI reason')).toHaveValue('Unsent DOI reason');
+  await userEvent.type(screening().getByLabelText('Screening reason'),'Unsent screening');
+  await userEvent.click(screen.getByLabelText('Select Paper A'));
+  await userEvent.clear(screen.getByLabelText('Research topic'));await userEvent.type(screen.getByLabelText('Research topic'),'Unsent topic');
+  const file=new File(['%PDF'],'unsent.pdf',{type:'application/pdf'});await userEvent.upload(screen.getByLabelText('PDF file'),file);
+  await userEvent.click(screen.getByRole('button',{name:'Record DOI annotation'}));
+  await waitFor(()=>expect(screen.getByLabelText('DOI reason')).toBeEnabled());
+  expect(screen.getByLabelText('DOI reason')).toHaveValue('');
+  expect(screening().getByLabelText('Screening reason')).toHaveValue('Unsent screening');
+  expect(screen.getByLabelText('Select Paper A')).toBeChecked();expect(screen.getByLabelText('Research topic')).toHaveValue('Unsent topic');
+  expect((screen.getByLabelText('PDF file') as HTMLInputElement).files?.[0]).toBe(file);
+});
+test('late DOI writes cannot replace a newly opened record',async()=>{
+  let resolve!:(value:ResearchRun)=>void;
+  vi.mocked(researchApi.sourceIdentity).mockReturnValueOnce(new Promise(r=>{resolve=r;}));
+  vi.mocked(researchApi.sourceIdentities).mockResolvedValue({run_id:run.id,sources:[{source:{id:'s',title:'Source A',uri:'upload:test',sha256:'0'.repeat(64)},active:true,doi:null,provenance:null}],conflicts:[]});
+  render(<EvidenceWorkspace/>);await search();await userEvent.click(screen.getByRole('button',{name:'Load DOI annotations'}));await screen.findByLabelText('DOI');
+  await userEvent.type(screen.getByLabelText('DOI'),'10.1234/test');await userEvent.type(screen.getByLabelText('DOI reason'),'Test');await userEvent.click(screen.getByRole('button',{name:'Record DOI annotation'}));
+  expect(screen.getByRole('button',{name:'Find papers'})).toBeDisabled();expect(screening().getByLabelText('Screening reason')).toBeDisabled();
+  const other={...run,id:'b'.repeat(32),topic:'Other record'};vi.mocked(researchApi.get).mockResolvedValueOnce(other);
+  await act(async()=>{window.history.replaceState({},'',`/?run=${other.id}`);window.dispatchEvent(new PopStateEvent('popstate'));});await screen.findByRole('heading',{name:'Other record'});
+  await act(async()=>resolve(run));expect(screen.getByRole('heading',{name:'Other record'})).toBeInTheDocument();expect(screen.queryByLabelText('DOI reason')).not.toBeInTheDocument();
 });
