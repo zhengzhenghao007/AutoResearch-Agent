@@ -422,3 +422,6 @@ Each candidate card records Include/Exclude plus a required reason, and displays
 
 ### DOI annotations in the workspace
 Load Source DOI annotations to inspect user-provided associations and their ordered reasons/history. Only current processed sources can receive Set/Clear events; historical absent sources are read-only. Duplicate active DOI values produce a notice and never merge sources. Refresh reloads both current identities and history. DOI inputs are validated by the backend's conservative supported subset, not externally verified. Annotations do not enrich citation/BibTeX exports. Failed writes retain drafts and never automatically retry; reopen the saved record before resubmitting after an ambiguous connection failure.
+
+Read-only duplicate clues are available with `python research_cli.py source-duplicates RUN_ID`
+and `GET /api/research/runs/{run_id}/source-duplicates`. See [rules and limits](docs/p2-source-duplicates.md).

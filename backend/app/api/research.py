@@ -11,6 +11,8 @@ from schemas.bibtex_export import BibtexExport
 from services.bibtex_export import build_bibtex_export
 from schemas.source_identity import SourceIdentityRequest, SourceIdentities
 from services.source_identity import build_source_identities
+from schemas.source_duplicates import SourceDuplicateReport
+from services.source_duplicates import build_source_duplicates
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -100,3 +102,8 @@ def source_identities(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get
 def record_source_identity(run_id: str, request: SourceIdentityRequest,
                            flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: flow.record_source_identity(run_id, **request.model_dump()))
+
+
+@router.get('/runs/{run_id}/source-duplicates', response_model=SourceDuplicateReport)
+def source_duplicates(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_source_duplicates(flow.store.load(run_id)))
