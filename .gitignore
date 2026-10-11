@@ -19,3 +19,8 @@ venv/
 # Downloaded papers
 data/papers/
 data/research_runs/
+
+# Local verification artifacts
+.test-tmp/
+.pytest_cache/
+.verification/

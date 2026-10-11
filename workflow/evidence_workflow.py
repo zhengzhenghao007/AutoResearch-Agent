@@ -1,8 +1,10 @@
 """Additive research loop, independent of the legacy ReaderPipeline."""
 import hashlib
 from uuid import uuid4
-from schemas.research import Candidate, ResearchRun, Review
+from schemas.research import Candidate, CandidateDecision, ResearchRun, Review
+from schemas.source_identity import SourceIdentityRequest, SourceIdentityAnnotation, IdentitySourceSnapshot
 from services.paper_processing import PaperProcessor
+from services.arxiv_identity import canonical_arxiv_pdf_url
 from services.evidence_extraction import EvidenceExtractor
 from services.evidence_review import review_paper
 from services.literature_synthesis import build_suggestions, synthesize
@@ -34,14 +36,21 @@ class EvidenceWorkflow:
             raise ValueError('max_results must be 1..20')
         seen = set()
         for item in self.search_source(topic, max_results=max_results):
-            url = item['pdf_url']
-            # arXiv feeds sometimes supply HTTP even though HTTPS is supported.
-            if url.startswith('http://arxiv.org/'):
-                url = 'https://' + url[len('http://'):]
+            url = canonical_arxiv_pdf_url(item['pdf_url'])
             identity = hashlib.sha256(url.encode()).hexdigest()[:16]
             if identity not in seen:
                 run.candidates.append(Candidate(id=identity, title=item['title'], pdf_url=url, summary=item.get('summary', ''), authors=item.get('authors', [])))
                 seen.add(identity)
+        self.store.save(run)
+        return run
+
+    def record_candidate_decision(self, run_id, candidate_id, decision, reason):
+        """Append user-supplied screening rationale without changing analysis selection."""
+        run = self.store.load(run_id)
+        event = CandidateDecision(candidate_id=candidate_id, decision=decision, reason=reason)
+        if event.candidate_id not in {candidate.id for candidate in run.candidates}:
+            raise ValueError('Candidate is not in this research run')
+        run.candidate_decisions.append(event)
         self.store.save(run)
         return run
 
@@ -50,6 +59,17 @@ class EvidenceWorkflow:
         run.review = Review(approved=bool(run.papers) and not issues, issues=issues or ([] if run.papers else ['No papers processed']))
         run.artifacts = synthesize(run.papers)
         run.generated_claims = build_suggestions(run.papers)
+        self.store.save(run)
+        return run
+
+    def record_source_identity(self, run_id, source_id, action, doi, reason):
+        run = self.store.load(run_id)
+        request = SourceIdentityRequest(source_id=source_id, action=action, doi=doi, reason=reason)
+        source = next((p.document.source for p in run.papers if p.document.source.id == request.source_id), None)
+        if source is None:
+            raise ValueError('Source is not currently processed in this research run')
+        snapshot = IdentitySourceSnapshot(id=source.id, sha256=source.sha256, uri=source.uri, title=source.title)
+        run.source_identity_annotations.append(SourceIdentityAnnotation(**request.model_dump(), source=snapshot))
         self.store.save(run)
         return run
 

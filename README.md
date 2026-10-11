@@ -8,7 +8,7 @@ The long-term goal is to build an autonomous research workflow similar to OpenAI
 
 ## Evidence-first MVP (2026-09)
 
-The new workflow is additive: the existing Streamlit UI and `/api/papers/search` and `/api/papers/analyze` remain available. Their legacy review scores are **not** provenance certification. The new evidence workflow is available through the CLI and `/api/research`; the existing frontend has not yet been connected to these new endpoints.
+The new workflow is additive: the existing Streamlit UI and `/api/papers/search` and `/api/papers/analyze` remain available. Their legacy review scores are **not** provenance certification. The new evidence workflow is available through the CLI and `/api/research`; the Next.js evidence workspace now connects to these endpoints alongside the legacy interface.
 
 Read the [10-project engineering survey](docs/research_agent_landscape.md), [current-code audit](docs/current_architecture_audit.md), [architecture and data contracts](docs/architecture.md), and [implementation roadmap](docs/roadmap.md).
 
@@ -46,6 +46,7 @@ Open `http://127.0.0.1:8000/docs` for interactive request schemas:
 | POST | `/api/research/search` | JSON `topic`, optional `max_results` (1–20) |
 | POST | `/api/research/runs/{run_id}/analyze` | JSON `selected_ids` from that run |
 | POST | `/api/research/upload` | multipart `file`, optional `run_id` |
+| GET | `/api/research/runs` | `page` (default 1), `page_size` (1–50, default 10); summaries and total |
 | GET | `/api/research/runs/{run_id}` | persisted research record |
 
 The API uses rule extraction. Explicit LLM mode is currently a CLI capability. Uploads accept PDF bytes, never server filesystem paths. Parsing runs in a separate process with a 45-second timeout, a 20 MiB input limit, 50-page default and one-million-character extracted-text cap. Encrypted or unreadable/scanned PDFs fail explicitly; OCR is not implemented. Downloads accept canonical HTTPS arXiv PDF URLs only and reject redirects. The server is a **local single-user development service**, with no authentication, multi-writer transactions, or OS-enforced parser memory quota. Do not expose it as an untrusted public upload service.
@@ -58,7 +59,42 @@ The API uses rule extraction. Explicit LLM mode is currently a CLI capability. U
 
 If Windows denies access to an old pytest temporary directory, use a fresh `--basetemp` path. Four legacy `test_*.py` provider demos run code at import time; they are excluded by default. `--run-live` explicitly opts into those demos and requires working provider credentials/network; they are not counted as deterministic unit tests. The offline suite tests real generated PDFs, fake network/provider adapters, citations, missing evidence, persistence and API behavior.
 
-Next: human-labelled extraction evaluation, structured user experimental inputs, semantic claim support review, and an evidence-inspection UI. Full paper writing and automatic experiment execution remain outside this MVP.
+Next: actual human review of the evaluation corpus, structured user experimental inputs, and semantic claim support review. Full paper writing and automatic experiment execution remain outside this MVP.
+
+### Evidence workspace
+
+Start the API above, then in a second terminal:
+
+```powershell
+cd frontend
+npm ci
+npm run dev
+```
+
+Open http://localhost:3000. Search creates a record; select candidates explicitly before choosing **Analyze selected papers**. Add multiple PDFs to the same record for comparison, or choose **New record** first. History reopens saved records and the `?run=` URL survives refresh. Evidence and claim links lead to quotations and extracted pages; canonical arXiv sources also link to the original PDF page. Suggestions remain separate from reported claims. Source support means literal provenance, not scientific validity.
+
+`NEXT_PUBLIC_API_BASE_URL` defaults to `http://127.0.0.1:8000`; set it before building if needed. A request timeout does not cancel server work: refresh history and reopen the record before retrying. The legacy interface remains below the evidence workspace.
+
+### Reproducible checks and evaluation
+
+```powershell
+python -m pip install -r requirements-ci.txt
+$env:PYTHON_DOTENV_DISABLED='1'
+python -m pytest tests -q -p no:cacheprovider --allow-hosts=127.0.0.1,::1
+python -m evaluation.evaluate_evidence
+cd frontend
+npm ci
+npm test
+npm run lint
+npm run typecheck
+npm run build
+```
+
+Windows allows loopback solely for the async test event loop; Linux CI uses `--disable-socket --allow-unix-socket` and no provider keys. CI runs on Python 3.11/3.12 and Node 22 for pushes and pull requests. Required status checks must be enabled separately in repository branch protection. Python direct dependencies are pinned in `requirements-ci.txt`; transitive dependencies are resolved by pip. Frontend installation uses its committed lockfile. Upgrade dependencies with these checks.
+
+The [redistributable synthetic corpus](tests/fixtures/evidence/README.md) tests text extraction, blank and raster-only pages/no OCR, truncation, missing/planned experiments and rejected quotes. All seven records are `pending_human_review`: the evaluator reports `reviewed_count: 0` and `metrics: null`. Only records with actual human-review provenance enter category precision/recall/missingness and quotation/support metrics. Synthetic regressions are not a scientific accuracy benchmark.
+
+For isolated browser QA, run `python -m uvicorn --app-dir tests ui_fixture_server:app --port 8000` instead of the normal API. This replaces only the external search/download source with clearly labelled synthetic papers, uses real PDF processing and temporary storage, and never changes production research records.
 
 ---
 
@@ -337,3 +373,57 @@ The objective is to create an AI research assistant capable of supporting the co
 # License
 
 MIT License
+
+## Read-only citation registry (P2 increment)
+
+The evidence workspace now includes **Export references** for an opened record.
+Load citation JSON or BibTeX to inspect it, then download the fetched response.
+BibTeX lists sources skipped for missing bibliographic identity. Switching records
+or starting an analysis/upload clears previous exports; load them again afterwards.
+Export reads do not disable research actions. Exported provenance is not scientific
+verification and does not apply screening decisions as an automatic filter.
+
+Record unverified user-provided DOI associations with
+`python research_cli.py source-doi RUN_ID SOURCE_ID set --doi 10.1234/example --reason "Publisher page"`.
+Use `source-identities RUN_ID` to inspect current state and duplicate assignments.
+Setting or clearing a DOI preserves history and does not change citation/BibTeX
+exports. See [DOI annotations](docs/p2-doi-annotations.md) for API and supported syntax.
+
+For a conservative BibTeX bibliography, run `python research_cli.py bibtex RUN_ID`
+or use `GET /api/research/runs/{run_id}/bibtex`. Explicit arXiv revisions are
+preserved; unknown authors, DOI and year remain absent. Uploads and unrecognized
+source URIs are explicitly skipped. See [BibTeX export](docs/p2-bibtex-export.md).
+
+Candidate screening annotations are also available through
+`POST /api/research/runs/{run_id}/candidate-decisions` and
+`python research_cli.py candidate-decision RUN_ID CANDIDATE_ID include --reason "Relevant method"`.
+Each revision appends a reason and timestamp to the run's history. These are
+annotations: analysis still uses explicitly selected IDs. See
+[candidate screening history](docs/p2-candidate-decisions.md) for semantics and compatibility.
+
+Export provenance for already processed papers through
+`GET /api/research/runs/{run_id}/citations`, or locally:
+
+```powershell
+python research_cli.py citations RUN_ID
+```
+
+The CLI writes JSON to stdout; use shell redirection to save it. The registry
+preserves source IDs, content hashes, original URIs, exact page quotations and
+both paper claims and generated suggestions that reference those quotations.
+The claim type remains explicit. Search-only candidates are excluded. Repeated
+exports of the same validated snapshot are deterministic and do not modify it.
+An exact arXiv revision is included only when the stored URI contains one;
+unversioned links yield null. No DOI, authors, BibTeX, or revision is inferred.
+This is a provenance export, not verification of scientific truth.
+
+### Candidate screening in the workspace
+Each candidate card records Include/Exclude plus a required reason, and displays the latest annotation and ordered history. These annotations never change the checkboxes used for analysis. Saving preserves unsaved selections, topic and upload input. Writes are serialized in the page; failures retain the reason and never retry automatically. After a connection loss, reopen the record to check whether the decision was saved before submitting again. These user annotations do not constitute scientific evaluation.
+
+### DOI annotations in the workspace
+Load Source DOI annotations to inspect user-provided associations and their ordered reasons/history. Only current processed sources can receive Set/Clear events; historical absent sources are read-only. Duplicate active DOI values produce a notice and never merge sources. Refresh reloads both current identities and history. DOI inputs are validated by the backend's conservative supported subset, not externally verified. Annotations do not enrich citation/BibTeX exports. Failed writes retain drafts and never automatically retry; reopen the saved record before resubmitting after an ambiguous connection failure.
+
+Read-only duplicate clues are available with `python research_cli.py source-duplicates RUN_ID`
+and `GET /api/research/runs/{run_id}/source-duplicates`. See [rules and limits](docs/p2-source-duplicates.md).
+
+The evidence workspace now provides **Load duplicate clues** and **Download duplicate clues JSON**. It displays independent arXiv, stored-hash and user-DOI groups, with candidate/source links separately. Any record mutation clears the report, including failed or ambiguous writes; reload explicitly afterward. Reading reports preserves unsaved selections and annotation drafts.
