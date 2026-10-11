@@ -8,6 +8,7 @@ from workflow.evidence_workflow import EvidenceWorkflow
 from services.citation_registry import build_citation_registry
 from services.bibtex_export import build_bibtex_export
 from services.source_identity import build_source_identities
+from services.source_duplicates import build_source_duplicates
 
 
 def main():
@@ -32,6 +33,8 @@ def main():
     bibtex.add_argument('run_id')
     identities = commands.add_parser('source-identities', help='Read user-supplied DOI state and conflicts')
     identities.add_argument('run_id')
+    duplicates = commands.add_parser('source-duplicates', help='Read exact duplicate clues without merging')
+    duplicates.add_argument('run_id')
     source_doi = commands.add_parser('source-doi', help='Append unverified DOI annotation history')
     source_doi.add_argument('run_id')
     source_doi.add_argument('source_id')
@@ -58,6 +61,8 @@ def main():
             result = build_citation_registry(flow.store.load(args.run_id))
         elif args.command == 'source-identities':
             result = build_source_identities(flow.store.load(args.run_id))
+        elif args.command == 'source-duplicates':
+            result = build_source_duplicates(flow.store.load(args.run_id))
         elif args.command == 'source-doi':
             result = flow.record_source_identity(args.run_id, args.source_id, args.action, args.doi, args.reason)
         elif args.command == 'bibtex':
