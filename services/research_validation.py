@@ -8,6 +8,8 @@ def validate_run(run: ResearchRun) -> None:
     candidate_ids = [c.id for c in run.candidates]
     if len(candidate_ids) != len(set(candidate_ids)):
         raise ValueError('Duplicate candidate IDs')
+    if any(event.candidate_id not in candidate_ids for event in run.candidate_decisions):
+        raise ValueError('Invalid candidate decision reference')
     if len(run.selected_ids) != len(set(run.selected_ids)) or not set(run.selected_ids) <= set(candidate_ids):
         raise ValueError('Invalid selected candidate references')
     source_ids, evidence_ids, claim_ids = set(), set(), set()
@@ -32,6 +34,12 @@ def validate_run(run: ResearchRun) -> None:
             raise ValueError('Invalid persisted evidence: ' + '; '.join(review.issues))
         issues.extend(f'{paper.document.source.title}: {issue}' for issue in review.issues)
     expected_issues = issues if run.papers else ['No papers processed']
+    bindings = {p.document.source.id: (p.document.source.sha256, p.document.source.uri) for p in run.papers}
+    for event in run.source_identity_annotations:
+        binding = (event.source.sha256, event.source.uri)
+        if event.source_id != event.source.id or bindings.get(event.source_id, binding) != binding:
+            raise ValueError('Identity annotation source binding mismatch')
+        bindings[event.source_id] = binding
     if run.review.approved != (bool(run.papers) and not issues) or run.review.issues != expected_issues:
         raise ValueError('Stored review does not match evidence')
     if run.generated_claims != build_suggestions(run.papers):
