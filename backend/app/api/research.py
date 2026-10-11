@@ -3,8 +3,16 @@ from typing import Annotated
 import requests
 from fastapi import APIRouter, Depends, File, UploadFile, Form, HTTPException, Query
 from pydantic import Field
-from schemas.research import Contract, ResearchRun, ResearchHistory
+from schemas.research import CandidateDecisionRequest, Contract, ResearchRun, ResearchHistory
 from workflow.evidence_workflow import EvidenceWorkflow
+from schemas.citation_registry import CitationRegistry
+from services.citation_registry import build_citation_registry
+from schemas.bibtex_export import BibtexExport
+from services.bibtex_export import build_bibtex_export
+from schemas.source_identity import SourceIdentityRequest, SourceIdentities
+from services.source_identity import build_source_identities
+from schemas.source_duplicates import SourceDuplicateReport
+from services.source_duplicates import build_source_duplicates
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -55,6 +63,13 @@ def analyze(run_id: str, request: SelectionRequest, flow: Annotated[EvidenceWork
     return invoke(lambda: flow.analyze(run_id, request.selected_ids))
 
 
+@router.post('/runs/{run_id}/candidate-decisions', response_model=ResearchRun)
+def candidate_decision(run_id: str, request: CandidateDecisionRequest,
+                       flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: flow.record_candidate_decision(
+        run_id, request.candidate_id, request.decision, request.reason))
+
+
 @router.post('/upload', response_model=ResearchRun)
 def upload(flow: Annotated[EvidenceWorkflow, Depends(get_workflow)], file: UploadFile = File(...), run_id: str | None = Form(None)):
     try:
@@ -66,3 +81,29 @@ def upload(flow: Annotated[EvidenceWorkflow, Depends(get_workflow)], file: Uploa
         return invoke(lambda: flow.import_pdf(data, title or 'Uploaded paper', run_id))
     finally:
         file.file.close()
+
+
+@router.get('/runs/{run_id}/citations', response_model=CitationRegistry)
+def citations(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_citation_registry(flow.store.load(run_id)))
+
+
+@router.get('/runs/{run_id}/bibtex', response_model=BibtexExport)
+def bibtex(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_bibtex_export(flow.store.load(run_id)))
+
+
+@router.get('/runs/{run_id}/source-identities', response_model=SourceIdentities)
+def source_identities(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_source_identities(flow.store.load(run_id)))
+
+
+@router.post('/runs/{run_id}/source-identities', response_model=ResearchRun)
+def record_source_identity(run_id: str, request: SourceIdentityRequest,
+                           flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: flow.record_source_identity(run_id, **request.model_dump()))
+
+
+@router.get('/runs/{run_id}/source-duplicates', response_model=SourceDuplicateReport)
+def source_duplicates(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_source_duplicates(flow.store.load(run_id)))

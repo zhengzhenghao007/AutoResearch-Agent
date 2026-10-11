@@ -373,3 +373,57 @@ The objective is to create an AI research assistant capable of supporting the co
 # License
 
 MIT License
+
+## Read-only citation registry (P2 increment)
+
+The evidence workspace now includes **Export references** for an opened record.
+Load citation JSON or BibTeX to inspect it, then download the fetched response.
+BibTeX lists sources skipped for missing bibliographic identity. Switching records
+or starting an analysis/upload clears previous exports; load them again afterwards.
+Export reads do not disable research actions. Exported provenance is not scientific
+verification and does not apply screening decisions as an automatic filter.
+
+Record unverified user-provided DOI associations with
+`python research_cli.py source-doi RUN_ID SOURCE_ID set --doi 10.1234/example --reason "Publisher page"`.
+Use `source-identities RUN_ID` to inspect current state and duplicate assignments.
+Setting or clearing a DOI preserves history and does not change citation/BibTeX
+exports. See [DOI annotations](docs/p2-doi-annotations.md) for API and supported syntax.
+
+For a conservative BibTeX bibliography, run `python research_cli.py bibtex RUN_ID`
+or use `GET /api/research/runs/{run_id}/bibtex`. Explicit arXiv revisions are
+preserved; unknown authors, DOI and year remain absent. Uploads and unrecognized
+source URIs are explicitly skipped. See [BibTeX export](docs/p2-bibtex-export.md).
+
+Candidate screening annotations are also available through
+`POST /api/research/runs/{run_id}/candidate-decisions` and
+`python research_cli.py candidate-decision RUN_ID CANDIDATE_ID include --reason "Relevant method"`.
+Each revision appends a reason and timestamp to the run's history. These are
+annotations: analysis still uses explicitly selected IDs. See
+[candidate screening history](docs/p2-candidate-decisions.md) for semantics and compatibility.
+
+Export provenance for already processed papers through
+`GET /api/research/runs/{run_id}/citations`, or locally:
+
+```powershell
+python research_cli.py citations RUN_ID
+```
+
+The CLI writes JSON to stdout; use shell redirection to save it. The registry
+preserves source IDs, content hashes, original URIs, exact page quotations and
+both paper claims and generated suggestions that reference those quotations.
+The claim type remains explicit. Search-only candidates are excluded. Repeated
+exports of the same validated snapshot are deterministic and do not modify it.
+An exact arXiv revision is included only when the stored URI contains one;
+unversioned links yield null. No DOI, authors, BibTeX, or revision is inferred.
+This is a provenance export, not verification of scientific truth.
+
+### Candidate screening in the workspace
+Each candidate card records Include/Exclude plus a required reason, and displays the latest annotation and ordered history. These annotations never change the checkboxes used for analysis. Saving preserves unsaved selections, topic and upload input. Writes are serialized in the page; failures retain the reason and never retry automatically. After a connection loss, reopen the record to check whether the decision was saved before submitting again. These user annotations do not constitute scientific evaluation.
+
+### DOI annotations in the workspace
+Load Source DOI annotations to inspect user-provided associations and their ordered reasons/history. Only current processed sources can receive Set/Clear events; historical absent sources are read-only. Duplicate active DOI values produce a notice and never merge sources. Refresh reloads both current identities and history. DOI inputs are validated by the backend's conservative supported subset, not externally verified. Annotations do not enrich citation/BibTeX exports. Failed writes retain drafts and never automatically retry; reopen the saved record before resubmitting after an ambiguous connection failure.
+
+Read-only duplicate clues are available with `python research_cli.py source-duplicates RUN_ID`
+and `GET /api/research/runs/{run_id}/source-duplicates`. See [rules and limits](docs/p2-source-duplicates.md).
+
+The evidence workspace now provides **Load duplicate clues** and **Download duplicate clues JSON**. It displays independent arXiv, stored-hash and user-DOI groups, with candidate/source links separately. Any record mutation clears the report, including failed or ambiguous writes; reload explicitly afterward. Reading reports preserves unsaved selections and annotation drafts.

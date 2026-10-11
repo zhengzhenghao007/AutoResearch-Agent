@@ -1,4 +1,7 @@
-import type { ResearchHistory, ResearchRun } from '@/types/research';
+import type {SourceDuplicateReport} from '@/types/source-duplicates';
+import type {SourceIdentitiesView,SourceIdentityRequest} from '@/types/source-identities';
+import type { CandidateDecision, ResearchHistory, ResearchRun } from '@/types/research';
+import type { CitationRegistry, BibtexExport } from '@/types/citations';
 const base = (process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
 export const REQUEST_TIMEOUT_MS = 120_000;
 
@@ -33,6 +36,12 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  sourceDuplicates: (id: string) => request<SourceDuplicateReport>(`/runs/${encodeURIComponent(id)}/source-duplicates`),
+  sourceIdentities: (id: string) => request<SourceIdentitiesView>(`/runs/${encodeURIComponent(id)}/source-identities`),
+  sourceIdentity: (id: string, body: SourceIdentityRequest) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}/source-identities`,json(body)),
+  candidateDecision: (id: string, body: Omit<CandidateDecision, "decided_at">) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}/candidate-decisions`, json(body)),
+  citations: (id: string) => request<CitationRegistry>(`/runs/${encodeURIComponent(id)}/citations`),
+  bibtex: (id: string) => request<BibtexExport>(`/runs/${encodeURIComponent(id)}/bibtex`),
   list: (page = 1) => request<ResearchHistory>(`/runs?page=${page}&page_size=10`),
   get: (id: string) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}`),
   search: (topic: string) => request<ResearchRun>('/search', json({topic,max_results:5})),
