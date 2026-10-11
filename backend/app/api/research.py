@@ -13,6 +13,8 @@ from schemas.source_identity import SourceIdentityRequest, SourceIdentities
 from services.source_identity import build_source_identities
 from schemas.source_duplicates import SourceDuplicateReport
 from services.source_duplicates import build_source_duplicates
+from schemas.screening_report import ScreeningReport
+from services.screening_report import build_screening_report
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -107,3 +109,8 @@ def record_source_identity(run_id: str, request: SourceIdentityRequest,
 @router.get('/runs/{run_id}/source-duplicates', response_model=SourceDuplicateReport)
 def source_duplicates(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: build_source_duplicates(flow.store.load(run_id)))
+
+
+@router.get('/runs/{run_id}/screening-report', response_model=ScreeningReport)
+def screening_report(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_screening_report(flow.store.load(run_id)))
