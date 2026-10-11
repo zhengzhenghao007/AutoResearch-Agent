@@ -1,3 +1,4 @@
+import type {SourceDuplicateReport} from '@/types/source-duplicates';
 import type {SourceIdentitiesView,SourceIdentityRequest} from '@/types/source-identities';
 import type { CandidateDecision, ResearchHistory, ResearchRun } from '@/types/research';
 import type { CitationRegistry, BibtexExport } from '@/types/citations';
@@ -35,6 +36,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  sourceDuplicates: (id: string) => request<SourceDuplicateReport>(`/runs/${encodeURIComponent(id)}/source-duplicates`),
   sourceIdentities: (id: string) => request<SourceIdentitiesView>(`/runs/${encodeURIComponent(id)}/source-identities`),
   sourceIdentity: (id: string, body: SourceIdentityRequest) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}/source-identities`,json(body)),
   candidateDecision: (id: string, body: Omit<CandidateDecision, "decided_at">) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}/candidate-decisions`, json(body)),
