@@ -2,6 +2,7 @@
 from datetime import datetime, timezone
 from typing import Literal
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
+from schemas.source_identity import SourceIdentityAnnotation
 
 Category = Literal['problem', 'method', 'dataset', 'experiment', 'result', 'limitation', 'future_work']
 CATEGORIES = ('problem', 'method', 'dataset', 'experiment', 'result', 'limitation', 'future_work')
@@ -97,6 +98,7 @@ class ResearchRun(Contract):
     candidates: list[Candidate] = Field(default_factory=list)
     selected_ids: list[str] = Field(default_factory=list)
     candidate_decisions: list[CandidateDecision] = Field(default_factory=list)
+    source_identity_annotations: list[SourceIdentityAnnotation] = Field(default_factory=list)
     papers: list[PaperEvidence] = Field(default_factory=list)
     generated_claims: list[Claim] = Field(default_factory=list)
     artifacts: list[Artifact] = Field(default_factory=list)
