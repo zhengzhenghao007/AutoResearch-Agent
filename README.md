@@ -427,3 +427,9 @@ Read-only duplicate clues are available with `python research_cli.py source-dupl
 and `GET /api/research/runs/{run_id}/source-duplicates`. See [rules and limits](docs/p2-source-duplicates.md).
 
 The evidence workspace now provides **Load duplicate clues** and **Download duplicate clues JSON**. It displays independent arXiv, stored-hash and user-DOI groups, with candidate/source links separately. Any record mutation clears the report, including failed or ambiguous writes; reload explicitly afterward. Reading reports preserves unsaved selections and annotation drafts.
+
+Export candidate screening decisions and revision history with
+`python research_cli.py screening-report RUN_ID` or
+`GET /api/research/runs/{run_id}/screening-report`. The read-only report includes
+latest-decision counts and notices when annotations differ from explicit analysis
+selection. See [screening report semantics](docs/p2-screening-report.md).
