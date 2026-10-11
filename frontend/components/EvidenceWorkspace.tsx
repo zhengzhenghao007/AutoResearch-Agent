@@ -5,6 +5,7 @@ import { researchApi } from '@/lib/research-api';
 import type { ResearchHistory, ResearchRun } from '@/types/research';
 import EvidenceViewer, { sourcePdf } from './EvidenceViewer';
 import ResearchExports from './ResearchExports';
+import SourceDuplicateClues from './SourceDuplicateClues';
 import CandidateScreening from './CandidateScreening';
 import SourceIdentities from './SourceIdentities';
 import './research.css';
@@ -85,7 +86,7 @@ export default function EvidenceWorkspace() {
         <section aria-label="Candidate papers"><div className="research-row"><h3>Candidate papers</h3><span className="research-meta">{selection.length} selected</span></div>
           {run.candidates.length===0 ? <p className="research-empty">No candidate papers found. Try another topic or add a PDF.</p> : <ul className="research-candidates">{run.candidates.map(candidate=><li key={candidate.id}><label><input type="checkbox" aria-label={`Select ${candidate.title}`} disabled={busy} checked={selection.includes(candidate.id)} onChange={event=>setSelection(current=>event.target.checked?[...current,candidate.id]:current.filter(id=>id!==candidate.id))}/><strong>{candidate.title}</strong></label><p className="research-meta">{candidate.authors.join(', ')}</p>{candidate.summary && <p>{candidate.summary}</p>}{sourcePdf(candidate.pdf_url) && <a href={sourcePdf(candidate.pdf_url)!} target="_blank" rel="noopener noreferrer">Source PDF</a>}{<CandidateScreening key={`${run.id}:${candidate.id}`} candidate={candidate} events={(run.candidate_decisions??[]).filter(event=>event.candidate_id===candidate.id)} disabled={busy} onRecord={(decision,reason)=>recordAnnotation(id=>researchApi.candidateDecision(id,{candidate_id:candidate.id,decision,reason}))}/>}</li>)}</ul>}
           <button className="research-primary" disabled={busy||selection.length===0} onClick={()=>void mutate('Analyzing selected papers…',()=>researchApi.analyze(run.id,selection))}>Analyze selected papers</button>
-        </section>{!busy && <ResearchExports runId={run.id} revision={revision}/>}<SourceIdentities key={run.id} run={run} revision={revision} busy={busy} onRecord={request=>recordAnnotation(id=>researchApi.sourceIdentity(id,request))}/><EvidenceViewer run={run}/></>}
+        </section>{!busy && <><ResearchExports runId={run.id} revision={revision}/><SourceDuplicateClues runId={run.id} revision={revision}/></>}<SourceIdentities key={run.id} run={run} revision={revision} busy={busy} onRecord={request=>recordAnnotation(id=>researchApi.sourceIdentity(id,request))}/><EvidenceViewer run={run}/></>}
     </div></div>
   </section>;
 }

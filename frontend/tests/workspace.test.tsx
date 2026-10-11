@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import EvidenceWorkspace from '@/components/EvidenceWorkspace';
 import { researchApi } from '@/lib/research-api';
 import type { ResearchRun } from '@/types/research';
-vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn(), candidateDecision:vi.fn(), sourceIdentities:vi.fn(), sourceIdentity:vi.fn() } }));
+vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn(), candidateDecision:vi.fn(), sourceIdentities:vi.fn(), sourceIdentity:vi.fn(), sourceDuplicates:vi.fn() } }));
 const run: ResearchRun = {schema_version:1,id:'a'.repeat(32),topic:'Navigation',plan:['Read sources'],candidates:[{id:'a',title:'Paper A',pdf_url:'https://arxiv.org/pdf/2401.12345',authors:[],summary:''},{id:'b',title:'Paper B',pdf_url:'',authors:[],summary:''}],selected_ids:[],papers:[],generated_claims:[],artifacts:[],review:{approved:false,issues:[],scope:'Literal support only'}};
 beforeEach(() => {
   vi.resetAllMocks(); window.history.replaceState({}, '', '/');
@@ -215,4 +215,19 @@ test('late DOI writes cannot replace a newly opened record',async()=>{
   const other={...run,id:'b'.repeat(32),topic:'Other record'};vi.mocked(researchApi.get).mockResolvedValueOnce(other);
   await act(async()=>{window.history.replaceState({},'',`/?run=${other.id}`);window.dispatchEvent(new PopStateEvent('popstate'));});await screen.findByRole('heading',{name:'Other record'});
   await act(async()=>resolve(run));expect(screen.getByRole('heading',{name:'Other record'})).toBeInTheDocument();expect(screen.queryByLabelText('DOI reason')).not.toBeInTheDocument();
+});
+
+test('duplicate report preserves inputs and is discarded as soon as an annotation write starts',async()=>{
+  vi.mocked(researchApi.sourceDuplicates).mockResolvedValue({schema_version:1,run_id:run.id,groups:[],candidate_source_links:[]});
+  let reject!:(error:Error)=>void;vi.mocked(researchApi.candidateDecision).mockReturnValueOnce(new Promise((_resolve,r)=>{reject=r;}));
+  render(<EvidenceWorkspace/>);await search();await userEvent.click(screen.getByLabelText('Select Paper A'));
+  await userEvent.type(screening().getByLabelText('Screening reason'),'Pending reason');
+  await userEvent.click(screen.getByRole('button',{name:'Load duplicate clues'}));await screen.findByRole('button',{name:'Download duplicate clues JSON'});
+  expect(screen.getByLabelText('Select Paper A')).toBeChecked();expect(screening().getByLabelText('Screening reason')).toHaveValue('Pending reason');
+  await userEvent.click(screening().getByRole('button',{name:'Record screening decision'}));
+  expect(screen.queryByRole('region',{name:'Duplicate clues'})).not.toBeInTheDocument();
+  await act(async()=>reject(new Error('Connection lost')));
+  await screen.findByRole('button',{name:'Load duplicate clues'});
+  expect(screen.queryByRole('button',{name:'Download duplicate clues JSON'})).not.toBeInTheDocument();
+  expect(screening().getByLabelText('Screening reason')).toHaveValue('Pending reason');
 });

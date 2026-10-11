@@ -425,3 +425,5 @@ Load Source DOI annotations to inspect user-provided associations and their orde
 
 Read-only duplicate clues are available with `python research_cli.py source-duplicates RUN_ID`
 and `GET /api/research/runs/{run_id}/source-duplicates`. See [rules and limits](docs/p2-source-duplicates.md).
+
+The evidence workspace now provides **Load duplicate clues** and **Download duplicate clues JSON**. It displays independent arXiv, stored-hash and user-DOI groups, with candidate/source links separately. Any record mutation clears the report, including failed or ambiguous writes; reload explicitly afterward. Reading reports preserves unsaved selections and annotation drafts.
