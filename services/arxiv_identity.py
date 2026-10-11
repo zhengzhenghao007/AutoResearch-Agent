@@ -22,3 +22,9 @@ def explicit_arxiv_revision_id(uri: str) -> str | None:
     if match and re.search(r'v[0-9]+$', match.group('identifier')):
         return match.group('identifier')
     return None
+
+
+def recognized_arxiv_identifier(uri: str) -> str | None:
+    """Return only the identifier literally present in a strictly recognized URI."""
+    match = _LINK.fullmatch(uri)
+    return match.group('identifier') if match else None
