@@ -80,3 +80,11 @@ test('duplicate clues use the encoded read-only route and preserve payloads',asy
   expect(fetcher.mock.calls[0][0]).toContain('/runs/a%2Fb/source-duplicates');
   expect(fetcher.mock.calls[0][1].method).toBeUndefined();
 });
+
+test('screening export uses an encoded read-only route',async()=>{
+  const payload={schema_version:1,run_id:'a/b',counts:{total:0,include:0,exclude:0,undecided:0,selected:0},items:[],scope:'Annotations only',topic:'Test'};
+  const fetcher=vi.fn().mockResolvedValue(new Response(JSON.stringify(payload)));vi.stubGlobal('fetch',fetcher);
+  expect(await researchApi.screeningReport('a/b')).toEqual(payload);
+  expect(fetcher.mock.calls[0][0]).toContain('/runs/a%2Fb/screening-report');
+  expect(fetcher.mock.calls[0][1].method).toBeUndefined();
+});

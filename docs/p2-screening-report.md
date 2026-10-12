@@ -22,5 +22,7 @@ Old records without decision history produce undecided candidates. Reading the
 report does not migrate or rewrite snapshots. No reviewer identity, scientific
 assessment or semantic-validation result is inferred from a user annotation.
 
-This increment provides API/CLI export; a dedicated webpage export control is
-not yet implemented. Existing candidate cards continue to display decisions.
+The evidence workspace offers Load screening report and Download screening JSON.
+It displays saved counts, decision history and selection notices. Unsaved checkboxes
+and drafts are not included. Starting any record mutation clears the report, even
+when a write fails; load it again explicitly afterward.
