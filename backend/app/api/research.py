@@ -15,6 +15,8 @@ from schemas.source_duplicates import SourceDuplicateReport
 from services.source_duplicates import build_source_duplicates
 from schemas.screening_report import ScreeningReport
 from services.screening_report import build_screening_report
+from schemas.claim_review import ClaimReviewReport
+from services.claim_review import build_claim_review
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -114,3 +116,8 @@ def source_duplicates(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get
 @router.get('/runs/{run_id}/screening-report', response_model=ScreeningReport)
 def screening_report(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: build_screening_report(flow.store.load(run_id)))
+
+
+@router.get('/runs/{run_id}/claim-review', response_model=ClaimReviewReport)
+def claim_review(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_claim_review(flow.store.load(run_id)))

@@ -433,3 +433,8 @@ Export candidate screening decisions and revision history with
 `GET /api/research/runs/{run_id}/screening-report`. The read-only report includes
 latest-decision counts and notices when annotations differ from explicit analysis
 selection. See [screening report semantics](docs/p2-screening-report.md).
+
+Inspect advisory planning-language flags with `python research_cli.py claim-review RUN_ID`
+or `GET /api/research/runs/{run_id}/claim-review`. Flags include original evidence
+and pages, leave the record unchanged, and never represent semantic approval.
+See [scope and limitations](docs/p2-claim-review.md).
