@@ -27,6 +27,11 @@ Generated run-level suggestions are excluded. Existing literal-support review
 and extraction behavior remain unchanged. Reads validate the complete snapshot
 and never rewrite claims, categories, review state, suggestions or artifacts.
 
-This increment exposes API and CLI only. Web display, correction history and
-broader semantic review remain future work. Real human scientific evaluation
+The evidence workspace also provides **Load claim review** and **Download claim
+review JSON**. The panel shows counts, matched phrases and all cited quotations
+with source IDs and page numbers. Empty results explicitly do not mean semantic
+approval. Starting a record mutation clears the loaded report, even if the write
+fails; switching record or revision discards late responses. Reads leave drafts
+and selections untouched. Correction history and broader semantic review remain
+future work. Real human scientific evaluation
 is still incomplete; synthetic tests check behavior, not scientific accuracy.

@@ -88,3 +88,11 @@ test('screening export uses an encoded read-only route',async()=>{
   expect(fetcher.mock.calls[0][0]).toContain('/runs/a%2Fb/screening-report');
   expect(fetcher.mock.calls[0][1].method).toBeUndefined();
 });
+
+test('claim review uses an encoded read-only route',async()=>{
+  const payload={schema_version:1,run_id:'a/b',rule_version:'planning-language-en-v1',claim_count:0,checked_claim_count:0,flagged_claim_count:0,flags:[],semantic_validation:'not_assessed',scope:'Advisory only'};
+  const fetcher=vi.fn().mockResolvedValue(new Response(JSON.stringify(payload)));vi.stubGlobal('fetch',fetcher);
+  expect(await researchApi.claimReview('a/b')).toEqual(payload);
+  expect(fetcher.mock.calls[0][0]).toContain('/runs/a%2Fb/claim-review');
+  expect(fetcher.mock.calls[0][1].method).toBeUndefined();
+});
