@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import EvidenceWorkspace from '@/components/EvidenceWorkspace';
 import { researchApi } from '@/lib/research-api';
 import type { ResearchRun } from '@/types/research';
-vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn(), candidateDecision:vi.fn(), sourceIdentities:vi.fn(), sourceIdentity:vi.fn(), sourceDuplicates:vi.fn() } }));
+vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn(), candidateDecision:vi.fn(), sourceIdentities:vi.fn(), sourceIdentity:vi.fn(), sourceDuplicates:vi.fn(), screeningReport:vi.fn() } }));
 const run: ResearchRun = {schema_version:1,id:'a'.repeat(32),topic:'Navigation',plan:['Read sources'],candidates:[{id:'a',title:'Paper A',pdf_url:'https://arxiv.org/pdf/2401.12345',authors:[],summary:''},{id:'b',title:'Paper B',pdf_url:'',authors:[],summary:''}],selected_ids:[],papers:[],generated_claims:[],artifacts:[],review:{approved:false,issues:[],scope:'Literal support only'}};
 beforeEach(() => {
   vi.resetAllMocks(); window.history.replaceState({}, '', '/');
@@ -229,5 +229,20 @@ test('duplicate report preserves inputs and is discarded as soon as an annotatio
   await act(async()=>reject(new Error('Connection lost')));
   await screen.findByRole('button',{name:'Load duplicate clues'});
   expect(screen.queryByRole('button',{name:'Download duplicate clues JSON'})).not.toBeInTheDocument();
+  expect(screening().getByLabelText('Screening reason')).toHaveValue('Pending reason');
+});
+
+test('screening report preserves inputs and is discarded as soon as an annotation write starts',async()=>{
+  vi.mocked(researchApi.screeningReport).mockResolvedValue({schema_version:1,run_id:run.id,topic:run.topic,counts:{total:0,include:0,exclude:0,undecided:0,selected:0},items:[],scope:'Annotations only'});
+  let reject!:(error:Error)=>void;vi.mocked(researchApi.candidateDecision).mockReturnValueOnce(new Promise((_resolve,r)=>{reject=r;}));
+  render(<EvidenceWorkspace/>);await search();await userEvent.click(screen.getByLabelText('Select Paper A'));
+  await userEvent.type(screening().getByLabelText('Screening reason'),'Pending reason');
+  await userEvent.click(screen.getByRole('button',{name:'Load screening report'}));await screen.findByRole('button',{name:'Download screening JSON'});
+  expect(screen.getByLabelText('Select Paper A')).toBeChecked();expect(screening().getByLabelText('Screening reason')).toHaveValue('Pending reason');
+  await userEvent.click(screening().getByRole('button',{name:'Record screening decision'}));
+  expect(screen.queryByRole('region',{name:'Screening audit report'})).not.toBeInTheDocument();
+  await act(async()=>reject(new Error('Connection lost')));
+  await screen.findByRole('button',{name:'Load screening report'});
+  expect(screen.queryByRole('button',{name:'Download screening JSON'})).not.toBeInTheDocument();
   expect(screening().getByLabelText('Screening reason')).toHaveValue('Pending reason');
 });
