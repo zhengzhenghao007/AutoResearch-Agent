@@ -1,6 +1,7 @@
 """Run with python research_cli.py --help. Default extraction is offline."""
 import argparse
 import sys
+import json
 from pathlib import Path
 from services.evidence_extraction import EvidenceExtractor
 from services.research_store import ResearchStore
@@ -11,6 +12,7 @@ from services.source_identity import build_source_identities
 from services.source_duplicates import build_source_duplicates
 from services.screening_report import build_screening_report
 from services.claim_review import build_claim_review
+from schemas.research import CATEGORIES
 
 
 def main():
@@ -41,6 +43,11 @@ def main():
     screening.add_argument('run_id')
     review = commands.add_parser('claim-review', help='Read advisory planning-language flags; not semantic approval')
     review.add_argument('run_id')
+    revise = commands.add_parser('revise-category', help='Explicit category correction with before/after history')
+    revise.add_argument('run_id')
+    revise.add_argument('expected_claim', type=Path, help='JSON file containing the exact current Claim')
+    revise.add_argument('category', choices=CATEGORIES)
+    revise.add_argument('--reason', required=True)
     source_doi = commands.add_parser('source-doi', help='Append unverified DOI annotation history')
     source_doi.add_argument('run_id')
     source_doi.add_argument('source_id')
@@ -73,6 +80,9 @@ def main():
             result = build_screening_report(flow.store.load(args.run_id))
         elif args.command == 'claim-review':
             result = build_claim_review(flow.store.load(args.run_id))
+        elif args.command == 'revise-category':
+            result = flow.revise_claim_category(args.run_id,
+                json.loads(args.expected_claim.read_text(encoding='utf-8-sig')), args.category, args.reason)
         elif args.command == 'source-doi':
             result = flow.record_source_identity(args.run_id, args.source_id, args.action, args.doi, args.reason)
         elif args.command == 'bibtex':

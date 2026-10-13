@@ -90,6 +90,20 @@ class Artifact(Contract):
     evidence_ids: list[str] = Field(default_factory=list)
 
 
+class CategoryRevisionRequest(Contract):
+    expected_claim: Claim
+    category: Category
+    reason: str = Field(min_length=1, max_length=2000)
+
+
+class CategoryRevision(Contract):
+    claim_id: str
+    before: PaperEvidence
+    after: PaperEvidence
+    reason: str = Field(min_length=1, max_length=2000)
+    revised_at: AwareDatetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
 class ResearchRun(Contract):
     schema_version: Literal[1] = 1
     id: str = Field(pattern=r'^[a-f0-9]{32}$')
@@ -99,6 +113,7 @@ class ResearchRun(Contract):
     selected_ids: list[str] = Field(default_factory=list)
     candidate_decisions: list[CandidateDecision] = Field(default_factory=list)
     source_identity_annotations: list[SourceIdentityAnnotation] = Field(default_factory=list)
+    category_revisions: list[CategoryRevision] = Field(default_factory=list, max_length=20)
     papers: list[PaperEvidence] = Field(default_factory=list)
     generated_claims: list[Claim] = Field(default_factory=list)
     artifacts: list[Artifact] = Field(default_factory=list)

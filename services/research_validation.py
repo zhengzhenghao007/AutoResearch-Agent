@@ -2,9 +2,12 @@
 from schemas.research import ResearchRun
 from services.evidence_review import review_paper
 from services.literature_synthesis import build_suggestions, synthesize
+from services.category_revisions import validate_revision
 
 
 def validate_run(run: ResearchRun) -> None:
+    for event in run.category_revisions:
+        validate_revision(event)
     candidate_ids = [c.id for c in run.candidates]
     if len(candidate_ids) != len(set(candidate_ids)):
         raise ValueError('Duplicate candidate IDs')

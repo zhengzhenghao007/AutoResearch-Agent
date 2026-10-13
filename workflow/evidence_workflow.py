@@ -9,6 +9,8 @@ from services.evidence_extraction import EvidenceExtractor
 from services.evidence_review import review_paper
 from services.literature_synthesis import build_suggestions, synthesize
 from services.research_store import ResearchStore
+from schemas.research import CategoryRevisionRequest, CategoryRevision
+from services.category_revisions import set_category, replay_revisions
 
 
 class EvidenceWorkflow:
@@ -62,6 +64,26 @@ class EvidenceWorkflow:
         self.store.save(run)
         return run
 
+    def revise_claim_category(self, run_id, expected_claim, category, reason):
+        request = CategoryRevisionRequest(expected_claim=expected_claim, category=category, reason=reason)
+        run = self.store.load(run_id)
+        if len(run.category_revisions) >= 20:
+            raise ValueError('Category revision budget exhausted (20 per research run)')
+        for i, paper in enumerate(run.papers):
+            claim = next((c for c in paper.claims if c.id == request.expected_claim.id), None)
+            if claim is None:
+                continue
+            if claim != request.expected_claim:
+                raise ValueError('Category revision is stale; reload the current claim')
+            if claim.category == request.category:
+                raise ValueError('Category is unchanged')
+            updated = set_category(paper, claim.id, request.category)
+            run.category_revisions.append(CategoryRevision(claim_id=claim.id,
+                before=paper.model_copy(deep=True), after=updated.model_copy(deep=True), reason=request.reason))
+            run.papers[i] = updated
+            return self._finish(run)
+        raise ValueError('Claim is not currently processed in this research run')
+
     def record_source_identity(self, run_id, source_id, action, doi, reason):
         run = self.store.load(run_id)
         request = SourceIdentityRequest(source_id=source_id, action=action, doi=doi, reason=reason)
@@ -87,7 +109,7 @@ class EvidenceWorkflow:
             if document.source.id not in seen:
                 papers.append(self.extractor.extract(document))
                 seen.add(document.source.id)
-        run.papers, run.selected_ids = papers, list(selected_ids)
+        run.papers, run.selected_ids = replay_revisions(papers, run.category_revisions), list(selected_ids)
         return self._finish(run)
 
     def import_pdf(self, data, title, run_id=None):
