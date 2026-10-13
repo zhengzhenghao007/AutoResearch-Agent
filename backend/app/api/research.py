@@ -17,6 +17,7 @@ from schemas.screening_report import ScreeningReport
 from services.screening_report import build_screening_report
 from schemas.claim_review import ClaimReviewReport
 from services.claim_review import build_claim_review
+from schemas.research import CategoryRevisionRequest
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -121,3 +122,9 @@ def screening_report(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_
 @router.get('/runs/{run_id}/claim-review', response_model=ClaimReviewReport)
 def claim_review(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: build_claim_review(flow.store.load(run_id)))
+
+
+@router.post('/runs/{run_id}/category-revisions', response_model=ResearchRun)
+def revise_category(run_id: str, request: CategoryRevisionRequest,
+                    flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: flow.revise_claim_category(run_id, **request.model_dump()))

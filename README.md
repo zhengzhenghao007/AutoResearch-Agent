@@ -438,3 +438,9 @@ Inspect advisory planning-language flags with `python research_cli.py claim-revi
 or `GET /api/research/runs/{run_id}/claim-review`. Flags include original evidence
 and pages, leave the record unchanged, and never represent semantic approval.
 See [scope and limitations](docs/p2-claim-review.md).
+
+Explicit category corrections are available through
+`POST /api/research/runs/{run_id}/category-revisions` and
+`python research_cli.py revise-category RUN_ID expected-claim.json CATEGORY --reason "Reason"`.
+They preserve evidence and before/after history, reject stale claims, and limit
+each run to 20 revisions. See [category revision behavior](docs/p2-category-revisions.md).
