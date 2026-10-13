@@ -13,6 +13,7 @@ from services.source_duplicates import build_source_duplicates
 from services.screening_report import build_screening_report
 from services.claim_review import build_claim_review
 from schemas.research import CATEGORIES
+from services.semantic_review import review_semantics
 
 
 def main():
@@ -43,6 +44,10 @@ def main():
     screening.add_argument('run_id')
     review = commands.add_parser('claim-review', help='Read advisory planning-language flags; not semantic approval')
     review.add_argument('run_id')
+    semantic = commands.add_parser('semantic-review', help='Explicit model review; sends selected claims and cited pages to the configured provider')
+    semantic.add_argument('run_id')
+    semantic.add_argument('claim_ids', nargs='+')
+    semantic.add_argument('--allow-model', action='store_true', required=True)
     revise = commands.add_parser('revise-category', help='Explicit category correction with before/after history')
     revise.add_argument('run_id')
     revise.add_argument('expected_claim', type=Path, help='JSON file containing the exact current Claim')
@@ -80,6 +85,8 @@ def main():
             result = build_screening_report(flow.store.load(args.run_id))
         elif args.command == 'claim-review':
             result = build_claim_review(flow.store.load(args.run_id))
+        elif args.command == 'semantic-review':
+            result = review_semantics(flow.store.load(args.run_id),args.claim_ids,args.allow_model)
         elif args.command == 'revise-category':
             result = flow.revise_claim_category(args.run_id,
                 json.loads(args.expected_claim.read_text(encoding='utf-8-sig')), args.category, args.reason)
@@ -99,7 +106,7 @@ def main():
             result = flow.store.load(args.run_id)
         print(result.model_dump_json(indent=2))
         return 0
-    except (ValueError, OSError) as exc:
+    except (ValueError, OSError, RuntimeError) as exc:
         print(f'Research failed: {exc}', file=sys.stderr)
         return 1
 

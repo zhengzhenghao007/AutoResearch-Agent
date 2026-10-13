@@ -1,6 +1,6 @@
 # Explicit category revisions
 
-This API/CLI increment lets a user correct a currently processed claim's category
+The workspace, API and CLI lets a user correct a currently processed claim's category
 without changing its text, type, timestamp, evidence references or source. It
 does not certify the new classification or scientific validity.
 
@@ -49,5 +49,6 @@ not itself reapply revisions. Old runs without history read as an empty list.
 Full paper snapshots intentionally favor inspectability over compact storage;
 each revision stores two copies of the paper's parsed text. The 20-event budget
 bounds event count but large PDFs can still make snapshots substantial. A compact
-audit store and a webpage editor are follow-up work. Human scientific evaluation
+audit store remains follow-up work. The workspace editor requires a reason, shows
+the remaining budget and full history, and preserves drafts after failed saves. Human scientific evaluation
 remains incomplete and is not inferred from an API user's correction.

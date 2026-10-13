@@ -18,6 +18,8 @@ from services.screening_report import build_screening_report
 from schemas.claim_review import ClaimReviewReport
 from services.claim_review import build_claim_review
 from schemas.research import CategoryRevisionRequest
+from schemas.semantic_review import SemanticReviewRequest, SemanticReviewReport
+from services.semantic_review import review_semantics
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -128,3 +130,20 @@ def claim_review(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_work
 def revise_category(run_id: str, request: CategoryRevisionRequest,
                     flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: flow.revise_claim_category(run_id, **request.model_dump()))
+
+
+def get_semantic_reviewer():
+    return review_semantics
+
+
+@router.post('/runs/{run_id}/semantic-review', response_model=SemanticReviewReport)
+def semantic_review(run_id: str, request: SemanticReviewRequest,
+                    flow: Annotated[EvidenceWorkflow, Depends(get_workflow)],
+                    reviewer=Depends(get_semantic_reviewer)):
+    run=invoke(lambda:flow.store.load(run_id))
+    try:
+        return reviewer(run,request.claim_ids,request.allow_model)
+    except ValueError as exc:
+        raise HTTPException(400,'Semantic review rejected; check selected claims, input size, configuration or model output.') from exc
+    except RuntimeError as exc:
+        raise HTTPException(502,'Semantic review provider failed. No record was changed.') from exc
