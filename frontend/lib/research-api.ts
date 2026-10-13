@@ -1,3 +1,5 @@
+import type {SemanticReviewReport} from '@/types/semantic-review';
+import type {Claim,Category} from '@/types/research';
 import type {ClaimReviewData} from '@/types/claim-review';
 import type {ScreeningReportData} from '@/types/screening-report';
 import type {SourceDuplicateReport} from '@/types/source-duplicates';
@@ -38,6 +40,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  semanticReview: (id:string,claim_ids:string[]) => request<SemanticReviewReport>(`/runs/${encodeURIComponent(id)}/semantic-review`,json({claim_ids,allow_model:true})),
+  reviseCategory: (id:string,expected_claim:Claim,category:Category,reason:string) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}/category-revisions`,json({expected_claim,category,reason})),
   claimReview: (id: string) => request<ClaimReviewData>(`/runs/${encodeURIComponent(id)}/claim-review`),
   screeningReport: (id: string) => request<ScreeningReportData>(`/runs/${encodeURIComponent(id)}/screening-report`),
   sourceDuplicates: (id: string) => request<SourceDuplicateReport>(`/runs/${encodeURIComponent(id)}/source-duplicates`),

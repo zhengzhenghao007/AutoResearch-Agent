@@ -444,3 +444,15 @@ Explicit category corrections are available through
 `python research_cli.py revise-category RUN_ID expected-claim.json CATEGORY --reason "Reason"`.
 They preserve evidence and before/after history, reject stale claims, and limit
 each run to 20 revisions. See [category revision behavior](docs/p2-category-revisions.md).
+
+### P2 semantic review and category revisions
+
+The evidence workspace now supports reasoned, category-only revisions with a
+20-event budget and full before/after history. Optional model review requires
+explicit claim selection and consent, returns support judgments and potential
+contradictions with source context, and never edits records automatically.
+See [semantic review](docs/p2-semantic-review.md) and
+[category revisions](docs/p2-category-revisions.md) for API/CLI use and limits.
+Human scientific evaluation remains unverified; mocked tests do not establish
+semantic accuracy. P2 engineering status and remaining extensions are recorded
+in the [roadmap](docs/roadmap.md).

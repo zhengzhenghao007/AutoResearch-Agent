@@ -67,6 +67,8 @@ class LLMClient:
         model_name: Optional[str] = None,
         temperature: float = 0.1,
         max_tokens: int = 2000,
+        max_retries: int = 2,
+        request_timeout: float | None = None,
     ) -> None:
         self.api_key = os.getenv(
             "OPENROUTER_API_KEY"
@@ -95,6 +97,8 @@ class LLMClient:
             base_url=self.base_url,
             temperature=temperature,
             max_tokens=max_tokens,
+            max_retries=max_retries,
+            timeout=request_timeout,
         )
 
     def chat(
