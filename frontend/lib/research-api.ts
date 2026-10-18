@@ -1,4 +1,5 @@
 import type {SemanticReviewReport} from '@/types/semantic-review';
+import type {ManuscriptDraftData} from '@/types/manuscript-draft';
 import type {CsvMetadata,ExperimentReport,ExperimentStatistics} from '@/types/experiments';
 import type {Claim,Category} from '@/types/research';
 import type {ClaimReviewData} from '@/types/claim-review';
@@ -41,6 +42,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  manuscriptDraft: (id:string) => request<ManuscriptDraftData>(`/runs/${encodeURIComponent(id)}/manuscript-draft`),
   create: (topic:string) => request<ResearchRun>('/runs',json({topic})),
   experiments: (id:string) => request<ExperimentReport>(`/runs/${encodeURIComponent(id)}/experiments`),
   experimentStatistics: (id:string) => request<ExperimentStatistics>(`/runs/${encodeURIComponent(id)}/experiment-statistics`),
