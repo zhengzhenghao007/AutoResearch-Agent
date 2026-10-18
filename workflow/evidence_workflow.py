@@ -32,6 +32,12 @@ class EvidenceWorkflow:
             'Review sources; researcher evaluates relevance and scientific validity.',
         ])
 
+    def create(self, topic):
+        """Start a local record without searching or contacting a model."""
+        run = self._new(topic)
+        self.store.save(run)
+        return run
+
     def search(self, topic, max_results=5):
         run = self._new(topic)
         if not 1 <= max_results <= 20:

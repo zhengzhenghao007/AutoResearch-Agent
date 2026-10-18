@@ -20,6 +20,10 @@ from services.claim_review import build_claim_review
 from schemas.research import CategoryRevisionRequest
 from schemas.semantic_review import SemanticReviewRequest, SemanticReviewReport
 from services.semantic_review import review_semantics
+from schemas.experiments import MAX_EXPERIMENT_BYTES, MAX_EXPERIMENT_ENVELOPE_BYTES, ExperimentReport
+from services.experiments import import_experiment, build_experiment_report, import_csv_experiment, parse_csv_metadata
+from schemas.experiment_statistics import ExperimentStatisticsReport
+from services.experiment_statistics import build_experiment_statistics
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -37,6 +41,10 @@ class SelectionRequest(Contract):
     selected_ids: list[str] = Field(min_length=1, max_length=20)
 
 
+class CreateRequest(Contract):
+    topic: str = Field(min_length=1, max_length=2000)
+
+
 def invoke(operation):
     try:
         return operation()
@@ -46,6 +54,46 @@ def invoke(operation):
         raise HTTPException(400, str(exc)) from exc
     except requests.RequestException as exc:
         raise HTTPException(502, 'Paper source unavailable; retry later') from exc
+
+
+@router.post('/runs/{run_id}/experiments', response_model=ResearchRun)
+def upload_experiment(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)],
+                      file: UploadFile = File(...)):
+    try:
+        data = file.file.read(MAX_EXPERIMENT_ENVELOPE_BYTES + 1)
+        if len(data) > MAX_EXPERIMENT_ENVELOPE_BYTES:
+            raise HTTPException(413, 'Experiment envelope exceeds 2 MiB')
+        return invoke(lambda: import_experiment(flow.store, run_id, data))
+    finally:
+        file.file.close()
+
+
+@router.post('/runs', response_model=ResearchRun)
+def create_run(request: CreateRequest, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: flow.create(request.topic))
+
+
+@router.post('/runs/{run_id}/experiments/csv', response_model=ResearchRun)
+def upload_experiment_csv(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)],
+                          file: UploadFile = File(...), metadata: str = Form(...)):
+    try:
+        data = file.file.read(MAX_EXPERIMENT_BYTES + 1)
+        if len(data) > MAX_EXPERIMENT_BYTES:
+            raise HTTPException(413, 'Experiment CSV exceeds 1 MiB')
+        return invoke(lambda: import_csv_experiment(flow.store, run_id, data,
+                      parse_csv_metadata(metadata.encode('utf-8'))))
+    finally:
+        file.file.close()
+
+
+@router.get('/runs/{run_id}/experiment-statistics', response_model=ExperimentStatisticsReport)
+def experiment_statistics(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_experiment_statistics(flow.store.load(run_id)))
+
+
+@router.get('/runs/{run_id}/experiments', response_model=ExperimentReport)
+def experiments(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_experiment_report(flow.store.load(run_id)))
 
 
 @router.post('/search', response_model=ResearchRun)

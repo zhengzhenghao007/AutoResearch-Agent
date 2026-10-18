@@ -1,6 +1,20 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import { researchApi, REQUEST_TIMEOUT_MS } from '@/lib/research-api';
 afterEach(() => {vi.unstubAllGlobals();vi.useRealTimers();});
+test('experiment import preserves multipart CSV metadata and statistics route',async()=>{
+  const fetcher=vi.fn().mockImplementation(()=>Promise.resolve(new Response('{}')));vi.stubGlobal('fetch',fetcher);
+  const metadata={title:'Study',protocol:null,statistical_method:null,columns:[{name:'x',unit:'m'}]};
+  const file=new File(['sample_id,x\ns1,0\n'],'data.csv');
+  await researchApi.importExperiment('a/b',file,'csv',metadata);
+  expect(fetcher.mock.calls[0][0]).toContain('/runs/a%2Fb/experiments/csv');
+  expect(fetcher.mock.calls[0][1].body.get('file')).toBe(file);
+  expect(JSON.parse(fetcher.mock.calls[0][1].body.get('metadata'))).toEqual(metadata);
+  expect(fetcher.mock.calls[0][1].headers).toBeUndefined();
+  await researchApi.experimentStatistics('a/b');
+  expect(fetcher.mock.calls[1][0]).toContain('/runs/a%2Fb/experiment-statistics');
+  await researchApi.create('Offline');
+  expect(JSON.parse(fetcher.mock.calls[2][1].body)).toEqual({topic:'Offline'});
+});
 test('screening posts only annotation fields to the encoded route',async()=>{
   const payload={id:'record',candidate_decisions:[]};
   const fetcher=vi.fn().mockResolvedValue(new Response(JSON.stringify(payload)));

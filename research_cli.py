@@ -14,6 +14,9 @@ from services.screening_report import build_screening_report
 from services.claim_review import build_claim_review
 from schemas.research import CATEGORIES
 from services.semantic_review import review_semantics
+from services.experiments import import_experiment, build_experiment_report, import_csv_experiment, parse_csv_metadata
+from services.experiment_statistics import build_experiment_statistics
+from schemas.experiments import MAX_EXPERIMENT_BYTES, MAX_EXPERIMENT_ENVELOPE_BYTES
 
 
 def main():
@@ -21,6 +24,19 @@ def main():
     parser.add_argument('--store', type=Path, help='Research JSON directory')
     parser.add_argument('--mode', choices=['rule', 'llm'], default='rule')
     commands = parser.add_subparsers(dest='command', required=True)
+    create = commands.add_parser('create', help='Create an offline research record')
+    create.add_argument('topic')
+    csv_import = commands.add_parser('import-experiment-csv', help='Import CSV with explicit column metadata')
+    csv_import.add_argument('run_id')
+    csv_import.add_argument('path', type=Path)
+    csv_import.add_argument('--metadata', required=True, type=Path)
+    statistics = commands.add_parser('experiment-statistics', help='Reproducible descriptive statistics and input references')
+    statistics.add_argument('run_id')
+    experiment = commands.add_parser('import-experiment', help='Import numeric user observations from UTF-8 JSON (offline)')
+    experiment.add_argument('run_id')
+    experiment.add_argument('path', type=Path)
+    experiments = commands.add_parser('experiments', help='Read experiment completeness; not scientific validation')
+    experiments.add_argument('run_id')
     search = commands.add_parser('search')
     search.add_argument('topic')
     search.add_argument('--max-results', type=int, default=5)
@@ -67,7 +83,23 @@ def main():
     args = parser.parse_args()
     flow = EvidenceWorkflow(store=ResearchStore(args.store), extractor=EvidenceExtractor(args.mode))
     try:
-        if args.command == 'search':
+        if args.command == 'create':
+            result = flow.create(args.topic)
+        elif args.command == 'import-experiment-csv':
+            with args.path.open('rb') as stream:
+                data = stream.read(MAX_EXPERIMENT_BYTES + 1)
+            with args.metadata.open('rb') as stream:
+                metadata = parse_csv_metadata(stream.read(65537))
+            result = import_csv_experiment(flow.store, args.run_id, data, metadata)
+        elif args.command == 'experiment-statistics':
+            result = build_experiment_statistics(flow.store.load(args.run_id))
+        elif args.command == 'import-experiment':
+            with args.path.open('rb') as stream:
+                data = stream.read(MAX_EXPERIMENT_ENVELOPE_BYTES + 1)
+            result = import_experiment(flow.store, args.run_id, data)
+        elif args.command == 'experiments':
+            result = build_experiment_report(flow.store.load(args.run_id))
+        elif args.command == 'search':
             result = flow.search(args.topic, args.max_results)
         elif args.command == 'analyze':
             result = flow.analyze(args.run_id, args.selected_ids)

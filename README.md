@@ -59,7 +59,7 @@ The API uses rule extraction. Explicit LLM mode is currently a CLI capability. U
 
 If Windows denies access to an old pytest temporary directory, use a fresh `--basetemp` path. Four legacy `test_*.py` provider demos run code at import time; they are excluded by default. `--run-live` explicitly opts into those demos and requires working provider credentials/network; they are not counted as deterministic unit tests. The offline suite tests real generated PDFs, fake network/provider adapters, citations, missing evidence, persistence and API behavior.
 
-Next: actual human review of the evaluation corpus, structured user experimental inputs, and semantic claim support review. Full paper writing and automatic experiment execution remain outside this MVP.
+P2 semantic review and P3 structured experimental inputs/descriptive statistics are now available (see below). Human scientific evaluation remains uncompleted, skipped by user request. Next is P4 evidence-linked writing; automatic experiment execution remains outside scope.
 
 ### Evidence workspace
 
@@ -456,3 +456,15 @@ See [semantic review](docs/p2-semantic-review.md) and
 Human scientific evaluation remains unverified; mocked tests do not establish
 semantic accuracy. P2 engineering status and remaining extensions are recorded
 in the [roadmap](docs/roadmap.md).
+
+### P3 user observations and statistics
+
+Create a record offline in the workspace or with `python research_cli.py create "My experiment"`.
+Import numeric observations into that run with
+`python research_cli.py import-experiment RUN_ID measurements.json`, then inspect
+missing values and metadata with `python research_cli.py experiments RUN_ID`.
+The workspace, API and CLI also accept CSV with explicitly declared columns and
+units. `python research_cli.py experiment-statistics RUN_ID` computes reproducible
+descriptive statistics and exports dataset/sample/column references. Original input
+and SHA-256 are retained separately from paper evidence; no model, imputation or
+statistical inference is used. See the [format, arithmetic and limits](docs/p3-observations.md).
