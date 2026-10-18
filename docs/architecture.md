@@ -2,6 +2,12 @@
 
 日期：2026-09-17。设计依据：当前源码审计、GitHub 一手源码快照、同一 ChatGPT 项目中 `c2c_evidence` 的 PLAN。用户已授权方案确定后实现第一阶段。
 
+2026-10-17 更新：下文 MVP 边界保留为初始设计记录。P3 已新增独立
+`ResearchRun.experiments`，保存 JSON/CSV 用户观测、原始输入与哈希；统计
+引用由数据集 ID、样本 ID、列名和值组成，不伪造 PDF 页码或原文引用。
+`user_observation` 数据、`paper_report` 引文和生成建议保持分离。
+描述统计为只读派生结果，算法和数值精度见 [P3 文档](p3-observations.md)。
+
 ## 取舍
 
 1. **推荐：增量证据服务。** 保留现有 CLI、Streamlit、`/api/papers/search` 和 `/api/papers/analyze`；新增独立的 evidence workflow 与 `/api/research`。旧分析不是已验证证据，不自动升级旧数据的可信度。

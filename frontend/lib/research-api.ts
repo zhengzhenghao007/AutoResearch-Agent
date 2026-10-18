@@ -1,4 +1,5 @@
 import type {SemanticReviewReport} from '@/types/semantic-review';
+import type {CsvMetadata,ExperimentReport,ExperimentStatistics} from '@/types/experiments';
 import type {Claim,Category} from '@/types/research';
 import type {ClaimReviewData} from '@/types/claim-review';
 import type {ScreeningReportData} from '@/types/screening-report';
@@ -40,6 +41,14 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  create: (topic:string) => request<ResearchRun>('/runs',json({topic})),
+  experiments: (id:string) => request<ExperimentReport>(`/runs/${encodeURIComponent(id)}/experiments`),
+  experimentStatistics: (id:string) => request<ExperimentStatistics>(`/runs/${encodeURIComponent(id)}/experiment-statistics`),
+  importExperiment: (id:string,file:File,format:'json'|'csv',metadata?:CsvMetadata) => {
+    const body=new FormData();body.append('file',file);
+    if(format==='csv')body.append('metadata',JSON.stringify(metadata));
+    return request<ResearchRun>(`/runs/${encodeURIComponent(id)}/experiments${format==='csv'?'/csv':''}`,{method:'POST',body});
+  },
   semanticReview: (id:string,claim_ids:string[]) => request<SemanticReviewReport>(`/runs/${encodeURIComponent(id)}/semantic-review`,json({claim_ids,allow_model:true})),
   reviseCategory: (id:string,expected_claim:Claim,category:Category,reason:string) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}/category-revisions`,json({expected_claim,category,reason})),
   claimReview: (id: string) => request<ClaimReviewData>(`/runs/${encodeURIComponent(id)}/claim-review`),

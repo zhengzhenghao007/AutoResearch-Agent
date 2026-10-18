@@ -3,9 +3,11 @@ from schemas.research import ResearchRun
 from services.evidence_review import review_paper
 from services.literature_synthesis import build_suggestions, synthesize
 from services.category_revisions import validate_revision
+from services.experiments import validate_experiments
 
 
 def validate_run(run: ResearchRun) -> None:
+    validate_experiments(run.experiments)
     for event in run.category_revisions:
         validate_revision(event)
     candidate_ids = [c.id for c in run.candidates]
