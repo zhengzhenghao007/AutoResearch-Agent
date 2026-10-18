@@ -16,6 +16,7 @@ from schemas.research import CATEGORIES
 from services.semantic_review import review_semantics
 from services.experiments import import_experiment, build_experiment_report, import_csv_experiment, parse_csv_metadata
 from services.experiment_statistics import build_experiment_statistics
+from services.manuscript_draft import build_manuscript_draft
 from schemas.experiments import MAX_EXPERIMENT_BYTES, MAX_EXPERIMENT_ENVELOPE_BYTES
 
 
@@ -24,6 +25,8 @@ def main():
     parser.add_argument('--store', type=Path, help='Research JSON directory')
     parser.add_argument('--mode', choices=['rule', 'llm'], default='rule')
     commands = parser.add_subparsers(dest='command', required=True)
+    draft = commands.add_parser('manuscript-draft', help='Read-only evidence-linked chapter preview; not approved for publication')
+    draft.add_argument('run_id')
     create = commands.add_parser('create', help='Create an offline research record')
     create.add_argument('topic')
     csv_import = commands.add_parser('import-experiment-csv', help='Import CSV with explicit column metadata')
@@ -83,7 +86,9 @@ def main():
     args = parser.parse_args()
     flow = EvidenceWorkflow(store=ResearchStore(args.store), extractor=EvidenceExtractor(args.mode))
     try:
-        if args.command == 'create':
+        if args.command == 'manuscript-draft':
+            result = build_manuscript_draft(flow.store.load(args.run_id))
+        elif args.command == 'create':
             result = flow.create(args.topic)
         elif args.command == 'import-experiment-csv':
             with args.path.open('rb') as stream:

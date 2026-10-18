@@ -468,3 +468,11 @@ units. `python research_cli.py experiment-statistics RUN_ID` computes reproducib
 descriptive statistics and exports dataset/sample/column references. Original input
 and SHA-256 are retained separately from paper evidence; no model, imputation or
 statistical inference is used. See the [format, arithmetic and limits](docs/p3-observations.md).
+
+### P4 chapter preview (first increment)
+
+Choose **Preview chapter draft** or run `python research_cli.py manuscript-draft RUN_ID`
+to inspect an offline outline with saved paper quotations, P3 statistical summaries,
+source/computation references and explicit missing-material placeholders. It is not
+an approved manuscript. Narrative revisions, linked review and final publication
+export remain future P4 work. See [scope and API](docs/p4-evidence-draft.md).

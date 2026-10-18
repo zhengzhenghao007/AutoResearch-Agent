@@ -24,6 +24,8 @@ from schemas.experiments import MAX_EXPERIMENT_BYTES, MAX_EXPERIMENT_ENVELOPE_BY
 from services.experiments import import_experiment, build_experiment_report, import_csv_experiment, parse_csv_metadata
 from schemas.experiment_statistics import ExperimentStatisticsReport
 from services.experiment_statistics import build_experiment_statistics
+from schemas.manuscript_draft import ManuscriptDraft
+from services.manuscript_draft import build_manuscript_draft
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -99,6 +101,11 @@ def experiments(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workf
 @router.post('/search', response_model=ResearchRun)
 def search(request: SearchRequest, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: flow.search(request.topic, request.max_results))
+
+
+@router.get('/runs/{run_id}/manuscript-draft', response_model=ManuscriptDraft)
+def manuscript_draft(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_manuscript_draft(flow.store.load(run_id)))
 
 
 @router.get('/runs', response_model=ResearchHistory)
