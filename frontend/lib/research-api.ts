@@ -1,3 +1,4 @@
+import type {ManuscriptState,ManuscriptRevisionRequest,ManuscriptExport} from '@/types/manuscript';
 import type {SemanticReviewReport} from '@/types/semantic-review';
 import type {ManuscriptDraftData} from '@/types/manuscript-draft';
 import type {CsvMetadata,ExperimentReport,ExperimentStatistics} from '@/types/experiments';
@@ -42,6 +43,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  manuscript: (id:string) => request<ManuscriptState>(`/runs/${encodeURIComponent(id)}/manuscript`),
+  saveManuscript: (id:string,body:ManuscriptRevisionRequest) => request<ManuscriptState>(`/runs/${encodeURIComponent(id)}/manuscript/revisions`,json(body)),
+  reviewManuscript: (id:string,revision_id:string) => request<ManuscriptState>(`/runs/${encodeURIComponent(id)}/manuscript/review`,json({revision_id,allow_model:true})),
+  approveManuscript: (id:string,revision_id:string,reviewer:string,note:string,expected_review_count:number) => request<ManuscriptState>(`/runs/${encodeURIComponent(id)}/manuscript/approval`,json({revision_id,reviewer,note,expected_review_count,confirm:true})),
+  exportManuscript: (id:string,revision_id:string) => request<ManuscriptExport>(`/runs/${encodeURIComponent(id)}/manuscript/export?revision_id=${encodeURIComponent(revision_id)}`),
   manuscriptDraft: (id:string) => request<ManuscriptDraftData>(`/runs/${encodeURIComponent(id)}/manuscript-draft`),
   create: (topic:string) => request<ResearchRun>('/runs',json({topic})),
   experiments: (id:string) => request<ExperimentReport>(`/runs/${encodeURIComponent(id)}/experiments`),

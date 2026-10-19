@@ -26,12 +26,51 @@ from schemas.experiment_statistics import ExperimentStatisticsReport
 from services.experiment_statistics import build_experiment_statistics
 from schemas.manuscript_draft import ManuscriptDraft
 from services.manuscript_draft import build_manuscript_draft
+from schemas.manuscript import ManuscriptState, RevisionRequest, ReviewRequest, ApprovalRequest, ManuscriptExport
+from services.manuscript import get_manuscript, save_revision, review_manuscript, approve_manuscript, export_manuscript
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
 
 def get_workflow():
     return EvidenceWorkflow()
+
+
+def get_manuscript_reviewer():
+    return review_manuscript
+
+
+@router.get('/runs/{run_id}/manuscript', response_model=ManuscriptState)
+def manuscript_state(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: get_manuscript(flow.store, run_id))
+
+
+@router.post('/runs/{run_id}/manuscript/revisions', response_model=ManuscriptState)
+def manuscript_revision(run_id: str, request: RevisionRequest,
+                        flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: save_revision(flow.store, run_id, **request.model_dump()))
+
+
+@router.post('/runs/{run_id}/manuscript/review', response_model=ManuscriptState)
+def manuscript_review(run_id: str, request: ReviewRequest,
+                       flow: Annotated[EvidenceWorkflow, Depends(get_workflow)],
+                       reviewer=Depends(get_manuscript_reviewer)):
+    try:
+        return invoke(lambda: reviewer(flow.store, run_id, **request.model_dump()))
+    except RuntimeError as exc:
+        raise HTTPException(502, 'Manuscript review provider failed. No record was changed.') from exc
+
+
+@router.post('/runs/{run_id}/manuscript/approval', response_model=ManuscriptState)
+def manuscript_approval(run_id: str, request: ApprovalRequest,
+                         flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: approve_manuscript(flow.store, run_id, **request.model_dump()))
+
+
+@router.get('/runs/{run_id}/manuscript/export', response_model=ManuscriptExport)
+def manuscript_export(run_id: str, revision_id: str,
+                      flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: export_manuscript(flow.store, run_id, revision_id))
 
 
 class SearchRequest(Contract):

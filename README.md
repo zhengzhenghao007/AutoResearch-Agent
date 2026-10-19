@@ -59,7 +59,7 @@ The API uses rule extraction. Explicit LLM mode is currently a CLI capability. U
 
 If Windows denies access to an old pytest temporary directory, use a fresh `--basetemp` path. Four legacy `test_*.py` provider demos run code at import time; they are excluded by default. `--run-live` explicitly opts into those demos and requires working provider credentials/network; they are not counted as deterministic unit tests. The offline suite tests real generated PDFs, fake network/provider adapters, citations, missing evidence, persistence and API behavior.
 
-P2 semantic review and P3 structured experimental inputs/descriptive statistics are now available (see below). Human scientific evaluation remains uncompleted, skipped by user request. Next is P4 evidence-linked writing; automatic experiment execution remains outside scope.
+P2 semantic review, P3 structured experimental inputs/descriptive statistics and P4 evidence-linked writing are available (see below). Human scientific evaluation remains uncompleted, skipped by user request. Automatic experiment execution remains outside scope.
 
 ### Evidence workspace
 
@@ -469,10 +469,14 @@ descriptive statistics and exports dataset/sample/column references. Original in
 and SHA-256 are retained separately from paper evidence; no model, imputation or
 statistical inference is used. See the [format, arithmetic and limits](docs/p3-observations.md).
 
-### P4 chapter preview (first increment)
+### P4 evidence-linked writing
 
 Choose **Preview chapter draft** or run `python research_cli.py manuscript-draft RUN_ID`
 to inspect an offline outline with saved paper quotations, P3 statistical summaries,
 source/computation references and explicit missing-material placeholders. It is not
-an approved manuscript. Narrative revisions, linked review and final publication
-export remain future P4 work. See [scope and API](docs/p4-evidence-draft.md).
+an approved manuscript. The **Manuscript editor** adds editable chapter plans and
+typed sentences with evidence references, immutable revisions, explicit model review,
+and human-approved Markdown export. Source/text changes or new model reports require
+new approval. Offline human review is supported; model findings and export approval
+never establish scientific validity. See [writing workflow and CLI](docs/p4-manuscripts.md)
+and [read-only preview](docs/p4-evidence-draft.md).
