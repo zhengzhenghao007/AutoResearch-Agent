@@ -4,10 +4,10 @@ import userEvent from '@testing-library/user-event';
 import EvidenceWorkspace from '@/components/EvidenceWorkspace';
 import { researchApi } from '@/lib/research-api';
 import type { ResearchRun } from '@/types/research';
-vi.mock('@/lib/research-api', () => ({ researchApi: { list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn(), candidateDecision:vi.fn(), sourceIdentities:vi.fn(), sourceIdentity:vi.fn(), sourceDuplicates:vi.fn(), screeningReport:vi.fn(), claimReview:vi.fn() } }));
+vi.mock('@/lib/research-api', () => ({ researchApi: { manuscript:vi.fn(), list:vi.fn(), get:vi.fn(), search:vi.fn(), analyze:vi.fn(), upload:vi.fn(), citations:vi.fn(), bibtex:vi.fn(), candidateDecision:vi.fn(), sourceIdentities:vi.fn(), sourceIdentity:vi.fn(), sourceDuplicates:vi.fn(), screeningReport:vi.fn(), claimReview:vi.fn() } }));
 const run: ResearchRun = {schema_version:1,id:'a'.repeat(32),topic:'Navigation',plan:['Read sources'],candidates:[{id:'a',title:'Paper A',pdf_url:'https://arxiv.org/pdf/2401.12345',authors:[],summary:''},{id:'b',title:'Paper B',pdf_url:'',authors:[],summary:''}],selected_ids:[],papers:[],generated_claims:[],artifacts:[],review:{approved:false,issues:[],scope:'Literal support only'}};
 beforeEach(() => {
-  vi.resetAllMocks(); window.history.replaceState({}, '', '/');
+  vi.resetAllMocks(); vi.mocked(researchApi.manuscript).mockResolvedValue({run_id:run.id,current_input_sha256:'hash',revisions:[],reviews:[],approvals:[]}); window.history.replaceState({}, '', '/');
   vi.mocked(researchApi.list).mockResolvedValue({items:[],total:0,page:1,page_size:10});
   vi.mocked(researchApi.search).mockResolvedValue(run);
   vi.mocked(researchApi.get).mockResolvedValue(run);

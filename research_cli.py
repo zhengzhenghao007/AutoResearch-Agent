@@ -17,6 +17,7 @@ from services.semantic_review import review_semantics
 from services.experiments import import_experiment, build_experiment_report, import_csv_experiment, parse_csv_metadata
 from services.experiment_statistics import build_experiment_statistics
 from services.manuscript_draft import build_manuscript_draft
+from services.manuscript import get_manuscript, save_revision, review_manuscript, approve_manuscript, export_manuscript
 from schemas.experiments import MAX_EXPERIMENT_BYTES, MAX_EXPERIMENT_ENVELOPE_BYTES
 
 
@@ -25,6 +26,29 @@ def main():
     parser.add_argument('--store', type=Path, help='Research JSON directory')
     parser.add_argument('--mode', choices=['rule', 'llm'], default='rule')
     commands = parser.add_subparsers(dest='command', required=True)
+    manuscript_show = commands.add_parser('manuscript-show', help='Read manuscript revisions and review history offline')
+    manuscript_show.add_argument('run_id')
+    manuscript_save = commands.add_parser('manuscript-save', help='Save an evidence-linked revision; omit sections to reset from preview')
+    manuscript_save.add_argument('run_id')
+    manuscript_save.add_argument('--expected-revision')
+    manuscript_save.add_argument('--expected-input-sha256', required=True)
+    manuscript_save.add_argument('--reason', required=True)
+    manuscript_save.add_argument('--sections', type=Path, help='JSON array of structured sections')
+    manuscript_review = commands.add_parser('manuscript-review', help='Send complete revision and evidence to configured model explicitly')
+    manuscript_review.add_argument('run_id')
+    manuscript_review.add_argument('revision_id')
+    manuscript_review.add_argument('--allow-model', action='store_true', required=True)
+    manuscript_approve = commands.add_parser('manuscript-approve', help='Record human attestation for current revision')
+    manuscript_approve.add_argument('run_id')
+    manuscript_approve.add_argument('revision_id')
+    manuscript_approve.add_argument('--reviewer', required=True)
+    manuscript_approve.add_argument('--note', required=True)
+    manuscript_approve.add_argument('--expected-review-count', required=True, type=int,
+                                    help='Number of reports for this revision that the human reviewed')
+    manuscript_approve.add_argument('--confirm', action='store_true', required=True)
+    manuscript_export = commands.add_parser('manuscript-export', help='Export current human-approved revision as JSON with Markdown')
+    manuscript_export.add_argument('run_id')
+    manuscript_export.add_argument('revision_id')
     draft = commands.add_parser('manuscript-draft', help='Read-only evidence-linked chapter preview; not approved for publication')
     draft.add_argument('run_id')
     create = commands.add_parser('create', help='Create an offline research record')
@@ -86,7 +110,26 @@ def main():
     args = parser.parse_args()
     flow = EvidenceWorkflow(store=ResearchStore(args.store), extractor=EvidenceExtractor(args.mode))
     try:
-        if args.command == 'manuscript-draft':
+        if args.command == 'manuscript-show':
+            result = get_manuscript(flow.store, args.run_id)
+        elif args.command == 'manuscript-save':
+            sections = None
+            if args.sections:
+                with args.sections.open('rb') as stream:
+                    data = stream.read(2 * 1024 * 1024 + 1)
+                if len(data) > 2 * 1024 * 1024:
+                    raise ValueError('Section input exceeds 2 MiB')
+                sections = json.loads(data.decode('utf-8-sig'))
+            result = save_revision(flow.store, args.run_id, args.expected_revision,
+                args.expected_input_sha256, args.reason, sections)
+        elif args.command == 'manuscript-review':
+            result = review_manuscript(flow.store, args.run_id, args.revision_id, args.allow_model)
+        elif args.command == 'manuscript-approve':
+            result = approve_manuscript(flow.store, args.run_id, args.revision_id, args.reviewer, args.note,
+                                        args.confirm, args.expected_review_count)
+        elif args.command == 'manuscript-export':
+            result = export_manuscript(flow.store, args.run_id, args.revision_id)
+        elif args.command == 'manuscript-draft':
             result = build_manuscript_draft(flow.store.load(args.run_id))
         elif args.command == 'create':
             result = flow.create(args.topic)
