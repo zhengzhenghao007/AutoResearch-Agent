@@ -469,6 +469,13 @@ descriptive statistics and exports dataset/sample/column references. Original in
 and SHA-256 are retained separately from paper evidence; no model, imputation or
 statistical inference is used. See the [format, arithmetic and limits](docs/p3-observations.md).
 
+### P5 deployment hardening (in progress)
+
+HTTP request bodies are capped at 22 MiB before JSON/multipart parsing, including
+chunked requests. Oversized inputs return 413; individual file limits still apply.
+This is a per-request limit, not a complete public deployment boundary. See
+[current limits and remaining P5 work](docs/p5-request-limits.md).
+
 ### P4 evidence-linked writing
 
 Choose **Preview chapter draft** or run `python research_cli.py manuscript-draft RUN_ID`
