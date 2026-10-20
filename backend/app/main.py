@@ -12,6 +12,7 @@ from backend.app.api.papers import (
     router as papers_router,
 )
 from backend.app.api.research import router as research_router
+from backend.app.request_limits import RequestBodyLimit
 
 
 app = FastAPI(
@@ -23,6 +24,7 @@ app = FastAPI(
     version="0.3.0",
 )
 
+app.add_middleware(RequestBodyLimit)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
