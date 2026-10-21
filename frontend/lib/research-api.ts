@@ -11,6 +11,11 @@ import type { CandidateDecision, ResearchHistory, ResearchRun } from '@/types/re
 import type { CitationRegistry, BibtexExport } from '@/types/citations';
 const base = (process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
 export const REQUEST_TIMEOUT_MS = 120_000;
+let accessToken = '';
+export function setResearchToken(token: string) { accessToken = token; }
+export interface ResearchSession { mode:'local'|'deployment'; user_id:string; role:'reader'|'writer'; jobs_enabled:boolean }
+export interface ResearchJob { id:string; kind:'search'|'analyze'; status:string; attempt:number; run_id:string|null; error:string|null; progress:string }
+export type JobRequest = {kind:'search';topic:string}|{kind:'analyze';run_id:string;selected_ids:string[]};
 
 function detailText(value: unknown): string {
   if (typeof value === 'string') return value;
@@ -28,7 +33,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let timedOut = false;
   const timer = setTimeout(() => { timedOut = true; controller.abort(); }, REQUEST_TIMEOUT_MS);
   try {
-    const response = await fetch(`${base}/api/research${path}`, { ...init, signal: controller.signal, cache: 'no-store' });
+    const headers = new Headers(init?.headers);
+    if (accessToken) headers.set('Authorization', `Bearer ${accessToken}`);
+    const response = await fetch(`${base}/api/research${path}`, { ...init, headers, signal: controller.signal, cache: 'no-store' });
     if (!response.ok) {
       let message = '';
       try { message = detailText(await response.json()); } catch { /* Fall back to HTTP status. */ }
@@ -43,6 +50,12 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  session: () => request<ResearchSession>('/session'),
+  jobs: () => request<{items:ResearchJob[]}>('/jobs'),
+  submitJob: (body:JobRequest) => request<ResearchJob>('/jobs',json(body)),
+  cancelJob: (id:string) => request<ResearchJob>(`/jobs/${encodeURIComponent(id)}/cancel`,json({})),
+  retryJob: (id:string) => request<ResearchJob>(`/jobs/${encodeURIComponent(id)}/retry`,json({})),
+  deleteJob: (id:string) => request<{removed:string}>(`/jobs/${encodeURIComponent(id)}`,{method:'DELETE'}),
   manuscript: (id:string) => request<ManuscriptState>(`/runs/${encodeURIComponent(id)}/manuscript`),
   saveManuscript: (id:string,body:ManuscriptRevisionRequest) => request<ManuscriptState>(`/runs/${encodeURIComponent(id)}/manuscript/revisions`,json(body)),
   reviewManuscript: (id:string,revision_id:string) => request<ManuscriptState>(`/runs/${encodeURIComponent(id)}/manuscript/review`,json({revision_id,allow_model:true})),

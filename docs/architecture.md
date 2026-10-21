@@ -74,6 +74,6 @@ tests/test_evidence_*.py
 
 - `ResearchRun.generated_claims` 保存独立的 suggestion Claim，不能与 PaperEvidence.claims 混用。research_ideas Artifact 引用生成建议的 ID，建议通过 evidence_ids 回溯论文原文。当前不自动产生 hypothesis；未来增加时沿用这个分层。
 - JSON 写入和重载都运行跨对象校验：选择、全局 ID、逐篇引文、review 结果，以及可确定性重建的建议和 artifacts。拒绝不一致快照，不把缓存的 approved 当作事实。该校验不提供防篡改签名，也不能仅凭保存的正文重新证明原 PDF 哈希。
-- PDF 使用子进程、45 秒 deadline、20 MiB 输入和一百万提取字符上限。没有 OS 内存配额；HTTP multipart 可能在业务读取前落盘，因此仅限可信本地用户，公开部署还需要请求大小限制、隔离与身份验证。
+- PDF 使用子进程、45 秒 deadline、20 MiB 输入和一百万提取字符上限。P5 在 multipart 解析前限制请求体，并加入认证、并发和读取时限；Linux PDF 子进程另有 CPU/内存配额。公开部署边界见 [P5 部署](p5-deployment.md)。
 - 本阶段只有 paper 输入，用户实验数据导入属于下一阶段。Source.kind 与 Claim.claim_type 预留边界并有错配测试；不声称已经实现实验数据分析。
 - 研究产物为抽取式摘要和方法并列比较。gap 是已读页面的 evidence coverage gap；建议是基于作者 limitation/future_work 的探索性研究方向，不宣称创新性、因果关系或预测实验结果。

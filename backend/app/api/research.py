@@ -1,7 +1,7 @@
 """Local evidence workspace API. Existing /api/papers contracts stay intact."""
 from typing import Annotated
 import requests
-from fastapi import APIRouter, Depends, File, UploadFile, Form, HTTPException, Query
+from fastapi import APIRouter, Depends, File, UploadFile, Form, HTTPException, Query, Request
 from pydantic import Field
 from schemas.research import CandidateDecisionRequest, Contract, ResearchRun, ResearchHistory
 from workflow.evidence_workflow import EvidenceWorkflow
@@ -32,8 +32,15 @@ from services.manuscript import get_manuscript, save_revision, review_manuscript
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
 
-def get_workflow():
-    return EvidenceWorkflow()
+def get_workflow(request: Request):
+    from backend.app.security import workflow_for_request
+    return workflow_for_request(request)
+
+
+@router.get('/session')
+def session(request: Request):
+    from backend.app.security import session_info
+    return session_info(request)
 
 
 def get_manuscript_reviewer():
@@ -92,6 +99,9 @@ def invoke(operation):
     except FileNotFoundError as exc:
         raise HTTPException(404, 'Research run not found') from exc
     except ValueError as exc:
+        from services.sqlite_store import ConflictError
+        if isinstance(exc, ConflictError):
+            raise HTTPException(409, str(exc)) from exc
         raise HTTPException(400, str(exc)) from exc
     except requests.RequestException as exc:
         raise HTTPException(502, 'Paper source unavailable; retry later') from exc

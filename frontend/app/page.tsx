@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import EvidenceWorkspace from "@/components/EvidenceWorkspace";
+import SessionWorkspace from "@/components/SessionWorkspace";
 
 import {
   analyzePaper,
@@ -165,6 +165,7 @@ function formatNumber(
 
 
 export default function Home() {
+  const [mode,setMode]=useState<'local'|'deployment'|null>(null);
   const [topic, setTopic] = useState(
     DEFAULT_TOPIC,
   );
@@ -284,7 +285,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
-      <EvidenceWorkspace />
+      <SessionWorkspace onMode={setMode}/>
+      {mode==='local'&&<>
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
           <div>
@@ -609,6 +611,7 @@ export default function Home() {
           </section>
         )}
       </div>
+      </>}
     </main>
   );
 }

@@ -1,6 +1,17 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { researchApi, REQUEST_TIMEOUT_MS } from '@/lib/research-api';
-afterEach(() => {vi.unstubAllGlobals();vi.useRealTimers();});
+import { researchApi, REQUEST_TIMEOUT_MS, setResearchToken } from '@/lib/research-api';
+afterEach(() => {setResearchToken('');vi.unstubAllGlobals();vi.useRealTimers();});
+test('credentials are headers only and cleared before another session',async()=>{
+  const fetcher=vi.fn().mockImplementation(()=>Promise.resolve(new Response('{}')));
+  vi.stubGlobal('fetch',fetcher);
+  setResearchToken('synthetic-token');
+  await researchApi.session();
+  expect(fetcher.mock.calls[0][1].headers.get('Authorization')).toBe('Bearer synthetic-token');
+  expect(fetcher.mock.calls[0][0]).not.toContain('synthetic-token');
+  setResearchToken('');
+  await researchApi.session();
+  expect(fetcher.mock.calls[1][1].headers.has('Authorization')).toBe(false);
+});
 test('experiment import preserves multipart CSV metadata and statistics route',async()=>{
   const fetcher=vi.fn().mockImplementation(()=>Promise.resolve(new Response('{}')));vi.stubGlobal('fetch',fetcher);
   const metadata={title:'Study',protocol:null,statistical_method:null,columns:[{name:'x',unit:'m'}]};
@@ -9,7 +20,7 @@ test('experiment import preserves multipart CSV metadata and statistics route',a
   expect(fetcher.mock.calls[0][0]).toContain('/runs/a%2Fb/experiments/csv');
   expect(fetcher.mock.calls[0][1].body.get('file')).toBe(file);
   expect(JSON.parse(fetcher.mock.calls[0][1].body.get('metadata'))).toEqual(metadata);
-  expect(fetcher.mock.calls[0][1].headers).toBeUndefined();
+  expect(fetcher.mock.calls[0][1].headers.has('Content-Type')).toBe(false);
   await researchApi.experimentStatistics('a/b');
   expect(fetcher.mock.calls[1][0]).toContain('/runs/a%2Fb/experiment-statistics');
   await researchApi.create('Offline');
@@ -51,7 +62,7 @@ test('uploads multipart with the existing record id and no forced content type',
   expect(url).toContain('/api/research/upload');
   expect(options.body.get('run_id')).toBe('record');
   expect(options.body.get('file').name).toBe('paper.pdf');
-  expect(options.headers).toBeUndefined();
+  expect(options.headers.has('Content-Type')).toBe(false);
 });
 test('renders structured FastAPI validation errors as readable messages', async () => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({detail:[{loc:['body','topic'],msg:'Field required'}]}), {status:422})));

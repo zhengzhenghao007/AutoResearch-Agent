@@ -2,10 +2,12 @@
 import json
 import sys
 from io import BytesIO
-from pypdf import PdfReader
 
 
 def main():
+    from services.parser_limits import apply_parser_limits
+    apply_parser_limits()
+    from pypdf import PdfReader
     data = sys.stdin.buffer.read(20 * 1024 * 1024 + 1)
     if len(data) > 20 * 1024 * 1024:
         return 1

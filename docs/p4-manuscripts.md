@@ -51,8 +51,9 @@ reference selections.
 - Sidecar files preserve existing ResearchRun compatibility. The local filesystem is
   the trust boundary; a hash detects accidental inconsistency, not a malicious local
   actor able to replace all data and hashes. There is no authenticated reviewer identity.
-- Bounded histories and local locking fit the existing single-user deployment. Full
-  cross-process transactions and authentication belong to P5.
+- Bounded histories and local locking fit the existing single-user deployment. P5 adds
+  transactional manuscript storage and authenticated user namespaces in SQLite deployment
+  mode; see [deployment](p5-deployment.md). Reviewer names remain user-entered metadata.
 
 The original `manuscript-draft` API/CLI remain read-only previews. See
 [the shared contract and implementation plan](p4-completion-plan.md) for the persistent

@@ -469,12 +469,17 @@ descriptive statistics and exports dataset/sample/column references. Original in
 and SHA-256 are retained separately from paper evidence; no model, imputation or
 statistical inference is used. See the [format, arithmetic and limits](docs/p3-observations.md).
 
-### P5 deployment hardening (in progress)
+### P5 deployment
 
-HTTP request bodies are capped at 22 MiB before JSON/multipart parsing, including
-chunked requests. Oversized inputs return 413; individual file limits still apply.
-This is a per-request limit, not a complete public deployment boundary. See
-[current limits and remaining P5 work](docs/p5-request-limits.md).
+Single-host Linux deployment now includes isolated user namespaces and writer/reader
+credentials, transactional SQLite run/manuscript storage, and durable search/analysis
+jobs with cancellation, explicit retry and stale-result protection. The UI supports
+memory-only credentials and background job controls. Default local JSON/offline use
+remains available. Requests and PDF workers have bounded resource limits.
+
+See [deployment, migration, backup and operating limits](docs/p5-deployment.md).
+Public hosting requires an operator-managed TLS proxy and aggregate OS/container
+quotas. Scientific evaluation remains **not assessed**; P5 does not change that status.
 
 ### P4 evidence-linked writing
 
