@@ -12,6 +12,8 @@ The new workflow is additive: the existing Streamlit UI and `/api/papers/search`
 
 Read the [10-project engineering survey](docs/research_agent_landscape.md), [current-code audit](docs/current_architecture_audit.md), [architecture and data contracts](docs/architecture.md), and [implementation roadmap](docs/roadmap.md).
 
+中文本机使用：参见 [启动与操作指南](docs/local-quickstart.md)。无需购买服务器；默认本地模式不需要登录令牌。
+
 ### Install and run (PowerShell, Python 3.11+)
 
 ```powershell
@@ -49,7 +51,7 @@ Open `http://127.0.0.1:8000/docs` for interactive request schemas:
 | GET | `/api/research/runs` | `page` (default 1), `page_size` (1–50, default 10); summaries and total |
 | GET | `/api/research/runs/{run_id}` | persisted research record |
 
-The API uses rule extraction. Explicit LLM mode is currently a CLI capability. Uploads accept PDF bytes, never server filesystem paths. Parsing runs in a separate process with a 45-second timeout, a 20 MiB input limit, 50-page default and one-million-character extracted-text cap. Encrypted or unreadable/scanned PDFs fail explicitly; OCR is not implemented. Downloads accept canonical HTTPS arXiv PDF URLs only and reject redirects. The server is a **local single-user development service**, with no authentication, multi-writer transactions, or OS-enforced parser memory quota. Do not expose it as an untrusted public upload service.
+The API uses rule extraction. Explicit LLM mode is currently a CLI capability. Uploads accept PDF bytes, never server filesystem paths. Parsing runs in a separate process with a 45-second timeout, a 20 MiB input limit, 50-page default and one-million-character extracted-text cap. Encrypted or unreadable/scanned PDFs fail explicitly; OCR is not implemented. Downloads accept canonical HTTPS arXiv PDF URLs only and reject redirects. The default JSON configuration is a **local single-user development service** and must stay on loopback. P5 adds optional SQLite transactions, background jobs and authenticated Linux deployment; see [deployment boundaries](docs/p5-deployment.md). Windows local parsing has wall-clock/input/output limits but no OS memory quota.
 
 ### Offline tests
 
