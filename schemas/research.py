@@ -1,7 +1,7 @@
 """Versioned evidence contracts. A citation is support, not proof of truth."""
 from datetime import datetime, timezone
 from typing import Literal
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, PrivateAttr
 from schemas.source_identity import SourceIdentityAnnotation
 from schemas.experiments import ExperimentDataset
 
@@ -106,6 +106,7 @@ class CategoryRevision(Contract):
 
 
 class ResearchRun(Contract):
+    _store_revision: int | None = PrivateAttr(default=None)
     schema_version: Literal[1] = 1
     id: str = Field(pattern=r'^[a-f0-9]{32}$')
     topic: str = Field(min_length=1, max_length=2000)

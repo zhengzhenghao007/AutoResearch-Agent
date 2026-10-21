@@ -1,6 +1,6 @@
 """Offline manuscript editing with immutable evidence snapshots and human export gates.
 
-Writes are serialized within one process; multi-process transactions are not supported.
+JSON writes use a process lock; SQLite uses database transactions across processes.
 """
 import hashlib
 import html
@@ -19,6 +19,10 @@ from services.manuscript_draft import build_manuscript_draft
 
 _LOCK = RLock()
 MAX_BYTES = 20 * 1024 * 1024
+
+
+def _lock(store):
+    return store.transaction() if hasattr(store, 'transaction') else _LOCK
 
 
 def _json(value):
@@ -115,11 +119,16 @@ def _path(store, run_id):
 
 
 def _read(store, run_id, source):
-    path = _path(store, run_id)
-    if not path.exists():
-        return ManuscriptState(run_id=run_id, current_input_sha256=source.input_sha256)
-    with path.open('rb') as stream:
-        data = stream.read(MAX_BYTES + 1)
+    if hasattr(store, 'read_manuscript'):
+        data = store.read_manuscript(run_id)
+        if data is None:
+            return ManuscriptState(run_id=run_id, current_input_sha256=source.input_sha256)
+    else:
+        path = _path(store, run_id)
+        if not path.exists():
+            return ManuscriptState(run_id=run_id, current_input_sha256=source.input_sha256)
+        with path.open('rb') as stream:
+            data = stream.read(MAX_BYTES + 1)
     if len(data) > MAX_BYTES:
         raise ValueError('Manuscript storage exceeds size limit')
     state = ManuscriptState.model_validate_json(data)
@@ -155,6 +164,9 @@ def _write(store, state):
     data = state.model_dump_json(indent=2).encode('utf-8')
     if len(data) > MAX_BYTES:
         raise ValueError('Manuscript storage exceeds size limit')
+    if hasattr(store, 'write_manuscript'):
+        store.write_manuscript(state.run_id, data)
+        return state
     path = _path(store, state.run_id)
     path.parent.mkdir(parents=True, exist_ok=True)
     name = None
@@ -170,14 +182,14 @@ def _write(store, state):
 
 
 def get_manuscript(store, run_id):
-    with _LOCK:
+    with _lock(store):
         return _read(store, run_id, build_manuscript_draft(store.load(run_id)))
 
 
 def save_revision(store, run_id, expected_revision, expected_input_sha256, reason, sections=None):
     request = RevisionRequest(expected_revision=expected_revision, expected_input_sha256=expected_input_sha256,
                               reason=reason, sections=sections)
-    with _LOCK:
+    with _lock(store):
         source = build_manuscript_draft(store.load(run_id))
         state = _read(store, run_id, source)
         current = state.revisions[-1].id if state.revisions else None
@@ -210,7 +222,7 @@ def _current(state, revision_id):
 def review_manuscript(store, run_id, revision_id, allow_model=False, client=None):
     if allow_model is not True:
         raise ValueError('Explicit allow_model consent is required')
-    with _LOCK:
+    with _lock(store):
         state = get_manuscript(store, run_id)
         revision = _current(state, revision_id)
         payload = _json(revision.model_dump(mode='json'))
@@ -238,7 +250,7 @@ def review_manuscript(store, run_id, revision_id, allow_model=False, client=None
     review = Review(**output.model_dump(), id=uuid4().hex, revision_id=revision.id,
         content_sha256=revision.content_sha256, input_sha256=revision.input_sha256,
         model=response.model_name, created_at=datetime.now(timezone.utc))
-    with _LOCK:
+    with _lock(store):
         state = get_manuscript(store, run_id)
         current = _current(state, revision_id)
         if current.content_sha256 != revision.content_sha256:
@@ -252,7 +264,7 @@ def approve_manuscript(store, run_id, revision_id, reviewer, note, confirm=False
         raise ValueError('Explicit human confirmation is required')
     request = ApprovalRequest(revision_id=revision_id, reviewer=reviewer, note=note, confirm=confirm,
                               expected_review_count=expected_review_count)
-    with _LOCK:
+    with _lock(store):
         state = get_manuscript(store, run_id)
         revision = _current(state, request.revision_id)
         if request.expected_review_count != sum(r.revision_id == revision.id for r in state.reviews):
@@ -270,7 +282,7 @@ def _escape(value):
 
 
 def export_manuscript(store, run_id, revision_id):
-    with _LOCK:
+    with _lock(store):
         state = get_manuscript(store, run_id)
         revision = _current(state, revision_id)
         review_count = sum(r.revision_id == revision.id for r in state.reviews)

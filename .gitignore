@@ -19,6 +19,12 @@ venv/
 # Downloaded papers
 data/papers/
 data/research_runs/
+data/deployment/
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+deployment-users.json
 
 # Local verification artifacts
 .test-tmp/

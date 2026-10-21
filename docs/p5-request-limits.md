@@ -16,10 +16,11 @@ buffering accepted requests. Conversion for replay temporarily holds two body
 copies. This is a per-request application limit, not a total process memory limit
 or an upstream server/proxy buffering guarantee.
 
-P5 remains in progress: concurrency quotas, slow-upload timeouts, parser CPU/memory
-isolation, transactional storage, background jobs/cancellation/retry and user
-authentication/authorization are not completed by this change. Keep deployment
-restricted to trusted local use until the remaining deployment controls exist.
+The completed P5 layer adds an eight-request admission limit, a 30-second body-read
+deadline, authentication before body handling, SQLite transactions and bounded jobs.
+Linux PDF workers also enforce CPU/address-space limits. See
+[deployment and operating boundaries](p5-deployment.md); upstream proxy/OS aggregate
+limits remain an operator responsibility.
 
 Validation covers declared/actual/chunked oversize, exact boundary, malformed
 headers, disconnects and the real application CORS/error path, plus existing
