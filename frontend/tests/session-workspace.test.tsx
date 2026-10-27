@@ -4,8 +4,18 @@ import userEvent from '@testing-library/user-event';
 import SessionWorkspace from '@/components/SessionWorkspace';
 import {researchApi,setResearchToken} from '@/lib/research-api';
 vi.mock('@/lib/research-api',()=>({setResearchToken:vi.fn(),researchApi:{session:vi.fn()}}));
-vi.mock('@/components/EvidenceWorkspace',()=>({default:()=> <div>Isolated workspace</div>}));
+vi.mock('@/components/EvidenceWorkspace',()=>({default:({onLeaveBlockedChange}:{onLeaveBlockedChange?:(value:boolean)=>void})=> <div>Isolated workspace<button onClick={()=>onLeaveBlockedChange?.(true)}>Simulate unsaved draft</button><button onClick={()=>onLeaveBlockedChange?.(false)}>Simulate saved draft</button></div>}));
 afterEach(()=>vi.resetAllMocks());
+test('session replacement cannot unmount unsaved writing',async()=>{
+ vi.mocked(researchApi.session).mockResolvedValue({mode:'deployment',user_id:'alice',role:'writer',jobs_enabled:true});
+ render(<SessionWorkspace/>);await screen.findByText('Isolated workspace');
+ await userEvent.type(screen.getByLabelText('Access token'),'replacement');
+ await userEvent.click(screen.getByRole('button',{name:'Simulate unsaved draft'}));
+ expect(screen.getByRole('button',{name:'Connect'})).toBeDisabled();
+ expect(screen.getByRole('button',{name:'Disconnect'})).toBeDisabled();
+ await userEvent.click(screen.getByRole('button',{name:'Simulate saved draft'}));
+ expect(screen.getByRole('button',{name:'Disconnect'})).toBeEnabled();
+});
 
 test('requires credentials after denied session and keeps token out of storage',async()=>{
  vi.mocked(researchApi.session).mockRejectedValueOnce(Object.assign(new Error('Authentication required'),{status:401})).mockResolvedValueOnce({mode:'deployment',user_id:'alice',role:'writer',jobs_enabled:true});

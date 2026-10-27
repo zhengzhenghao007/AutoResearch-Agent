@@ -13,6 +13,7 @@ import { researchApi } from '@/lib/research-api';
 import type { ResearchHistory, ResearchRun } from '@/types/research';
 import { sourcePdf } from './EvidenceViewer';
 import ReadingDesk from './ReadingDesk';
+import ResearchOverview from './ResearchOverview';
 import ComparisonTable from './ComparisonTable';
 import ResearchExports from './ResearchExports';
 import SourceDuplicateClues from './SourceDuplicateClues';
@@ -21,16 +22,22 @@ import SourceIdentities from './SourceIdentities';
 import './research.css';
 
 const message = (error: unknown) => error instanceof Error ? error.message : 'The request failed. Check the record state before continuing.';
-function setUrl(id?: string) { const url=new URL(window.location.href); if(id) url.searchParams.set('run',id); else url.searchParams.delete('run'); url.hash=''; window.history.pushState({},'',url); }
+function urlStage(){const value=new URL(window.location.href).searchParams.get('stage');return value&&['library','reading','compare','writing'].includes(value)?value:'library';}
+function historyIndex():number|null {const index=window.history.state?.researchIndex;return Number.isSafeInteger(index)?index:null;}
+function setUrl(id?: string,stage='library',replace=false) { const url=new URL(window.location.href); if(id) url.searchParams.set('run',id); else url.searchParams.delete('run'); if(id&&stage!=='library')url.searchParams.set('stage',stage);else url.searchParams.delete('stage'); url.hash=''; const index=(historyIndex()??0)+(replace?0:1);window.history[replace?'replaceState':'pushState']({...window.history.state,researchIndex:index},'',url);return index; }
 
-export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false}:{jobsEnabled?:boolean;readOnly?:boolean}) {
+export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLeaveBlockedChange}:{jobsEnabled?:boolean;readOnly?:boolean;onLeaveBlockedChange?:(value:boolean)=>void}) {
   const [stage,setStage]=useState('library');
+  const stageRef=useRef('library');
+  const activeHistoryIndex=useRef<number|null>(null);
+  const currentUrlRun=useRef<string|null>(null);
+  function navigateStage(value:string){stageRef.current=value;setStage(value);if(value==='writing')setWritingVisited(true);const id=run?.id??currentUrlRun.current;if(id)activeHistoryIndex.current=setUrl(id,value);}
   const [focusEvidence,setFocusEvidence]=useState('');
   const [focusSource,setFocusSource]=useState('');
   const [readingVisit,setReadingVisit]=useState(0);
   const [writingVisited,setWritingVisited]=useState(false);
   const [historyOpen,setHistoryOpen]=useState(false);
-  function showEvidence(id:string,sourceId=''){setFocusEvidence(id);setFocusSource(sourceId);setReadingVisit(n=>n+1);setStage('reading');}
+  function showEvidence(id:string,sourceId=''){setFocusEvidence(id);setFocusSource(sourceId);setReadingVisit(n=>n+1);navigateStage('reading');}
   const [run,setRun]=useState<ResearchRun|null>(null);
   const [revision,setRevision]=useState(0);
   const [screeningPending,setScreeningPending]=useState(false);
@@ -41,7 +48,6 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false}:{jo
   const [file,setFile]=useState<File|null>(null); const fileInput=useRef<HTMLInputElement>(null);
   const [pending,setPending]=useState(''); const [loading,setLoading]=useState(false); const [error,setError]=useState('');
   const [history,setHistory]=useState<ResearchHistory|null>(null); const [page,setPage]=useState(1); const [historyBusy,setHistoryBusy]=useState(false); const [historyError,setHistoryError]=useState('');
-  const currentUrlRun=useRef<string|null>(null);
   const generation=useRef(0); const historyGeneration=useRef(0); const mutation=useRef(false);
   const accept=useCallback((value: ResearchRun)=>{setRun(value);setRevision(current=>current+1);setTopic(value.topic);setSelection(value.selected_ids);setFile(null);if(fileInput.current)fileInput.current.value='';},[]);
   const refreshHistory=useCallback(async (target: number)=>{
@@ -51,7 +57,9 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false}:{jo
     finally{if(ticket===historyGeneration.current)setHistoryBusy(false);}
   },[]);
   const open=useCallback(async(id: string|null)=>{
-    currentUrlRun.current=id;setStage('library');setFocusEvidence('');setWritingVisited(false);
+    const nextStage=id?urlStage():'library';stageRef.current=nextStage;
+    activeHistoryIndex.current=historyIndex();
+    currentUrlRun.current=id;setStage(nextStage);setFocusEvidence('');setWritingVisited(nextStage==='writing');
     const ticket=++generation.current;setError('');setRun(null);setSelection([]);setTopic('');setFile(null);if(fileInput.current)fileInput.current.value='';setLoading(Boolean(id));
     if(!id)return;
     if(!/^[a-f0-9]{32}$/.test(id)){setError('Invalid research record ID in the URL. Choose a record from history.');setLoading(false);return;}
@@ -62,15 +70,27 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false}:{jo
   const invalidate=useCallback(()=>{generation.current++;historyGeneration.current++;},[]);
   useEffect(()=>{
     let active=true;
-    const restore=()=>{const id=new URL(window.location.href).searchParams.get('run');if(id!==currentUrlRun.current)void open(id);};
-    queueMicrotask(()=>{if(active){void open(new URL(window.location.href).searchParams.get('run'));void refreshHistory(1);}});
+    const restore=()=>{
+      const id=new URL(window.location.href).searchParams.get('run');
+      if(id!==currentUrlRun.current){
+        // A browser Back action bypasses disabled in-app record buttons.
+        if(manuscriptLock.current){
+          const targetIndex=historyIndex();
+          if(targetIndex!==null&&activeHistoryIndex.current!==null&&targetIndex!==activeHistoryIndex.current)window.history.go(activeHistoryIndex.current-targetIndex);
+          else activeHistoryIndex.current=setUrl(currentUrlRun.current??undefined,stageRef.current);
+          setError('Save or discard manuscript changes and wait for manuscript requests before leaving this record.');return;
+        }
+        void open(id);
+      }else{activeHistoryIndex.current=historyIndex();const nextStage=id?urlStage():'library';stageRef.current=nextStage;setStage(nextStage);if(nextStage==='writing')setWritingVisited(true);}
+    };
+    queueMicrotask(()=>{if(active){if(historyIndex()===null)window.history.replaceState({...window.history.state,researchIndex:0},'',window.location.href);void open(new URL(window.location.href).searchParams.get('run'));void refreshHistory(1);}});
     window.addEventListener('popstate',restore);
     return()=>{active=false;invalidate();window.removeEventListener('popstate',restore);};
   },[open,refreshHistory,invalidate]);
   async function mutate(label: string,operation:()=>Promise<ResearchRun>) {
     if(readOnly||manuscriptLock.current||mutation.current||loading)return;
     mutation.current=true;const ticket=++generation.current;setPending(label);setError('');
-    try {const value=await operation();if(ticket===generation.current){accept(value);setUrl(value.id);currentUrlRun.current=value.id;}void refreshHistory(page);}
+    try {const value=await operation();if(ticket===generation.current){accept(value);activeHistoryIndex.current=setUrl(value.id,stageRef.current);currentUrlRun.current=value.id;}void refreshHistory(page);}
     catch(error){if(ticket===generation.current)setError(message(error));}
     finally{mutation.current=false;setPending('');}
   }
@@ -90,6 +110,7 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false}:{jo
   }
   const runBusy=Boolean(pending)||loading||screeningPending;
   const busy=runBusy||manuscriptPending;
+  useEffect(()=>{onLeaveBlockedChange?.(busy);return()=>onLeaveBlockedChange?.(false);},[busy,onLeaveBlockedChange]);
   return <section className="research-workspace" aria-labelledby="research-title">
     <header className="research-header"><div><h1 id="research-title">Literature workbench</h1><p>From papers to a draft you can trace back to the source.</p></div><button disabled={busy} onClick={()=>{setUrl();void open(null);}}>New record</button></header>
     <div className="research-layout"><aside className="research-history" aria-label="Research history"><div className="research-row"><h2>Your research</h2><button className="history-toggle" aria-expanded={historyOpen} aria-controls="history-content" onClick={()=>setHistoryOpen(value=>!value)}>{historyOpen?'Hide records':'Show records'}</button><button className="history-refresh" disabled={historyBusy} onClick={()=>void refreshHistory(page)}>Refresh history</button></div>
@@ -100,14 +121,16 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false}:{jo
       <nav aria-label="History pages" className="research-row"><button aria-label="Previous history page" disabled={historyBusy||page<=1} onClick={()=>void refreshHistory(page-1)}>Previous</button><span>Page {page}{history ? ` of ${Math.max(1,Math.ceil(history.total/history.page_size))}`:''}</span><button aria-label="Next history page" disabled={historyBusy||!history||page*history.page_size>=history.total} onClick={()=>void refreshHistory(page+1)}>Next</button></nav>
       </div>
     </aside><div className="research-main">
-      <nav className="workflow-nav" aria-label="Research workflow">{[['library','Library'],['reading','Reading & evidence'],['compare','Compare'],['writing','Writing']].map(([id,label],i)=><button key={id} aria-current={stage===id?'step':undefined} aria-controls={`stage-${id}`} disabled={id!=='library'&&!run} onClick={()=>{setStage(id);if(id==='writing')setWritingVisited(true);}}><span aria-hidden="true">{i+1}</span>{label}</button>)}</nav>
+      <nav className="workflow-nav" aria-label="Research workflow">{[['library','Library'],['reading','Reading & evidence'],['compare','Compare'],['writing','Writing']].map(([id,label],i)=><button key={id} aria-current={stage===id?'step':undefined} aria-controls={`stage-${id}`} disabled={id!=='library'&&!run} onClick={()=>navigateStage(id)}><span aria-hidden="true">{i+1}</span>{label}</button>)}</nav>
+      {error&&<p role="alert" className="research-error">{error}</p>}
       {run&&<div className="research-record-title"><h2>{run.topic}</h2><p className="research-meta">{run.papers.length} papers · {run.papers.reduce((n,p)=>n+p.evidence.length,0)} quotations · {run.review.approved?'Literal source checks passed':'Source checks pending'}</p></div>}
       <div id="stage-library" hidden={stage!=='library'}>
+      {run&&<ResearchOverview run={run} onStage={navigateStage} onSource={id=>showEvidence('',id)}/>}
       <div className="stage-intro"><h3>Build your reading list</h3><p>Search for papers or add PDFs you already have. Each research record keeps its own sources, evidence and drafts.</p></div>
       {jobsEnabled&&<ResearchJobs topic={topic} runId={run?.id} selectedIds={selection} blocked={busy} readOnly={readOnly} onOpen={id=>{setUrl(id);void open(id);void refreshHistory(page);}}/>}
       <fieldset disabled={readOnly} style={{border:0,padding:0,minWidth:0}}><form className="research-search" onSubmit={event=>{event.preventDefault();if(!jobsEnabled&&topic.trim())void mutate('Finding papers…',()=>researchApi.search(topic.trim()));}}><label htmlFor="research-topic">Research topic</label><div className="research-row"><input id="research-topic" maxLength={2000} required value={topic} disabled={busy} onChange={e=>setTopic(e.target.value)} placeholder="e.g. vision language robot navigation"/>{!jobsEnabled&&<button className="research-primary" disabled={busy||!topic.trim()}>Find papers</button>}<button type="button" disabled={busy||!topic.trim()} onClick={()=>void mutate('Creating offline record…',()=>researchApi.create(topic.trim()))}>Create offline record</button></div><p className="research-meta">A search creates a new record. Choose papers before analysis.</p></form>
       <form className="research-upload" onSubmit={event=>{event.preventDefault();if(file)void mutate('Adding PDF…',()=>researchApi.upload(file,run?.id));}}><label htmlFor="research-pdf">PDF file</label><div className="research-row"><input ref={fileInput} id="research-pdf" type="file" accept=".pdf,application/pdf" disabled={busy} onChange={event=>setFile(event.target.files?.[0]??null)}/><button disabled={busy||!file}>Add PDF</button></div><p className="research-meta">{run?'Adds evidence to the current record. Use New record to start separately.':'Creates a record from a text-based PDF.'}</p></form>
-      </fieldset>{pending && <p role="status" className="research-notice">{pending} Keep this page open while the request completes.</p>}{loading && <p role="status">Opening research record…</p>}{error && <p role="alert" className="research-error">{error}</p>}
+      </fieldset>{pending && <p role="status" className="research-notice">{pending} Keep this page open while the request completes.</p>}{loading && <p role="status">Opening research record…</p>}
       {!run&&!loading&&!error && <p className="research-empty">Start with a research topic, add a PDF, or reopen a saved record.</p>}
       {run && <>
         {run.plan.length>0 && <details className="research-plan"><summary>Research plan</summary><ol>{run.plan.map((step,i)=><li key={i}>{step}</li>)}</ol></details>}

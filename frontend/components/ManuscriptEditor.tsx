@@ -12,6 +12,12 @@ function Editor({runId,blocked=false,onBusyChange}:Props) {
  const alive=useRef(true),lock=useRef(false);
  const latest=state?.revisions.at(-1);
  const dirty=Boolean(latest&&JSON.stringify(sections)!==JSON.stringify(latest.sections));
+ useEffect(()=>{
+  if(!dirty)return;
+  const warn=(event:BeforeUnloadEvent)=>{event.preventDefault();event.returnValue='';};
+  window.addEventListener('beforeunload',warn);
+  return()=>window.removeEventListener('beforeunload',warn);
+ },[dirty]);
  const stale=Boolean(latest&&latest.input_sha256!==state?.current_input_sha256);
  const busy=blocked||Boolean(pending);
  const ready=Boolean(latest&&!dirty&&!stale&&!busy);
@@ -26,7 +32,7 @@ function Editor({runId,blocked=false,onBusyChange}:Props) {
  function edit(next:ManuscriptSection[]){onBusyChange?.(true);setSections(next);setConfirm(false);setConsent(false);}
  function sentence(sectionId:string,id:string,patch:Partial<ManuscriptSentence>){edit(sections.map(s=>s.id===sectionId?{...s,sentences:s.sentences.map(t=>t.id===id?{...t,...patch}:t)}:s));}
  function move(index:number,offset:number){const next=[...sections];[next[index],next[index+offset]]=[next[index+offset],next[index]];edit(next);}
- function save(reset:boolean){if(!state)return;void action('Saving manuscript…',async()=>{const value=await researchApi.saveManuscript(runId,{expected_revision:latest?.id??null,expected_input_sha256:state.current_input_sha256,reason:reason.trim(),sections:reset?null:sections});if(alive.current){accept(value,true);setReason('');setNote('');}});}
+ function save(reset:boolean){if(!state)return;if(reset&&dirty&&!window.confirm('Replace unsaved manuscript changes with the current evidence preview?'))return;void action('Saving manuscript…',async()=>{const value=await researchApi.saveManuscript(runId,{expected_revision:latest?.id??null,expected_input_sha256:state.current_input_sha256,reason:reason.trim(),sections:reset?null:sections});if(alive.current){accept(value,true);setReason('');setNote('');}});}
  useEffect(()=>{onBusyChange?.((Boolean(pending)&&pending!=='Loading manuscript…')||dirty);},[pending,dirty,onBusyChange]);
  const blocks=latest?.source.sections.flatMap(s=>s.blocks)??[];
  return <section className="research-panel" aria-label="Manuscript editor"><h3>Manuscript editor</h3>
@@ -41,7 +47,7 @@ function Editor({runId,blocked=false,onBusyChange}:Props) {
  <DeferredDetails summary={`References for ${t.id} (${t.reference_ids.length} selected)`}>{()=> <fieldset><legend>Choose reference blocks</legend>{blocks.map(b=><label key={b.id} className="manuscript-reference"><input type="checkbox" checked={t.reference_ids.includes(b.id)} onChange={e=>sentence(s.id,t.id,{reference_ids:e.target.checked?[...t.reference_ids,b.id]:t.reference_ids.filter(id=>id!==b.id)})}/>{b.id} · {b.kind}: {b.text}</label>)}{t.reference_ids.filter(id=>!blocks.some(b=>b.id===id)).map(id=><label key={id}><input type="checkbox" checked onChange={()=>sentence(s.id,t.id,{reference_ids:t.reference_ids.filter(x=>x!==id)})}/>Missing reference: {id}</label>)}{!blocks.length&&<p>No evidence references available in this snapshot.</p>}</fieldset>}</DeferredDetails>
  <button onClick={()=>edit(sections.map(x=>x.id===s.id?{...x,sentences:x.sentences.filter(y=>y.id!==t.id)}:x))}>Remove sentence {t.id}</button></div>)}
  <button disabled={busy||s.sentences.length>=200} onClick={()=>edit(sections.map(x=>x.id===s.id?{...x,sentences:[...x.sentences,{id:`sentence-${crypto.randomUUID()}`,text:'',kind:'hypothesis',reference_ids:[]}]}:x))}>Add sentence to {s.title}</button></div>}</DeferredDetails>)}</fieldset>
- <button disabled={busy||!reason.trim()||state.revisions.length>=20} onClick={()=>save(false)}>Save manuscript revision</button>
+ <div className="manuscript-save-bar"><span role="status">{dirty?'Unsaved changes':`Saved revision ${latest.number}`}</span><button disabled={busy||!reason.trim()||state.revisions.length>=20} onClick={()=>save(false)}>Save manuscript revision</button>{dirty&&<button disabled={busy} onClick={()=>{if(window.confirm('Discard unsaved manuscript changes and return to the saved revision?')){setSections(latest.sections);setReason('');setConfirm(false);setConsent(false);setError('');}}}>Discard unsaved changes</button>}</div>
  <details className="research-advanced"><summary>Review and export</summary><EvidenceSnapshot source={latest.source}/><h4>Current revision findings</h4>{reviews.length===0?<p>No model review for this revision. Human assessment can proceed offline.</p>:reviews.map(r=><article key={r.id}><p>{r.model} · {r.created_at} · Scientific validation: {r.scientific_validation}</p><ul>{r.findings.map(f=><li key={f.sentence_id}>{f.sentence_id}: {f.status} — {f.rationale}</li>)}</ul><h5>Potential contradictions</h5>{r.contradictions.length?r.contradictions.map((c,i)=><p key={i}>{c.sentence_ids.join(' / ')}: {c.rationale}</p>):<p>No potential contradictions reported. This does not prove consistency.</p>}</article>)}
  <label><input type="checkbox" checked={consent} disabled={!ready} onChange={e=>setConsent(e.target.checked)}/>Send this manuscript and referenced evidence to the configured model (may incur cost).</label><button disabled={!ready||!consent} onClick={()=>void action('Reviewing manuscript…',async()=>{const value=await researchApi.reviewManuscript(runId,latest.id);if(alive.current){accept(value,false);setNote('');}})}>Review manuscript with model</button>
  <h4>Human approval</h4><p>Inspect the current text, evidence, missing results and any findings above. Approval records your assessment of this exact revision; it does not establish scientific validity.</p>
