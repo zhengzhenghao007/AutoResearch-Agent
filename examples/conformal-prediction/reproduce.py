@@ -29,7 +29,7 @@ def write_json(path, value):
 
 def display_text(text):
     """Make PDF control characters visible in Markdown; JSON remains lossless."""
-    return ''.join(f'\\u{ord(c):04x}' if ord(c) < 32 and c not in '\n\r\t' else c for c in text)
+    return ''.join(f'\\u{ord(c):04x}' if ord(c) < 32 and c not in '\n\r' else c for c in text)
 
 
 def main():

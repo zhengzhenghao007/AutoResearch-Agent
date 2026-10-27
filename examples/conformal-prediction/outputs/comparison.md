@@ -32,7 +32,7 @@ tion of the observed values. [evidence=e:80d2a6482a415d424e8cc77f4bcac0da0a4e454
 [paper_report; method] Conformal Prediction with Missing Values, p.3: In practice, Φ is obtained as the result
 of an algorithm I trained on
 \u0008\u0000
-X (k), M(k)\u0001	n+1
+X (k), M(k)\u0001\u0009n+1
 k=1. [evidence=e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:18]
 [paper_report; method] Conformal Prediction with Missing Values, p.3: The imputation
 function Φ is the output of an algorithm I treating its input
@@ -51,7 +51,7 @@ only one instance of it. [evidence=e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf
 [paper_report; method] Conformal Prediction with Missing Values, p.5: Algorithm 1 CP-MDA-Exact (with CQR)
 Input: Imputation algorithm I, quantile regression al-
 gorithm QR, significance level α, training set\u0008\u0000
-x(k), m(k), y(k)\u0001	n
+x(k), m(k), y(k)\u0001\u0009n
 k=1, test point
 \u0000
 x(test), m(test)\u0001
@@ -103,13 +103,13 @@ Input: Imputation algorithm I, predictive algorithm A, conformity score function
 X (1), M(1), Y(1)\u0001
 , · · ·,
 \u0000
-X (n), M(n), Y(n)\u0001	
+X (n), M(n), Y(n)\u0001\u0009
 . [evidence=e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:58]
 [paper_report; method] Conformal Prediction with Missing Values, p.14: 2: Fit the imputation function: Φ(·) ← I
 \u0000\u0008\u0000
 X (k), M(k)\u0001
 , k∈ Tr
-	\u0001
+\u0009\u0001
 3: Impute the data set:
 n
 X (k)
@@ -120,7 +120,7 @@ k=1
 \u0008
 Φ
 \u0000
-X (k), M(k)\u0001	n
+X (k), M(k)\u0001\u0009n
 k=1
 4: Fit algorithm A: ˆg(·) ← A
 \u0010n\u0010
@@ -165,7 +165,7 @@ classification) and any score function. [evidence=e:80d2a6482a415d424e8cc77f4bca
 Input: Imputation algorithm I, predictive algorithm A, conformity score function sg paramatrized by a model g, signifi-
 cance level α, training set
 \u0008\u0000
-X (k), M(k), Y(k)\u0001	n
+X (k), M(k), Y(k)\u0001\u0009n
 k=1, test point
 \u0000
 X (test), M(test)\u0001
@@ -174,7 +174,7 @@ X (test), M(test)\u0001
 \u0000\u0008\u0000
 X (k), M(k)\u0001
 , k∈ Tr
-	\u0001
+\u0009\u0001
 3: Impute the training set:
 n
 X (k)
@@ -185,7 +185,7 @@ k∈Tr
 \u0008
 Φ
 \u0000
-X (k), M(k)\u0001	
+X (k), M(k)\u0001\u0009
 k∈Tr
 4: Fit algorithm A: ˆg(·) ← A
 \u0010n\u0010
@@ -197,7 +197,7 @@ o\u0011
 // Generate an augmented calibration set:
 5: Cal(test) =
 \u0008
-k ∈ Cal such that M(k) ⊂ M(test)	
+k ∈ Cal such that M(k) ⊂ M(test)\u0009
 6: for k ∈ Cal(test) do
 7: fM (k) = M (test) Additional masking
 8: end for
