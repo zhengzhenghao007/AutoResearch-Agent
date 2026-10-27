@@ -8,6 +8,23 @@ const source={schema_version:1 as const,builder:'evidence-draft-v1' as const,run
 const revision={id:'r1',number:1,created_at:'today',reason:'Initial',content_sha256:'content',input_sha256:'hash',sections:[{id:'intro',title:'Introduction',sentences:[{id:'s1',text:'Original hypothesis',kind:'hypothesis' as const,reference_ids:[]}]}],source};
 const state={run_id:'run',current_input_sha256:'hash',revisions:[revision],reviews:[],approvals:[]};
 afterEach(()=>vi.resetAllMocks());
+test('dirty writing blocks page close and confirmed discard releases the guard',async()=>{
+ vi.mocked(researchApi.manuscript).mockResolvedValue(state);
+ const confirm=vi.spyOn(window,'confirm').mockReturnValue(false);
+ render(<ManuscriptEditor runId="run" revision={0}/>);
+ const text=await screen.findByLabelText('Sentence s1');
+ await userEvent.type(text,' changed');
+ const closing=new Event('beforeunload',{cancelable:true});window.dispatchEvent(closing);
+ expect(closing.defaultPrevented).toBe(true);
+ await userEvent.click(screen.getByRole('button',{name:'Discard unsaved changes'}));
+ expect(text).toHaveValue('Original hypothesis changed');
+ confirm.mockReturnValue(true);
+ await userEvent.click(screen.getByRole('button',{name:'Discard unsaved changes'}));
+ expect(text).toHaveValue('Original hypothesis');
+ const cleanClose=new Event('beforeunload',{cancelable:true});window.dispatchEvent(cleanClose);
+ expect(cleanClose.defaultPrevented).toBe(false);
+ expect(researchApi.saveManuscript).not.toHaveBeenCalled();confirm.mockRestore();
+});
 test('reference choices load only when a sentence reference picker is opened',async()=>{
  vi.mocked(researchApi.manuscript).mockResolvedValue(state);
  render(<ManuscriptEditor runId="run" revision={0}/>);

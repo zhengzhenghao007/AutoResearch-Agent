@@ -21,6 +21,10 @@ Bring a research question and a small collection of papers. Keep quotations atta
 
 Advanced source checks, screening records and category corrections are available when needed. Local mode opens without a token prompt. The older interface lives separately at `/legacy`.
 
+The Library overview highlights truncated papers, missing extraction categories and sources without quotations, with links to inspect each one. Workflow links retain your current stage on reload. Unsaved manuscript changes block record/session switches and trigger the browser's close warning; save a revision before closing, or explicitly discard edits. Browser crash recovery is not provided.
+
+See the [public-product comparison and quality review](docs/superpowers/plans/2026-10-27-workbench-quality.md) for the design references, verified improvements and remaining limits.
+
 ## A real example, including what went wrong
 
 **How do conformal prediction methods address missing inputs, perturbations and sparse training regions?**
