@@ -200,9 +200,18 @@ def save_revision(store, run_id, expected_revision, expected_input_sha256, reaso
         sections = request.sections
         if sections is None:
             kinds = {'paper_claim':'paper_report', 'user_statistics':'user_observation', 'placeholder':'placeholder'}
-            sections = [Section(id=s.id, title=s.title, sentences=[Sentence(id=f'sentence_{i}_{j}',
-                text=b.text, kind=kinds[b.kind], reference_ids=[b.id]) for j,b in enumerate(s.blocks)])
-                for i,s in enumerate(source.sections)]
+            # Preserve every binding when a real multi-paper outline exceeds a
+            # section's 200-sentence bound. The document-wide bound still applies.
+            sections = []
+            for i, section in enumerate(source.sections):
+                for offset in range(0, len(section.blocks), 200):
+                    part = offset // 200 + 1
+                    sections.append(Section(
+                        id=section.id if part == 1 else f'{section.id}_part_{part}',
+                        title=section.title if part == 1 else f'{section.title} (part {part})',
+                        sentences=[Sentence(id=f'sentence_{i}_{offset+j}', text=block.text,
+                            kind=kinds[block.kind], reference_ids=[block.id])
+                            for j, block in enumerate(section.blocks[offset:offset+200])]))
         _validate_sections(sections, source)
         state.revisions.append(Revision(id=uuid4().hex, number=len(state.revisions)+1,
             created_at=datetime.now(timezone.utc), reason=request.reason, sections=sections, source=source,

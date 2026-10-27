@@ -1,0 +1,44 @@
+{
+  "mode": "rule",
+  "model_calls": 0,
+  "human_approval": false,
+  "steps": [
+    {
+      "operation": "create",
+      "run_id": "50d5f881c9804e0489528fa935611bbc"
+    },
+    {
+      "operation": "import_pdf",
+      "source": "zaffran23a",
+      "sha256": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+      "pages": 27,
+      "total_pages": 27,
+      "quotes": 87,
+      "missing_fields": [
+        "future_work"
+      ]
+    },
+    {
+      "operation": "import_pdf",
+      "source": "ghosh23a",
+      "sha256": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+      "pages": 10,
+      "total_pages": 10,
+      "quotes": 72,
+      "missing_fields": [
+        "limitation"
+      ]
+    },
+    {
+      "operation": "import_pdf",
+      "source": "cruz-cabezas25a",
+      "sha256": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+      "pages": 28,
+      "total_pages": 28,
+      "quotes": 103,
+      "missing_fields": []
+    }
+  ],
+  "literal_source_support": true,
+  "scope": "Case reproduction, not a scientific-quality benchmark."
+}

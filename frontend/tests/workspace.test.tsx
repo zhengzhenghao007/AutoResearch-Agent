@@ -14,7 +14,7 @@ beforeEach(() => {
   vi.mocked(researchApi.analyze).mockResolvedValue(run);
   vi.mocked(researchApi.upload).mockResolvedValue(run);
 });
-async function search() { await userEvent.type(screen.getByLabelText('Research topic'), 'Navigation'); await userEvent.click(screen.getByRole('button',{name:'Find papers'})); await screen.findByLabelText('Select Paper A'); }
+async function search() { await userEvent.type(screen.getByLabelText('Research topic'), 'Navigation'); await userEvent.click(screen.getByRole('button',{name:'Find papers'})); await screen.findByLabelText('Select Paper A'); await userEvent.click(screen.getByText('Library tools: references, duplicates and screening')); for(const summary of screen.getAllByText('Screening decision',{selector:'summary'})) await userEvent.click(summary); }
 function screening() { return within(screen.getByRole('group',{name:'Screening for Paper A'})); }
 test('failed analysis preserves the unfinished screening draft',async()=>{
   render(<EvidenceWorkspace/>);await search();
@@ -140,12 +140,16 @@ test('links claims to quotes to page text and separates suggestions', async () =
   const rich: ResearchRun = {...run,papers:[{document:{source:{id:'arxiv:2401.12345',title:'Source paper',kind:'paper',uri:'https://arxiv.org/pdf/2401.12345',sha256:'0'.repeat(64),collected_at:''},pages:[{number:2,text:'The full extracted page text.'}],total_pages:10,truncated:true},evidence:[{id:'arxiv:2401.12345:p2:e1',source_id:'arxiv:2401.12345',page:2,quote:'The exact supported quotation.'}],claims:[{id:'arxiv:2401.12345:c1',text:'A reported result',category:'result',claim_type:'paper_report',evidence_ids:['arxiv:2401.12345:p2:e1'],created_by:'extractor',timestamp:''}],missing_fields:['dataset'],extractor:'literal'}],generated_claims:[{id:'idea',text:'Try a new experiment',category:'future_work',claim_type:'suggestion',evidence_ids:['arxiv:2401.12345:p2:e1'],created_by:'composer',timestamp:''}],artifacts:[{kind:'literature_summary',title:'Summary',content:'A supported summary',claim_ids:['arxiv:2401.12345:c1'],evidence_ids:['arxiv:2401.12345:p2:e1']} ]};
   vi.mocked(researchApi.get).mockResolvedValue(rich); window.history.replaceState({},'',`/?run=${run.id}`); render(<EvidenceWorkspace/>);
   await screen.findAllByText('A reported result');
-  for(const link of screen.getAllByRole('link',{name:/Evidence arxiv:/})) expect(document.getElementById(decodeURIComponent(link.getAttribute('href')!.slice(1)))).toBeInTheDocument();
-  const claimLink=screen.getByRole('link',{name:'Claim arxiv:2401.12345:c1'}); expect(document.getElementById(decodeURIComponent(claimLink.getAttribute('href')!.slice(1)))).toHaveTextContent('A reported result');
-  const pageLink=screen.getByRole('link',{name:'Extracted page 2'}); expect(document.getElementById(decodeURIComponent(pageLink.getAttribute('href')!.slice(1)))).toHaveTextContent('The full extracted page text.');
+  await userEvent.click(screen.getByRole('button',{name:'Reading & evidence'}));
+  expect(screen.getByText('The exact supported quotation.')).toBeVisible();
+  expect(screen.getByLabelText('Extracted page 2')).toHaveTextContent('The full extracted page text.');
   expect(screen.getByRole('link',{name:'Open source PDF at page 2'})).toHaveAttribute('href','https://arxiv.org/pdf/2401.12345#page=2');
-  expect(within(screen.getByRole('region',{name:'Research suggestions'})).getByText('Try a new experiment')).toBeInTheDocument();
-  expect(screen.getByText(/Missing fields: dataset/)).toBeInTheDocument(); expect(screen.getByText(/Truncated/)).toBeInTheDocument();
+  expect(screen.getByText('Truncated document')).toBeVisible();
+  await userEvent.click(screen.getByRole('button',{name:'Compare'}));
+  await userEvent.click(screen.getByText('Exploratory suggestions'));
+  expect(screen.getByText('Try a new experiment')).toBeVisible();
+  await userEvent.click(screen.getByRole('button',{name:'Read evidence'}));
+  expect(screen.getByText('The exact supported quotation.')).toBeVisible();
 });
 test('disables mutations during analysis and ignores completion after navigation',async()=>{
   let resolve!: (value: ResearchRun)=>void;
@@ -252,12 +256,18 @@ test('claim review preserves inputs and is discarded as soon as an annotation wr
   let reject!:(error:Error)=>void;vi.mocked(researchApi.candidateDecision).mockReturnValueOnce(new Promise((_resolve,r)=>{reject=r;}));
   render(<EvidenceWorkspace/>);await search();await userEvent.click(screen.getByLabelText('Select Paper A'));
   await userEvent.type(screening().getByLabelText('Screening reason'),'Pending reason');
+  await userEvent.click(screen.getByRole('button',{name:'Reading & evidence'}));
+  await userEvent.click(screen.getByText('Advanced review: source checks and claim categories'));
   await userEvent.click(screen.getByRole('button',{name:'Load claim review'}));await screen.findByRole('button',{name:'Download claim review JSON'});
+  await userEvent.click(screen.getByRole('button',{name:'Library'}));
   expect(screen.getByLabelText('Select Paper A')).toBeChecked();expect(screening().getByLabelText('Screening reason')).toHaveValue('Pending reason');
+  await userEvent.click(screen.getByRole('button',{name:'Library'}));
   await userEvent.click(screening().getByRole('button',{name:'Record screening decision'}));
   expect(screen.queryByRole('region',{name:'Claim classification review'})).not.toBeInTheDocument();
   await act(async()=>reject(new Error('Connection lost')));
+  await userEvent.click(screen.getByRole('button',{name:'Reading & evidence'}));
   await screen.findByRole('button',{name:'Load claim review'});
   expect(screen.queryByRole('button',{name:'Download claim review JSON'})).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button',{name:'Library'}));
   expect(screening().getByLabelText('Screening reason')).toHaveValue('Pending reason');
 });

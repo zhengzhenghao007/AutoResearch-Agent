@@ -11,7 +11,9 @@ import ScreeningReport from './ScreeningReport';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { researchApi } from '@/lib/research-api';
 import type { ResearchHistory, ResearchRun } from '@/types/research';
-import EvidenceViewer, { sourcePdf } from './EvidenceViewer';
+import { sourcePdf } from './EvidenceViewer';
+import ReadingDesk from './ReadingDesk';
+import ComparisonTable from './ComparisonTable';
 import ResearchExports from './ResearchExports';
 import SourceDuplicateClues from './SourceDuplicateClues';
 import CandidateScreening from './CandidateScreening';
@@ -22,6 +24,13 @@ const message = (error: unknown) => error instanceof Error ? error.message : 'Th
 function setUrl(id?: string) { const url=new URL(window.location.href); if(id) url.searchParams.set('run',id); else url.searchParams.delete('run'); url.hash=''; window.history.pushState({},'',url); }
 
 export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false}:{jobsEnabled?:boolean;readOnly?:boolean}) {
+  const [stage,setStage]=useState('library');
+  const [focusEvidence,setFocusEvidence]=useState('');
+  const [focusSource,setFocusSource]=useState('');
+  const [readingVisit,setReadingVisit]=useState(0);
+  const [writingVisited,setWritingVisited]=useState(false);
+  const [historyOpen,setHistoryOpen]=useState(false);
+  function showEvidence(id:string,sourceId=''){setFocusEvidence(id);setFocusSource(sourceId);setReadingVisit(n=>n+1);setStage('reading');}
   const [run,setRun]=useState<ResearchRun|null>(null);
   const [revision,setRevision]=useState(0);
   const [screeningPending,setScreeningPending]=useState(false);
@@ -42,7 +51,7 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false}:{jo
     finally{if(ticket===historyGeneration.current)setHistoryBusy(false);}
   },[]);
   const open=useCallback(async(id: string|null)=>{
-    currentUrlRun.current=id;
+    currentUrlRun.current=id;setStage('library');setFocusEvidence('');setWritingVisited(false);
     const ticket=++generation.current;setError('');setRun(null);setSelection([]);setTopic('');setFile(null);if(fileInput.current)fileInput.current.value='';setLoading(Boolean(id));
     if(!id)return;
     if(!/^[a-f0-9]{32}$/.test(id)){setError('Invalid research record ID in the URL. Choose a record from history.');setLoading(false);return;}
@@ -82,24 +91,42 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false}:{jo
   const runBusy=Boolean(pending)||loading||screeningPending;
   const busy=runBusy||manuscriptPending;
   return <section className="research-workspace" aria-labelledby="research-title">
-    <header className="research-header"><div><h1 id="research-title">Evidence workspace</h1><p>Read the source. Trace the claim. Keep the research record.</p></div><button disabled={busy} onClick={()=>{setUrl();void open(null);}}>New record</button></header>
-    <div className="research-layout"><aside className="research-history" aria-label="Research history"><div className="research-row"><h2>History</h2><button disabled={historyBusy} onClick={()=>void refreshHistory(page)}>Refresh history</button></div>
+    <header className="research-header"><div><h1 id="research-title">Literature workbench</h1><p>From papers to a draft you can trace back to the source.</p></div><button disabled={busy} onClick={()=>{setUrl();void open(null);}}>New record</button></header>
+    <div className="research-layout"><aside className="research-history" aria-label="Research history"><div className="research-row"><h2>Your research</h2><button className="history-toggle" aria-expanded={historyOpen} aria-controls="history-content" onClick={()=>setHistoryOpen(value=>!value)}>{historyOpen?'Hide records':'Show records'}</button><button className="history-refresh" disabled={historyBusy} onClick={()=>void refreshHistory(page)}>Refresh history</button></div>
+      <div id="history-content" className="history-content" data-expanded={historyOpen}>
       {historyBusy && <p role="status">Loading history…</p>}{historyError && <p role="alert">{historyError}</p>}
       {history && history.items.length===0 && <p className="research-meta">No saved records on this page.</p>}
       <ul>{history?.items.map(item=><li key={item.id}><button disabled={busy} aria-current={run?.id===item.id?'page':undefined} onClick={()=>{setUrl(item.id);void open(item.id);}}><strong>{item.topic}</strong><span>{item.paper_count} papers / {item.candidate_count} candidates</span><span>{item.source_support_passed?'Source support passed':'Source support pending'}</span></button></li>)}</ul>
       <nav aria-label="History pages" className="research-row"><button aria-label="Previous history page" disabled={historyBusy||page<=1} onClick={()=>void refreshHistory(page-1)}>Previous</button><span>Page {page}{history ? ` of ${Math.max(1,Math.ceil(history.total/history.page_size))}`:''}</span><button aria-label="Next history page" disabled={historyBusy||!history||page*history.page_size>=history.total} onClick={()=>void refreshHistory(page+1)}>Next</button></nav>
+      </div>
     </aside><div className="research-main">
+      <nav className="workflow-nav" aria-label="Research workflow">{[['library','Library'],['reading','Reading & evidence'],['compare','Compare'],['writing','Writing']].map(([id,label],i)=><button key={id} aria-current={stage===id?'step':undefined} aria-controls={`stage-${id}`} disabled={id!=='library'&&!run} onClick={()=>{setStage(id);if(id==='writing')setWritingVisited(true);}}><span aria-hidden="true">{i+1}</span>{label}</button>)}</nav>
+      {run&&<div className="research-record-title"><h2>{run.topic}</h2><p className="research-meta">{run.papers.length} papers · {run.papers.reduce((n,p)=>n+p.evidence.length,0)} quotations · {run.review.approved?'Literal source checks passed':'Source checks pending'}</p></div>}
+      <div id="stage-library" hidden={stage!=='library'}>
+      <div className="stage-intro"><h3>Build your reading list</h3><p>Search for papers or add PDFs you already have. Each research record keeps its own sources, evidence and drafts.</p></div>
       {jobsEnabled&&<ResearchJobs topic={topic} runId={run?.id} selectedIds={selection} blocked={busy} readOnly={readOnly} onOpen={id=>{setUrl(id);void open(id);void refreshHistory(page);}}/>}
       <fieldset disabled={readOnly} style={{border:0,padding:0,minWidth:0}}><form className="research-search" onSubmit={event=>{event.preventDefault();if(!jobsEnabled&&topic.trim())void mutate('Finding papers…',()=>researchApi.search(topic.trim()));}}><label htmlFor="research-topic">Research topic</label><div className="research-row"><input id="research-topic" maxLength={2000} required value={topic} disabled={busy} onChange={e=>setTopic(e.target.value)} placeholder="e.g. vision language robot navigation"/>{!jobsEnabled&&<button className="research-primary" disabled={busy||!topic.trim()}>Find papers</button>}<button type="button" disabled={busy||!topic.trim()} onClick={()=>void mutate('Creating offline record…',()=>researchApi.create(topic.trim()))}>Create offline record</button></div><p className="research-meta">A search creates a new record. Choose papers before analysis.</p></form>
       <form className="research-upload" onSubmit={event=>{event.preventDefault();if(file)void mutate('Adding PDF…',()=>researchApi.upload(file,run?.id));}}><label htmlFor="research-pdf">PDF file</label><div className="research-row"><input ref={fileInput} id="research-pdf" type="file" accept=".pdf,application/pdf" disabled={busy} onChange={event=>setFile(event.target.files?.[0]??null)}/><button disabled={busy||!file}>Add PDF</button></div><p className="research-meta">{run?'Adds evidence to the current record. Use New record to start separately.':'Creates a record from a text-based PDF.'}</p></form>
       </fieldset>{pending && <p role="status" className="research-notice">{pending} Keep this page open while the request completes.</p>}{loading && <p role="status">Opening research record…</p>}{error && <p role="alert" className="research-error">{error}</p>}
       {!run&&!loading&&!error && <p className="research-empty">Start with a research topic, add a PDF, or reopen a saved record.</p>}
-      {run && <><div className="research-record-title"><h2>{run.topic}</h2><p className="research-meta">Record {run.id}</p></div>
+      {run && <>
         {run.plan.length>0 && <details className="research-plan"><summary>Research plan</summary><ol>{run.plan.map((step,i)=><li key={i}>{step}</li>)}</ol></details>}
-        <section aria-label="Candidate papers"><div className="research-row"><h3>Candidate papers</h3><span className="research-meta">{selection.length} selected</span></div>
-          {run.candidates.length===0 ? <p className="research-empty">No candidate papers found. Try another topic or add a PDF.</p> : <ul className="research-candidates">{run.candidates.map(candidate=><li key={candidate.id}><label><input type="checkbox" aria-label={`Select ${candidate.title}`} disabled={busy} checked={selection.includes(candidate.id)} onChange={event=>setSelection(current=>event.target.checked?[...current,candidate.id]:current.filter(id=>id!==candidate.id))}/><strong>{candidate.title}</strong></label><p className="research-meta">{candidate.authors.join(', ')}</p>{candidate.summary && <p>{candidate.summary}</p>}{sourcePdf(candidate.pdf_url) && <a href={sourcePdf(candidate.pdf_url)!} target="_blank" rel="noopener noreferrer">Source PDF</a>}{<CandidateScreening key={`${run.id}:${candidate.id}`} candidate={candidate} events={(run.candidate_decisions??[]).filter(event=>event.candidate_id===candidate.id)} disabled={busy||readOnly} onRecord={(decision,reason)=>recordAnnotation(id=>researchApi.candidateDecision(id,{candidate_id:candidate.id,decision,reason}))}/>}</li>)}</ul>}
+        <section aria-label="Candidate papers" hidden={run.candidates.length===0&&run.papers.length>0}><div className="research-row"><h3>Candidate papers</h3><span className="research-meta">{selection.length} selected</span></div>
+          {run.candidates.length===0 ? <p className="research-empty">No candidate papers found. Try another topic or add a PDF.</p> : <ul className="research-candidates">{run.candidates.map(candidate=><li key={candidate.id}><label><input type="checkbox" aria-label={`Select ${candidate.title}`} disabled={busy} checked={selection.includes(candidate.id)} onChange={event=>setSelection(current=>event.target.checked?[...current,candidate.id]:current.filter(id=>id!==candidate.id))}/><strong>{candidate.title}</strong></label><p className="research-meta">{candidate.authors.join(', ')}</p>{candidate.summary && <p>{candidate.summary}</p>}{sourcePdf(candidate.pdf_url) && <a href={sourcePdf(candidate.pdf_url)!} target="_blank" rel="noopener noreferrer">Source PDF</a>}{<details className="candidate-review"><summary>Screening decision</summary><CandidateScreening key={`${run.id}:${candidate.id}`} candidate={candidate} events={(run.candidate_decisions??[]).filter(event=>event.candidate_id===candidate.id)} disabled={busy||readOnly} onRecord={(decision,reason)=>recordAnnotation(id=>researchApi.candidateDecision(id,{candidate_id:candidate.id,decision,reason}))}/></details>}</li>)}</ul>}
           {!jobsEnabled&&<button className="research-primary" disabled={busy||readOnly||selection.length===0} onClick={()=>void mutate('Analyzing selected papers…',()=>researchApi.analyze(run.id,selection))}>Analyze selected papers</button>}
-        </section>{!busy && <><ResearchExports runId={run.id} revision={revision}/><SourceDuplicateClues runId={run.id} revision={revision}/><ScreeningReport runId={run.id} revision={revision}/><ClaimReview runId={run.id} revision={revision}/><ManuscriptDraft runId={run.id} revision={revision}/></>}<fieldset disabled={readOnly} style={{border:0,padding:0,minWidth:0}}><ManuscriptEditor runId={run.id} revision={revision} blocked={runBusy} onBusyChange={manuscriptBusy}/><SemanticReview key={`semantic:${run.id}`} run={run} revision={revision} blocked={busy}/><SourceIdentities key={run.id} run={run} revision={revision} busy={busy} onRecord={request=>recordAnnotation(id=>researchApi.sourceIdentity(id,request))}/><CategoryRevisions key={`categories:${run.id}`} run={run} busy={busy} onSave={(claim,category,reason)=>recordAnnotation(id=>researchApi.reviseCategory(id,claim,category,reason))}/><Experiments key={`experiments:${run.id}`} run={run} revision={revision} busy={busy} onImport={(file,format,metadata)=>recordAnnotation(id=>researchApi.importExperiment(id,file,format,metadata))}/></fieldset><EvidenceViewer run={run}/></>}
+        </section>
+        {run.papers.length>0&&<section className="library-sources" aria-label="Imported papers"><h3>In this record</h3>{run.papers.map(p=><article key={p.document.source.id}><div><h4>{p.document.source.title}</h4><p className="research-meta">{p.document.pages.length}/{p.document.total_pages} pages · {p.evidence.length} quotations</p></div><button onClick={()=>showEvidence(p.evidence[0]?.id??'',p.document.source.id)}>Read paper</button></article>)}</section>}
+        <details className="research-advanced"><summary>Library tools: references, duplicates and screening</summary>{!busy&&<><ResearchExports runId={run.id} revision={revision}/><SourceDuplicateClues runId={run.id} revision={revision}/><ScreeningReport runId={run.id} revision={revision}/></>}<fieldset disabled={readOnly} className="research-fieldset"><SourceIdentities key={run.id} run={run} revision={revision} busy={busy} onRecord={request=>recordAnnotation(id=>researchApi.sourceIdentity(id,request))}/></fieldset></details>
+      </>}
+      </div>
+      {run&&<>
+       <div id="stage-reading" hidden={stage!=='reading'}><ReadingDesk key={`${run.id}:${readingVisit}`} run={run} focusEvidence={focusEvidence} focusSource={focusSource} onFocus={setFocusEvidence}/>
+        <details className="research-advanced"><summary>Advanced review: source checks and claim categories</summary><p>{run.review.scope}</p>{run.review.issues.map((issue,i)=><p key={i}>{issue}</p>)}{!busy&&<ClaimReview runId={run.id} revision={revision}/>}<fieldset disabled={readOnly} className="research-fieldset"><SemanticReview key={`semantic:${run.id}`} run={run} revision={revision} blocked={busy}/><CategoryRevisions key={`categories:${run.id}`} run={run} busy={busy} onSave={(claim,category,reason)=>recordAnnotation(id=>researchApi.reviseCategory(id,claim,category,reason))}/></fieldset></details>
+       </div>
+       <div id="stage-compare" hidden={stage!=='compare'}><ComparisonTable run={run} onEvidence={showEvidence}/><details className="research-advanced"><summary>Optional: your experimental observations</summary><fieldset disabled={readOnly} className="research-fieldset"><Experiments key={`experiments:${run.id}`} run={run} revision={revision} busy={busy} onImport={(file,format,metadata)=>recordAnnotation(id=>researchApi.importExperiment(id,file,format,metadata))}/></fieldset></details></div>
+       <div id="stage-writing" hidden={stage!=='writing'}><h3>Write from your evidence</h3><p className="research-meta">Start with an attributed outline, then save revisions. Missing evidence stays visible; approval is a separate, explicit step.</p>{!busy&&<ManuscriptDraft runId={run.id} revision={revision}/>}<fieldset disabled={readOnly} className="research-fieldset">{writingVisited&&<ManuscriptEditor runId={run.id} revision={revision} blocked={runBusy} onBusyChange={manuscriptBusy}/>}</fieldset></div>
+      </>}
+
     </div></div>
   </section>;
 }
