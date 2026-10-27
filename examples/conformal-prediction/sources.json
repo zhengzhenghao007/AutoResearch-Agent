@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "topic": "Conformal prediction with imperfect data: missing inputs, perturbations and sparse regions",
+  "selection": "Purposive three-paper worked example, not a systematic search or performance benchmark. Each paper addresses a different obstacle to useful predictive sets.",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "license_evidence": "https://proceedings.mlr.press/pmlr-license-agreement.pdf",
+  "verified_date": "2026-10-26",
+  "papers": [
+    {
+      "key": "zaffran23a",
+      "filename": "zaffran23a.pdf",
+      "title": "Conformal Prediction with Missing Values",
+      "authors": [
+        "Margaux Zaffran",
+        "Aymeric Dieuleveut",
+        "Julie Josse",
+        "Yaniv Romano"
+      ],
+      "year": 2023,
+      "publication": "Proceedings of Machine Learning Research 202:40578–40604",
+      "landing_url": "https://proceedings.mlr.press/v202/zaffran23a.html",
+      "pdf_url": "https://proceedings.mlr.press/v202/zaffran23a/zaffran23a.pdf",
+      "sha256": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15"
+    },
+    {
+      "key": "ghosh23a",
+      "filename": "ghosh23a.pdf",
+      "title": "Probabilistically robust conformal prediction",
+      "authors": [
+        "Subhankar Ghosh",
+        "Yuanjie Shi",
+        "Taha Belkhouja",
+        "Yan Yan",
+        "Jana Doppa",
+        "Brian Jones"
+      ],
+      "year": 2023,
+      "publication": "Proceedings of Machine Learning Research 216:681–690",
+      "landing_url": "https://proceedings.mlr.press/v216/ghosh23a.html",
+      "pdf_url": "https://proceedings.mlr.press/v216/ghosh23a/ghosh23a.pdf",
+      "sha256": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533"
+    },
+    {
+      "key": "cruz-cabezas25a",
+      "filename": "cruz-cabezas25a.pdf",
+      "title": "Epistemic Uncertainty in Conformal Scores: A Unified Approach",
+      "authors": [
+        "Luben Miguel Cruz Cabezas",
+        "Vagner Silva Santos",
+        "Thiago Ramos",
+        "Rafael Izbicki"
+      ],
+      "year": 2025,
+      "publication": "Proceedings of Machine Learning Research 286:443–470",
+      "landing_url": "https://proceedings.mlr.press/v286/cruz-cabezas25a.html",
+      "pdf_url": "https://raw.githubusercontent.com/mlresearch/v286/main/assets/cruz-cabezas25a/cruz-cabezas25a.pdf",
+      "sha256": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e"
+    }
+  ],
+  "excluded": [
+    {
+      "key": "wang23n",
+      "filename": "wang23n.pdf",
+      "title": "Probabilistic Conformal Prediction Using Conditional Random Samples",
+      "authors": [
+        "Zhendong Wang",
+        "Ruijiang Gao",
+        "Mingzhang Yin",
+        "Mingyuan Zhou",
+        "David Blei"
+      ],
+      "year": 2023,
+      "publication": "Proceedings of Machine Learning Research 206:8814–8836",
+      "landing_url": "https://proceedings.mlr.press/v206/wang23n.html",
+      "pdf_url": "https://proceedings.mlr.press/v206/wang23n/wang23n.pdf",
+      "sha256": "e2afa5c8cfaa9ed315564fa79376fb7c7af90d6f60678dd4b131d6f7b47522fc",
+      "excluded_reason": "Original PDF is 34,802,189 bytes, above the 20 MiB importer limit; actual import rejected. Not included in output."
+    }
+  ]
+}

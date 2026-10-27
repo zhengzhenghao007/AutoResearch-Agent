@@ -1,0 +1,14 @@
+# Traceable literature workbench
+
+The user requested three connected outcomes: reorganize the workspace into Library → Reading & evidence → Compare → Writing, demonstrate a complete licensed-paper case with omissions/errors, and rebuild the GitHub landing page around the product. Earlier authorization requests autonomous execution and GitHub upload.
+
+## Approach and decisions
+Keep the existing API, records and provenance semantics; reorganize the frontend rather than replace working services. A cosmetic reskin would leave the overloaded workflow intact; a new backend would add migration risk without solving it. Four accessible navigation buttons reveal persistent panels so unsaved editor state survives stage changes. Advanced review is collapsed; no model calls happen without explicit action. Local sessions show a quiet status, with credentials shown only when authentication is required. Legacy tools move to /legacy and remain unavailable in deployment mode.
+
+Design: a quiet blue research desk: white #ffffff, paper blue #f3f6fa, ink #193047, muted #596d81, blue #275dad, rule #dce4ed. System sans for controls and body; Georgia for quotations only. Left record history, central task navigation, source-index and quotation/page detail in reading. Comparison is a horizontally scrollable category matrix with direct evidence navigation, no inferred rankings. Empty states explain the next useful action. Mobile stacks navigation/history and allows comparison scrolling. Keyboard focus remains visible.
+
+## Case
+Builder selects three explicitly licensed PMLR papers around conformal regression. Use original PDFs, pin SHA256 and publisher URLs, preserve attribution/license. Run the actual offline import, extraction, comparison and manuscript-preview services. Check in outputs and source manifest; PDFs may be downloaded by an explicit reproduction command rather than committed. Provide a fixed snapshot install for viewing in the normal workspace and a fresh run reproduction command. Do not invent human approval or perform paid model calls. End product is a clearly marked review draft, comparison and evidence registry, not an approved publication. Record concrete observed extraction errors and omissions, with page references and separation between automatic output and editorial commentary. A case-specific qualitative audit is not a benchmark score or the existing pending human evaluation.
+
+## Completion
+Existing functional tests plus workflow-navigation/session/reading regression tests; production build and lint; real local browser desktop/mobile checks and screenshots. Reproduction validates quote/page integrity and file hashes. README leads with screenshots, example outcomes and minimal offline local startup; prior engineering material moves to a linked guide. Upload on a dedicated branch and PR; do not merge main automatically.

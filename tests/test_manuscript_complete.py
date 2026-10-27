@@ -9,6 +9,20 @@ def service():
     return importlib.import_module('services.manuscript')
 
 
+def test_large_preview_splits_sections_without_dropping_evidence(tmp_path):
+    flow, run = make_run(tmp_path, 'Our method uses calibrated predictions.', 'method')
+    base = run.papers[0].claims[0]
+    run.papers[0].claims = [base.model_copy(update={'id': f'claim_{i}'}) for i in range(215)]
+    flow._finish(run)
+    svc = service()
+    state = svc.get_manuscript(flow.store, run.id)
+    saved = svc.save_revision(flow.store, run.id, None, state.current_input_sha256, 'Initial large draft')
+    sentences = [s for section in saved.revisions[0].sections for s in section.sentences]
+    assert len([s for s in sentences if s.kind == 'paper_report']) == 215
+    assert all(len(section.sentences) <= 200 for section in saved.revisions[0].sections)
+    assert svc.get_manuscript(flow.store, run.id) == saved
+
+
 def initialized(tmp_path):
     flow, run = make_run(tmp_path, 'The reported outcome improved.', 'result')
     svc = service()

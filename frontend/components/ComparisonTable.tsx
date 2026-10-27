@@ -1,0 +1,12 @@
+import type {Category,ResearchRun} from '@/types/research';
+
+const rows: {id:Category;label:string}[]=[{id:'problem',label:'Research problem'},{id:'method',label:'Method'},{id:'dataset',label:'Data'},{id:'experiment',label:'Experiments'},{id:'result',label:'Reported results'},{id:'limitation',label:'Limitations'},{id:'future_work',label:'Future work'}];
+export default function ComparisonTable({run,onEvidence}:{run:ResearchRun;onEvidence:(id:string)=>void}) {
+ return <section aria-label="Paper comparison">
+  <h3>Compare the evidence</h3><p className="research-meta">Compare what these papers report. Extracted categories may be wrong; open the quotation before drawing a conclusion. No performance ranking is inferred.</p>
+  {run.papers.length<2&&<p className="research-empty">Add at least two PDFs in Library for a useful side-by-side comparison.</p>}
+  {run.papers.length>0&&<div className="comparison-scroll" tabIndex={0} role="region" aria-label="Scrollable comparison table"><table className="comparison-table"><caption>Saved paper quotations by category</caption><thead><tr><th scope="col">Category</th>{run.papers.map(p=><th scope="col" key={p.document.source.id}>{p.document.source.title}<span>{p.document.pages.length}/{p.document.total_pages} pages</span></th>)}</tr></thead><tbody>{rows.map(row=><tr key={row.id}><th scope="row">{row.label}</th>{run.papers.map(p=>{const claims=p.claims.filter(c=>c.category===row.id&&c.claim_type==='paper_report');return <td key={p.document.source.id}>{claims.length? <><p className="comparison-excerpt">{claims[0].text}</p><button onClick={()=>onEvidence(claims[0].evidence_ids[0])}>Read evidence</button>{claims.length>1&&<details><summary>{claims.length-1} more extracts</summary>{claims.slice(1).map(c=><div key={c.id}><p>{c.text}</p><button onClick={()=>onEvidence(c.evidence_ids[0])}>Read evidence</button></div>)}</details>}</>:<span className="coverage-missing">Not extracted</span>}</td>;})}</tr>)}</tbody></table></div>}
+  <p className="research-meta">“Not extracted” describes this record, not the absence of a result in the paper or a gap in the field.</p>
+  <details className="research-advanced"><summary>Exploratory suggestions</summary><p>Ideas need evaluation; linked context does not establish novelty or feasibility.</p>{run.generated_claims.map(c=><article key={c.id}><p>{c.text}</p>{c.evidence_ids[0]&&<button onClick={()=>onEvidence(c.evidence_ids[0])}>Read context</button>}</article>)}</details>
+ </section>;
+}

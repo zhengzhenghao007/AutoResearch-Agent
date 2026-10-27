@@ -26,8 +26,8 @@ $env:NEXT_PUBLIC_API_BASE_URL='http://127.0.0.1:8000'
 npm run dev -- --hostname 127.0.0.1 --port 3000
 ```
 
-打开 http://127.0.0.1:3000。看到 `local · local · writer` 和 **Evidence workspace**
-即可使用。默认本地模式自动连接，顶部 **Access token** 不用填写，也不用点 Connect。
+打开 http://127.0.0.1:3000。看到 `Local workspace · Saved on this computer` 和 **Literature workbench**
+即可使用。默认本地模式自动连接，不显示令牌输入框。
 停止时在两个终端分别按 `Ctrl+C`。关闭服务不会删除已保存记录。
 如果端口已被占用，先打开网页检查是否已经启动，不要重复启动第二份服务。
 
@@ -37,25 +37,37 @@ npm run dev -- --hostname 127.0.0.1 --port 3000
 
 ## 推荐的操作顺序
 
-1. **检索论文**：在上方 Evidence workspace 的 **Research topic** 输入研究主题，
+1. **文献库 Library**：在 **Research topic** 输入研究主题，
    点击 **Find papers**。例如 `id:1706.03762` 可检索《Attention Is All You Need》。
 2. **选择并分析**：勾选需要的论文，再点 **Analyze selected papers**。检索本身不会分析
    所有候选论文。也可以通过 **PDF file → Add PDF** 上传自己的文字型 PDF。
-3. **查看证据**：在 **Supported findings** 和 **Evidence and extracted pages** 查看结果，
-   展开折叠项读取原文及页码。**Source support passed** 表示原文引用核对通过，不是科研结论认证。
-4. **保存与重开**：记录自动保存，左侧 **History** 可以重开；带 `?run=` 的链接也可以收藏。
+3. **阅读与证据 Reading & evidence**：选择论文、搜索摘录或筛选类别；点选摘录，旁边显示
+   引文和所在页的完整提取文本。高级审核按需展开。**Literal source checks passed** 只表示原文引用核对，不是科研结论认证。
+4. **保存与重开**：记录自动保存，左侧 **Your research** 可以重开；带 `?run=` 的链接也可以收藏。
    **New record** 开始另一个记录。搜索会创建新记录。
-5. **导入实验数据**：在 **User experiment observations** 选择 JSON 或 CSV。
+5. **比较 Compare**：查看各篇论文的证据矩阵；**Read evidence** 跳回原文。需要导入自己的实验数据时，
+   展开 **Optional: your experimental observations**，在 **User experiment observations** 选择 JSON 或 CSV。
    CSV 需要明确填写数据标题、列名和单位；使用 **Import observations** 导入，再点
    **Load data checks and statistics** 查看描述统计及样本引用。缺失值保持缺失，不会生成实验结果。
-6. **查看或编辑文稿**：点 **Preview chapter draft** 查看草稿；在 **Manuscript editor**
-   填写 **Revision reason**，点 **Initialize from current preview** 初始化。编辑后填写原因并
-   **Save manuscript revision**。缺少的实验材料会保留占位，事实句需要引用依据。
-7. **导出**：引文可通过 **Load citation JSON / Load BibTeX** 查看和下载。完整文稿需要你检查
-   当前版本，在 **Human approval** 填写审阅信息并明确批准，之后点 **Download approved manuscript**。
+6. **写作 Writing**：点 **Preview chapter draft** 查看草稿；在 **Manuscript editor**
+   填写 **Revision reason**，点 **Initialize from current preview** 初始化。章节与引用选项按需展开。
+   编辑后填写原因并 **Save manuscript revision**。缺少的实验材料会保留占位，事实句需要引用依据。
+7. **导出**：文献库展开 **Library tools: references, duplicates and screening**，通过 **Load citation JSON / Load BibTeX** 查看和下载引文。完整文稿需要你检查
+   当前版本，展开 **Review and export**，在 **Human approval** 填写审阅信息并明确批准，之后点 **Download approved manuscript**。
    这个导出批准是对当前文稿的操作，不会把项目的人工科学评测标记为通过。
 
-建议先使用上方 Evidence workspace。下方旧版界面保留兼容用途，不是这份操作流程的入口。
+旧版界面移至 `/legacy`，本地主入口只显示四区工作台。
+
+## 先体验完整案例
+
+```powershell
+.\.venv\Scripts\python.exe examples/conformal-prediction/reproduce.py --install
+```
+
+从项目根目录执行后，打开输出的链接，或刷新 **Your research**。这会安装三篇开放许可论文的
+研究记录副本，无需下载或模型密钥。依次体验文献库、阅读、比较、写作。
+[案例说明、原始输出与错误记录](../examples/conformal-prediction/README.md)保留了真实遗漏和误分类，
+不会把引文核对通过当成科学验证。
 
 ## 数据在哪里
 

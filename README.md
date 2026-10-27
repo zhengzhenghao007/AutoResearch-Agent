@@ -1,496 +1,91 @@
 # AutoResearch-Agent
 
-> A Multi-Agent Literature Review System powered by Large Language Models.
+**A traceable literature research workbench.**
 
-AutoResearch-Agent is a research-assistant prototype with an evidence-first literature MVP. It searches arXiv, processes selected papers or uploaded PDFs, preserves page-level quotations, and produces extractive comparisons with explicit evidence gaps. It does not generate or validate experimental results on behalf of a researcher.
+可追溯的文献研究工作台：整理文献、核对原文、比较证据，再形成有出处的草稿。
 
-The long-term goal is to build an autonomous research workflow similar to OpenAI Deep Research, but focused on academic literature analysis.
+Bring a research question and a small collection of papers. Keep quotations attached to their source pages, compare what the papers report, and develop a draft without losing its evidence. Records and revisions stay on your machine in default local mode.
 
-## Evidence-first MVP (2026-09)
+![Reading a real paper beside its extracted source page](docs/images/workbench-reading.png)
 
-The new workflow is additive: the existing Streamlit UI and `/api/papers/search` and `/api/papers/analyze` remain available. Their legacy review scores are **not** provenance certification. The new evidence workflow is available through the CLI and `/api/research`; the Next.js evidence workspace now connects to these endpoints alongside the legacy interface.
+[Explore the complete example](examples/conformal-prediction/README.md) · [中文使用指南](docs/local-quickstart.md) · [Engineering reference](docs/engineering-guide.md)
 
-Read the [10-project engineering survey](docs/research_agent_landscape.md), [current-code audit](docs/current_architecture_audit.md), [architecture and data contracts](docs/architecture.md), and [implementation roadmap](docs/roadmap.md).
+## One record, four places to work
 
-中文本机使用：参见 [启动与操作指南](docs/local-quickstart.md)。无需购买服务器；默认本地模式不需要登录令牌。
+| Workspace | What you do |
+|---|---|
+| **Library** | Search arXiv, choose candidates or import PDFs. Reopen saved research from history. |
+| **Reading & evidence** | Select a paper, search its extracts, and inspect a quotation beside its extracted page. |
+| **Compare** | Compare categories across papers. Follow extracts back to evidence; missing material stays visible. |
+| **Writing** | Assemble an attributed outline, edit and save revisions, then explicitly review and approve an export. |
 
-### Install and run (PowerShell, Python 3.11+)
+Advanced source checks, screening records and category corrections are available when needed. Local mode opens without a token prompt. The older interface lives separately at `/legacy`.
+
+## A real example, including what went wrong
+
+**How do conformal prediction methods address missing inputs, perturbations and sparse training regions?**
+
+The [worked case](examples/conformal-prediction/README.md) processes three CC BY 4.0 papers through the actual offline pipeline: **65 PDF pages, 262 source-linked quotations, a comparison and a saved manuscript revision**. The corpus is deliberately selected; it is not a systematic review.
+
+![Comparing three papers with links back to evidence](docs/images/workbench-comparison.png)
+
+- [Read the short editorial comparison](examples/conformal-prediction/review-notes.md), separated from automatic output.
+- Inspect the [actual automatic draft](examples/conformal-prediction/outputs/draft.md) and [citation registry](examples/conformal-prediction/outputs/citations.json).
+- Check the [omissions and errors](examples/conformal-prediction/audit.md): misclassified sentences, bibliography noise, missed abstract statements and an oversized PDF rejection.
+- Reproduce using [pinned publisher PDFs and licenses](examples/conformal-prediction/sources.json), or install the checked-in record without downloads.
+
+Every saved quote matches its extracted page. **That is traceability, not proof of correct interpretation.** The example has no fabricated experiments, model calls or human approval. Its final writing artifact is a review draft.
+
+## Quick start
+
+Requires **Python 3.11+ and Node.js 20.9+**. Run from the repository root. No model key is needed for the default workflow.
 
 ```powershell
+git clone https://github.com/zhengzhenghao007/AutoResearch-Agent.git
+cd AutoResearch-Agent
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m pip install pytest httpx
+npm --prefix frontend ci
 
-# Search returns a run ID and candidate IDs; it does not download all candidates.
-.\.venv\Scripts\python.exe research_cli.py search "vision-language robot navigation" --max-results 5
-.\.venv\Scripts\python.exe research_cli.py analyze RUN_ID CANDIDATE_ID_1 CANDIDATE_ID_2
+# Optional: install the real example as a new local research record.
+.\.venv\Scripts\python.exe examples/conformal-prediction/reproduce.py --install
 
-# Local PDFs use the same page extraction, evidence, review and comparison services.
-.\.venv\Scripts\python.exe research_cli.py import-pdf "C:\papers\paper.pdf"
-.\.venv\Scripts\python.exe research_cli.py import-pdf "C:\papers\second.pdf" --run-id RUN_ID
-.\.venv\Scripts\python.exe research_cli.py show RUN_ID
-```
-
-Replace the uppercase IDs with values from the previous JSON response. Outputs are persisted atomically in `data/research_runs/` (git ignored). `--store PATH` selects another directory. Default `--mode rule` needs no LLM key; it is deliberately conservative and may miss relevant information. `--mode llm` explicitly uses the existing OpenRouter configuration and may incur provider charges; the model can only select quotations and categories, and fabricated quotations are rejected. No live model is called by the default test suite.
-
-Each paper records its content hash, parsed pages, total page count, truncation, source-linked evidence, typed claims and missing categories. Reports are literal paper quotations, not independently verified scientific facts. The comparison includes supported extracts, methods side by side, coverage gaps and explicitly labelled exploratory suggestions. No input experiment means no invented user result. Coverage gaps are not proof of novelty or gaps in the entire research field.
-
-### HTTP API
-
-```powershell
-.\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000
-```
-
-Open `http://127.0.0.1:8000/docs` for interactive request schemas:
-
-| Method | Endpoint | Input |
-|---|---|---|
-| POST | `/api/research/search` | JSON `topic`, optional `max_results` (1–20) |
-| POST | `/api/research/runs/{run_id}/analyze` | JSON `selected_ids` from that run |
-| POST | `/api/research/upload` | multipart `file`, optional `run_id` |
-| GET | `/api/research/runs` | `page` (default 1), `page_size` (1–50, default 10); summaries and total |
-| GET | `/api/research/runs/{run_id}` | persisted research record |
-
-The API uses rule extraction. Explicit LLM mode is currently a CLI capability. Uploads accept PDF bytes, never server filesystem paths. Parsing runs in a separate process with a 45-second timeout, a 20 MiB input limit, 50-page default and one-million-character extracted-text cap. Encrypted or unreadable/scanned PDFs fail explicitly; OCR is not implemented. Downloads accept canonical HTTPS arXiv PDF URLs only and reject redirects. The default JSON configuration is a **local single-user development service** and must stay on loopback. P5 adds optional SQLite transactions, background jobs and authenticated Linux deployment; see [deployment boundaries](docs/p5-deployment.md). Windows local parsing has wall-clock/input/output limits but no OS memory quota.
-
-### Offline tests
-
-```powershell
-.\.venv\Scripts\python.exe -m pytest tests -q -p no:cacheprovider
-```
-
-If Windows denies access to an old pytest temporary directory, use a fresh `--basetemp` path. Four legacy `test_*.py` provider demos run code at import time; they are excluded by default. `--run-live` explicitly opts into those demos and requires working provider credentials/network; they are not counted as deterministic unit tests. The offline suite tests real generated PDFs, fake network/provider adapters, citations, missing evidence, persistence and API behavior.
-
-P2 semantic review, P3 structured experimental inputs/descriptive statistics and P4 evidence-linked writing are available (see below). Human scientific evaluation remains uncompleted, skipped by user request. Automatic experiment execution remains outside scope.
-
-### Evidence workspace
-
-Start the API above, then in a second terminal:
-
-```powershell
-cd frontend
-npm ci
-npm run dev
-```
-
-Open http://localhost:3000. Search creates a record; select candidates explicitly before choosing **Analyze selected papers**. Add multiple PDFs to the same record for comparison, or choose **New record** first. History reopens saved records and the `?run=` URL survives refresh. Evidence and claim links lead to quotations and extracted pages; canonical arXiv sources also link to the original PDF page. Suggestions remain separate from reported claims. Source support means literal provenance, not scientific validity.
-
-`NEXT_PUBLIC_API_BASE_URL` defaults to `http://127.0.0.1:8000`; set it before building if needed. A request timeout does not cancel server work: refresh history and reopen the record before retrying. The legacy interface remains below the evidence workspace.
-
-### Reproducible checks and evaluation
-
-```powershell
-python -m pip install -r requirements-ci.txt
+# Terminal 1: local API, no credentials or paid model calls.
 $env:PYTHON_DOTENV_DISABLED='1'
-python -m pytest tests -q -p no:cacheprovider --allow-hosts=127.0.0.1,::1
-python -m evaluation.evaluate_evidence
-cd frontend
-npm ci
-npm test
-npm run lint
-npm run typecheck
-npm run build
+$env:AUTORESEARCH_DEPLOYMENT='0'
+$env:AUTORESEARCH_STORAGE='json'
+.\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --no-proxy-headers
 ```
 
-Windows allows loopback solely for the async test event loop; Linux CI uses `--disable-socket --allow-unix-socket` and no provider keys. CI runs on Python 3.11/3.12 and Node 22 for pushes and pull requests. Required status checks must be enabled separately in repository branch protection. Python direct dependencies are pinned in `requirements-ci.txt`; transitive dependencies are resolved by pip. Frontend installation uses its committed lockfile. Upgrade dependencies with these checks.
-
-The [redistributable synthetic corpus](tests/fixtures/evidence/README.md) tests text extraction, blank and raster-only pages/no OCR, truncation, missing/planned experiments and rejected quotes. All seven records are `pending_human_review`: the evaluator reports `reviewed_count: 0` and `metrics: null`. Only records with actual human-review provenance enter category precision/recall/missingness and quotation/support metrics. Synthetic regressions are not a scientific accuracy benchmark.
-
-For isolated browser QA, run `python -m uvicorn --app-dir tests ui_fixture_server:app --port 8000` instead of the normal API. This replaces only the external search/download source with clearly labelled synthetic papers, uses real PDF processing and temporary storage, and never changes production research records.
-
----
-
-# Features
-
-## Current
-
-- Research topic planning
-- arXiv paper search
-- Automatic PDF download
-- PDF text extraction
-- Structured LLM Paper Reader
-- Rule-based Reader fallback
-- Reviewer Agent
-- Reader evaluation pipeline
-- Modular workflow architecture
-- OpenRouter integration
-- Pydantic structured output
-
----
-
-# Project Architecture
-
-```
-
-User Research Topic
-│
-▼
-Planner Agent
-│
-▼
-Paper Searcher
-│
-▼
-PDF Downloader
-│
-▼
-PDF Reader
-│
-▼
-LLM Reader
-│
-▼
-Reviewer
-│
-▼
-Research Report
-
-```
-
-Current workflow:
-
-```
-
-Topic
-→ Planner
-→ arXiv Search
-→ Download PDF
-→ Extract Text
-→ Structured LLM Reader
-→ Reviewer
-
-```
-
----
-
-# Example Output
-
-```
-
-Paper Analysis
-
-Reader Model:
-nvidia/nemotron-nano-9b-v2:free
-
-Research Problem
-
-Current robotic systems lack privacy-aware navigation capabilities...
-
-Methodology
-
-The framework combines A* path planning with Vision Language Models...
-
-Datasets
-
-• S3DIS Dataset
-
-Main Contributions
-
-• Privacy-aware navigation framework
-• Gaussian privacy distance metric
-• Real robot deployment
-
-Limitations
-
-• Limited real-world evaluation
-• Static environment assumption
-
-```
-
----
-
-# Repository Structure
-
-```
-
-AutoResearch-Agent
-│
-├── agents/
-│   ├── planner.py
-│   ├── researcher.py
-│   ├── reader.py
-│   ├── llm_reader.py
-│   └── reviewer.py
-│
-├── schemas/
-│   ├── paper_analysis.py
-│   └── reflection_result.py
-│
-├── services/
-│   └── llm_client.py
-│
-├── workflow/
-│   └── research_workflow.py
-│
-├── evaluation/
-│
-├── tools/
-│
-└── main.py
-
-```
-
----
-
-# Technology Stack
-
-- Python 3.11+
-- LangChain
-- OpenRouter
-- Pydantic
-- arXiv API
-- pypdf
-- LLM Structured Output
-
----
-
-# Current Milestones
-
-## Milestone 1
-
-- Planner Agent
-- Paper Search
-- PDF Reader
-- Rule-based Reader
-- Reviewer
-
-Completed
-
----
-
-## Milestone 2
-
-- OpenRouter Integration
-- Structured LLM Reader
-- Pydantic Output
-- Automatic Rule-based Fallback
-
-Completed
-
----
-
-## Milestone 3 (In Progress)
-
-Reflection Agent
-
----
-
-## Future Roadmap
-
-### Reflection Agent
-
-Automatically improve low-quality paper analyses.
-
-### Memory Agent
-
-Remember previous papers to avoid repeated analysis.
-
-### Multi-paper Reading
-
-Read multiple papers simultaneously.
-
-### Literature Review Generator
-
-Automatically generate survey papers.
-
-### Citation Graph
-
-Analyze citation relationships.
-
-### Web UI
-
-Interactive browser interface.
-
-### Local Model Support
-
-Support Ollama and local LLM deployment.
-
----
-
-# Installation
-
-Clone the repository.
-
-```bash
-git clone https://github.com/zhengzhenghao007/AutoResearch-Agent.git
-
-cd AutoResearch-Agent
-```
-
-Create a virtual environment.
-
-```bash
-python -m venv .venv
-```
-
-Activate the environment.
-
-Windows
-
-```bash
-.venv\Scripts\activate
-```
-
-Install dependencies.
-
-```bash
-pip install -r requirements.txt
-```
-
-Create a `.env` file.
-
-```env
-OPENROUTER_API_KEY=your_api_key
-OPENROUTER_MODEL=openrouter/free
-OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
-```
-
-Run the project.
-
-```bash
-python main.py
-```
-
----
-
-# Future Vision
-
-AutoResearch-Agent is designed as a modular multi-agent research platform.
-
-Eventually it will support:
-
-- Autonomous literature review
-- Reflection-based self-improvement
-- Long-term memory
-- Multi-paper reasoning
-- Survey generation
-- Knowledge graph construction
-- Research planning
-- Local and cloud LLMs
-
-The objective is to create an AI research assistant capable of supporting the complete academic literature review workflow.
-
----
-
-# License
-
-MIT License
-
-## Read-only citation registry (P2 increment)
-
-The evidence workspace now includes **Export references** for an opened record.
-Load citation JSON or BibTeX to inspect it, then download the fetched response.
-BibTeX lists sources skipped for missing bibliographic identity. Switching records
-or starting an analysis/upload clears previous exports; load them again afterwards.
-Export reads do not disable research actions. Exported provenance is not scientific
-verification and does not apply screening decisions as an automatic filter.
-
-Record unverified user-provided DOI associations with
-`python research_cli.py source-doi RUN_ID SOURCE_ID set --doi 10.1234/example --reason "Publisher page"`.
-Use `source-identities RUN_ID` to inspect current state and duplicate assignments.
-Setting or clearing a DOI preserves history and does not change citation/BibTeX
-exports. See [DOI annotations](docs/p2-doi-annotations.md) for API and supported syntax.
-
-For a conservative BibTeX bibliography, run `python research_cli.py bibtex RUN_ID`
-or use `GET /api/research/runs/{run_id}/bibtex`. Explicit arXiv revisions are
-preserved; unknown authors, DOI and year remain absent. Uploads and unrecognized
-source URIs are explicitly skipped. See [BibTeX export](docs/p2-bibtex-export.md).
-
-Candidate screening annotations are also available through
-`POST /api/research/runs/{run_id}/candidate-decisions` and
-`python research_cli.py candidate-decision RUN_ID CANDIDATE_ID include --reason "Relevant method"`.
-Each revision appends a reason and timestamp to the run's history. These are
-annotations: analysis still uses explicitly selected IDs. See
-[candidate screening history](docs/p2-candidate-decisions.md) for semantics and compatibility.
-
-Export provenance for already processed papers through
-`GET /api/research/runs/{run_id}/citations`, or locally:
+In a second terminal, from the same repository root:
 
 ```powershell
-python research_cli.py citations RUN_ID
+npm --prefix frontend run dev -- --hostname 127.0.0.1 --port 3000
 ```
 
-The CLI writes JSON to stdout; use shell redirection to save it. The registry
-preserves source IDs, content hashes, original URIs, exact page quotations and
-both paper claims and generated suggestions that reference those quotations.
-The claim type remains explicit. Search-only candidates are excluded. Repeated
-exports of the same validated snapshot are deterministic and do not modify it.
-An exact arXiv revision is included only when the stored URI contains one;
-unversioned links yield null. No DOI, authors, BibTeX, or revision is inferred.
-This is a provenance export, not verification of scientific truth.
+Open **http://127.0.0.1:3000**. Choose the example in **Your research**, or add your own text-based PDF in **Library**. Start with **Reading & evidence**, then **Compare** and **Writing**. Search requires internet; imported PDFs and the installed example work offline.
 
-### Candidate screening in the workspace
-Each candidate card records Include/Exclude plus a required reason, and displays the latest annotation and ordered history. These annotations never change the checkboxes used for analysis. Saving preserves unsaved selections, topic and upload input. Writes are serialized in the page; failures retain the reason and never retry automatically. After a connection loss, reopen the record to check whether the decision was saved before submitting again. These user annotations do not constitute scientific evaluation.
+For macOS/Linux, use `.venv/bin/python` and `export NAME=value` instead of PowerShell environment syntax. See the [detailed startup guide](docs/local-quickstart.md) for configuration and operation. Keep default local mode on loopback; shared hosting uses the separate [authenticated deployment setup](docs/p5-deployment.md).
 
-### DOI annotations in the workspace
-Load Source DOI annotations to inspect user-provided associations and their ordered reasons/history. Only current processed sources can receive Set/Clear events; historical absent sources are read-only. Duplicate active DOI values produce a notice and never merge sources. Refresh reloads both current identities and history. DOI inputs are validated by the backend's conservative supported subset, not externally verified. Annotations do not enrich citation/BibTeX exports. Failed writes retain drafts and never automatically retry; reopen the saved record before resubmitting after an ambiguous connection failure.
+## Current boundaries
 
-Read-only duplicate clues are available with `python research_cli.py source-duplicates RUN_ID`
-and `GET /api/research/runs/{run_id}/source-duplicates`. See [rules and limits](docs/p2-source-duplicates.md).
+Rule extraction is reproducible and requires no model, but can miss statements, mix PDF columns and misclassify quotations. There is no OCR; the importer accepts text PDFs up to 20 MiB and parses at most 50 pages by default. Comparisons do not rank incompatible experiments. The tool does not autonomously run experiments or establish novelty, causality or scientific validity. Human scientific evaluation remains incomplete; the example is not a replacement for it.
 
-The evidence workspace now provides **Load duplicate clues** and **Download duplicate clues JSON**. It displays independent arXiv, stored-hash and user-DOI groups, with candidate/source links separately. Any record mutation clears the report, including failed or ambiguous writes; reload explicitly afterward. Reading reports preserves unsaved selections and annotation drafts.
+Optional model-based review is explicit and may incur provider costs. See [data and deployment boundaries](docs/p5-deployment.md) before sharing an instance.
 
-Export candidate screening decisions and revision history with
-`python research_cli.py screening-report RUN_ID` or
-`GET /api/research/runs/{run_id}/screening-report`. The read-only report includes
-latest-decision counts and notices when annotations differ from explicit analysis
-selection. See [screening report semantics](docs/p2-screening-report.md).
+## For contributors
 
-Inspect advisory planning-language flags with `python research_cli.py claim-review RUN_ID`
-or `GET /api/research/runs/{run_id}/claim-review`. Flags include original evidence
-and pages, leave the record unchanged, and never represent semantic approval.
-See [scope and limitations](docs/p2-claim-review.md).
+- [Architecture and data contracts](docs/architecture.md)
+- [API, CLI, testing and capability reference](docs/engineering-guide.md)
+- [Roadmap](docs/roadmap.md)
+- [Case reproduction and licensing](examples/conformal-prediction/README.md)
 
-Explicit category corrections are available through
-`POST /api/research/runs/{run_id}/category-revisions` and
-`python research_cli.py revise-category RUN_ID expected-claim.json CATEGORY --reason "Reason"`.
-They preserve evidence and before/after history, reject stale claims, and limit
-each run to 20 revisions. See [category revision behavior](docs/p2-category-revisions.md).
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-ci.txt
+.\.venv\Scripts\python.exe -m pytest tests -q --allow-hosts=127.0.0.1,::1
+npm --prefix frontend test
+npm --prefix frontend run lint
+npm --prefix frontend run build
+```
 
-### P2 semantic review and category revisions
-
-The evidence workspace now supports reasoned, category-only revisions with a
-20-event budget and full before/after history. Optional model review requires
-explicit claim selection and consent, returns support judgments and potential
-contradictions with source context, and never edits records automatically.
-See [semantic review](docs/p2-semantic-review.md) and
-[category revisions](docs/p2-category-revisions.md) for API/CLI use and limits.
-Human scientific evaluation remains unverified; mocked tests do not establish
-semantic accuracy. P2 engineering status and remaining extensions are recorded
-in the [roadmap](docs/roadmap.md).
-
-### P3 user observations and statistics
-
-Create a record offline in the workspace or with `python research_cli.py create "My experiment"`.
-Import numeric observations into that run with
-`python research_cli.py import-experiment RUN_ID measurements.json`, then inspect
-missing values and metadata with `python research_cli.py experiments RUN_ID`.
-The workspace, API and CLI also accept CSV with explicitly declared columns and
-units. `python research_cli.py experiment-statistics RUN_ID` computes reproducible
-descriptive statistics and exports dataset/sample/column references. Original input
-and SHA-256 are retained separately from paper evidence; no model, imputation or
-statistical inference is used. See the [format, arithmetic and limits](docs/p3-observations.md).
-
-### P5 deployment
-
-Single-host Linux deployment now includes isolated user namespaces and writer/reader
-credentials, transactional SQLite run/manuscript storage, and durable search/analysis
-jobs with cancellation, explicit retry and stale-result protection. The UI supports
-memory-only credentials and background job controls. Default local JSON/offline use
-remains available. Requests and PDF workers have bounded resource limits.
-
-See [deployment, migration, backup and operating limits](docs/p5-deployment.md).
-Public hosting requires an operator-managed TLS proxy and aggregate OS/container
-quotas. Scientific evaluation remains **not assessed**; P5 does not change that status.
-
-### P4 evidence-linked writing
-
-Choose **Preview chapter draft** or run `python research_cli.py manuscript-draft RUN_ID`
-to inspect an offline outline with saved paper quotations, P3 statistical summaries,
-source/computation references and explicit missing-material placeholders. It is not
-an approved manuscript. The **Manuscript editor** adds editable chapter plans and
-typed sentences with evidence references, immutable revisions, explicit model review,
-and human-approved Markdown export. Source/text changes or new model reports require
-new approval. Offline human review is supported; model findings and export approval
-never establish scientific validity. See [writing workflow and CLI](docs/p4-manuscripts.md)
-and [read-only preview](docs/p4-evidence-draft.md).
+Engineering checks test behavior and provenance contracts. They do not measure the scientific quality of a literature review.

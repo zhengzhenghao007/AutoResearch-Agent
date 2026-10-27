@@ -11,6 +11,9 @@ import type { CandidateDecision, ResearchHistory, ResearchRun } from '@/types/re
 import type { CitationRegistry, BibtexExport } from '@/types/citations';
 const base = (process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
 export const REQUEST_TIMEOUT_MS = 120_000;
+export class ResearchApiError extends Error {
+  constructor(message:string, public status:number) { super(message); }
+}
 let accessToken = '';
 export function setResearchToken(token: string) { accessToken = token; }
 export interface ResearchSession { mode:'local'|'deployment'; user_id:string; role:'reader'|'writer'; jobs_enabled:boolean }
@@ -39,7 +42,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     if (!response.ok) {
       let message = '';
       try { message = detailText(await response.json()); } catch { /* Fall back to HTTP status. */ }
-      throw new Error(message || `Request failed (${response.status}).`);
+      throw new ResearchApiError(message || `Request failed (${response.status}).`, response.status);
     }
     return await response.json() as T;
   } catch (error) {

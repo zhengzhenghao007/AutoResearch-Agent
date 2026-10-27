@@ -1,1 +1,2 @@
-*.pdf binary
+examples/conformal-prediction/outputs/*.json linguist-generated=true
+examples/conformal-prediction/outputs/*.md linguist-generated=true
