@@ -265,8 +265,8 @@ Source: Conformal Prediction with Missing Values; PDF page(s): 2
 Consider a data set
 with n exchangeable realizations of the random variable
 (X, M, Y) ∈ Rd ×{0, 1}d ×R:
- 
-X (k), M(k), Y(k)	n
+\u0008\u0000
+X (k), M(k), Y(k)\u0001	n
 k=1,
 where X represents the features, M the missing pattern, or
 mask, and Y an outcome to predict.
@@ -283,8 +283,8 @@ Source: Conformal Prediction with Missing Values; PDF page(s): 3
 
 In practice, Φ is obtained as the result
 of an algorithm I trained on
- 
-X (k), M(k)	n+1
+\u0008\u0000
+X (k), M(k)\u0001	n+1
 k=1.
 
 Source: Conformal Prediction with Missing Values; PDF page(s): 3
@@ -316,14 +316,14 @@ Source: Conformal Prediction with Missing Values; PDF page(s): 4
 
 Algorithm 1 CP-MDA-Exact (with CQR)
 Input: Imputation algorithm I, quantile regression al-
-gorithm QR, significance level α, training set 
-x(k), m(k), y(k)	n
+gorithm QR, significance level α, training set\u0008\u0000
+x(k), m(k), y(k)\u0001	n
 k=1, test point
- 
-x(test), m(test)
+\u0000
+x(test), m(test)\u0001
 Output: Prediction interval bCα
- 
-x(test), m(test)
+\u0000
+x(test), m(test)\u0001
 1: Randomly split {1, .
 
 Source: Conformal Prediction with Missing Values; PDF page(s): 5
@@ -524,20 +524,20 @@ Source: Conformal Prediction with Missing Values; PDF page(s): 13
 
 Conformal Prediction with Missing Values
 Algorithm 3 SCP on impute-then-predict
-Input: Imputation algorithm I, predictive algorithm A, conformity score function s, significance level α, training set 
-X (1), M(1), Y(1)
+Input: Imputation algorithm I, predictive algorithm A, conformity score function s, significance level α, training set\u0008\u0000
+X (1), M(1), Y(1)\u0001
 , · · ·,
- 
-X (n), M(n), Y(n)	
+\u0000
+X (n), M(n), Y(n)\u0001	
 .
 
 Source: Conformal Prediction with Missing Values; PDF page(s): 14
 
 2: Fit the imputation function: Φ(·) ← I
-  
-X (k), M(k)
+\u0000\u0008\u0000
+X (k), M(k)\u0001
 , k∈ Tr
-	
+	\u0001
 3: Impute the data set:
 n
 X (k)
@@ -545,26 +545,26 @@ imp
 on
 k=1
 :=
-
+\u0008
 Φ
- 
-X (k), M(k)	n
+\u0000
+X (k), M(k)\u0001	n
 k=1
 4: Fit algorithm A: ˆg(·) ← A
-n
+\u0010n\u0010
 X (k)
 imp , Y(k)
-
+\u0011
 , k∈ Tr
-o
+o\u0011
 5: for k ∈ Cal do
 6: Set S(k) = s
-
+\u0010
 Y (k), ˆg
-
+\u0010
 X (k)
 imp
-
+\u0011\u0011
 , the conformity scores
 7: end for
 8: Set SCal = {S(k), k∈ Cal}
@@ -591,8 +591,8 @@ impute-then-predict+Jackknife+ is marginally valid (of level 1 − 2α).
 Source: Conformal Prediction with Missing Values; PDF page(s): 14
 
 Φ is the output of an imputing algorithm I trained on
-n 
-X (k), M(k), Y(k)
+n\u0000
+X (k), M(k), Y(k)\u0001
 k∈T
 o
 .
@@ -613,20 +613,20 @@ Source: Conformal Prediction with Missing Values; PDF page(s): 17
 Algorithm 4 CP-MDA-Exact
 Input: Imputation algorithm I, predictive algorithm A, conformity score function sg paramatrized by a model g, signifi-
 cance level α, training set
- 
-X (k), M(k), Y(k)	n
+\u0008\u0000
+X (k), M(k), Y(k)\u0001	n
 k=1, test point
- 
-X (test), M(test)
+\u0000
+X (test), M(test)\u0001
 .
 
 Source: Conformal Prediction with Missing Values; PDF page(s): 17
 
 2: Fit the imputation function: Φ(·) ← I
-  
-X (k), M(k)
+\u0000\u0008\u0000
+X (k), M(k)\u0001
 , k∈ Tr
-	
+	\u0001
 3: Impute the training set:
 n
 X (k)
@@ -634,21 +634,21 @@ imp
 o
 k∈Tr
 :=
-
+\u0008
 Φ
- 
-X (k), M(k)	
+\u0000
+X (k), M(k)\u0001	
 k∈Tr
 4: Fit algorithm A: ˆg(·) ← A
-n
+\u0010n\u0010
 X (k)
 imp , Y(k)
-
+\u0011
 , k∈ Tr
-o
+o\u0011
 // Generate an augmented calibration set:
 5: Cal(test) =
-
+\u0008
 k ∈ Cal such that M(k) ⊂ M(test)	
 6: for k ∈ Cal(test) do
 7: fM (k) = M (test) Additional masking
@@ -673,60 +673,60 @@ i
 • bCα(X (test), m(test)) =
 h
 bQ ˜α
- 
+\u0000
 ˆq α
 2 ◦ Φ(X (test), m(test)) − SCal(test)
-
+\u0001
 ; bQ1− ˜α
- 
+\u0000
 ˆq1− α
 2 ◦ Φ(X (test), m(test)) + SCal(test)
-i
+\u0001i
 • bCα(X (test), m(test)) =
 h
 bQ ˜α
-
+\u0010
 Z m(test)
 α
 2
-
+\u0011
 ; bQ1− ˜α
-
+\u0010
 Z m(test)
 1− α
 2
-i
+\u0011i
 .
 
 Source: Conformal Prediction with Missing Values; PDF page(s): 19
 
 On the other hand, the output predictive interval of Algorithm 2 is then written as:
 • bCα
- 
-X (test), m(test)
+\u0000
+X (test), m(test)\u0001
 = [ bQ ˜α
- 
+\u0000
 Z α
 2
-
+\u0001
 ; bQ1− ˜α
- 
+\u0000
 Z1− α
 2
-
+\u0001
 ].
 
 Source: Conformal Prediction with Missing Values; PDF page(s): 19
 
 The result of Algorithm 1 implies that for any mask m ∈ M, we have :
 P
-
+\u0010
 Y (test) ∈ bCα
-
+\u0010
 X (test), m
-
+\u0011
 |M (test) = m
-
+\u0011
 ≥ 1 − α,
 i.e.
 
@@ -1498,9 +1498,9 @@ m
 mX
 i=1
 I
-
+\u0010
 Yi ∈ ˆR(Xi)
-
+\u0011
 ,
 which is an estimate of the marginal coverage of R.
 

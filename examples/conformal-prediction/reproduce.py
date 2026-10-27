@@ -27,6 +27,11 @@ def write_json(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
 
+def display_text(text):
+    """Make PDF control characters visible in Markdown; JSON remains lossless."""
+    return ''.join(f'\\u{ord(c):04x}' if ord(c) < 32 and c not in '\n\r\t' else c for c in text)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--pdf-dir', type=Path, default=ROOT / '.verification/case-pdfs')
@@ -98,9 +103,9 @@ def main():
             text += [block.text, '']
             if block.paper:
                 text += [f'Source: {block.paper.source.title}; PDF page(s): '+', '.join(str(e.page) for e in block.paper.evidence), '']
-    (args.output / 'draft.md').write_text('\n'.join(text),encoding='utf-8')
+    (args.output / 'draft.md').write_text(display_text('\n'.join(text)),encoding='utf-8')
     comparison = next(a for a in run.artifacts if a.kind=='method_comparison')
-    (args.output / 'comparison.md').write_text('# '+comparison.title+'\n\n'+comparison.content+'\n',encoding='utf-8')
+    (args.output / 'comparison.md').write_text(display_text('# '+comparison.title+'\n\n'+comparison.content+'\n'),encoding='utf-8')
     print(json.dumps({'output':str(args.output),'papers':len(run.papers),'quotes':sum(len(p.evidence) for p in run.papers),
                       'human_approval':False},indent=2))
 
