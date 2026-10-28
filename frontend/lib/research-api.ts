@@ -10,6 +10,7 @@ import type {SourceIdentitiesView,SourceIdentityRequest} from '@/types/source-id
 import type { CandidateDecision, ResearchHistory, ResearchRun } from '@/types/research';
 import type { CitationRegistry, BibtexExport } from '@/types/citations';
 import type {WorkspaceItemRequest,WorkspacePreview} from '@/types/workspace';
+import type {ResearchTask,CreateResearchTask,TaskBudget} from '@/types/research-tasks';
 const base = (process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
 export const REQUEST_TIMEOUT_MS = 120_000;
 export class ResearchApiError extends Error {
@@ -54,6 +55,12 @@ async function request<T>(path: string, init?: RequestInit, binary = false): Pro
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  researchTasks:(id:string)=>request<{items:ResearchTask[]}>(`/runs/${encodeURIComponent(id)}/tasks`),
+  createResearchTask:(id:string,body:CreateResearchTask)=>request<ResearchTask>(`/runs/${encodeURIComponent(id)}/tasks`,json(body)),
+  researchTask:(id:string,taskId:string)=>request<ResearchTask>(`/runs/${encodeURIComponent(id)}/tasks/${encodeURIComponent(taskId)}`),
+  nextResearchTask:(id:string,taskId:string)=>request<ResearchTask>(`/runs/${encodeURIComponent(id)}/tasks/${encodeURIComponent(taskId)}/next`,json({})),
+  cancelResearchTask:(id:string,taskId:string)=>request<ResearchTask>(`/runs/${encodeURIComponent(id)}/tasks/${encodeURIComponent(taskId)}/cancel`,json({})),
+  increaseResearchTaskBudget:(id:string,taskId:string,body:TaskBudget)=>request<ResearchTask>(`/runs/${encodeURIComponent(id)}/tasks/${encodeURIComponent(taskId)}/budget`,json(body)),
   saveWorkspaceItem: (id:string,body:WorkspaceItemRequest) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}/workspace/items`,json(body)),
   previewWorkspaceItem: (id:string,body:WorkspaceItemRequest) => request<WorkspacePreview>(`/runs/${encodeURIComponent(id)}/workspace/preview`,json(body)),
   workspaceItem: (id:string,itemId:string) => request<WorkspacePreview>(`/runs/${encodeURIComponent(id)}/workspace/items/${encodeURIComponent(itemId)}`),
