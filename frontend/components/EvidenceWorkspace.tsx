@@ -14,6 +14,7 @@ import type { ResearchHistory, ResearchRun } from '@/types/research';
 import { sourcePdf } from './EvidenceViewer';
 import ReadingDesk from './ReadingDesk';
 import ResearchOverview from './ResearchOverview';
+import ResearchTasks from './ResearchTasks';
 import ResearchMaterials from './ResearchMaterials';
 import ComparisonTable from './ComparisonTable';
 import ResearchExports from './ResearchExports';
@@ -34,6 +35,7 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLe
   const currentUrlRun=useRef<string|null>(null);
   function navigateStage(value:string){stageRef.current=value;setStage(value);if(value==='writing')setWritingVisited(true);const id=run?.id??currentUrlRun.current;if(id)activeHistoryIndex.current=setUrl(id,value);}
   const [focusEvidence,setFocusEvidence]=useState('');
+  const [tasksOpen,setTasksOpen]=useState(false);
   const [focusSource,setFocusSource]=useState('');
   const [readingVisit,setReadingVisit]=useState(0);
   const [writingVisited,setWritingVisited]=useState(false);
@@ -132,6 +134,7 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLe
       {run&&<div className="research-record-title"><h2>{run.topic}</h2><p className="research-meta">{run.papers.length} papers · {run.papers.reduce((n,p)=>n+p.evidence.length,0)} quotations · {run.review.approved?'Literal source checks passed':'Source checks pending'}</p></div>}
       <div id="stage-library" hidden={stage!=='library'}>
       {run&&<ResearchOverview run={run} onStage={navigateStage} onSource={id=>showEvidence('',id)}/>}
+      {run&&<details className="task-panel-entry" onToggle={event=>setTasksOpen(event.currentTarget.open)}><summary>Research tasks: plan, checkpoints and budget</summary>{tasksOpen&&<ResearchTasks key={run.id} runId={run.id} topic={run.topic} papers={run.papers} readOnly={readOnly} onEvidence={id=>showEvidence(id)}/>}</details>}
       <div className="stage-intro"><h3>Build your reading list</h3><p>Search for papers or add PDFs you already have. Each research record keeps its own sources, evidence and drafts.</p></div>
       {jobsEnabled&&<ResearchJobs topic={topic} runId={run?.id} selectedIds={selection} blocked={leaveBlocked} readOnly={readOnly} onOpen={id=>{setUrl(id);void open(id);void refreshHistory(page);}}/>}
       <fieldset disabled={readOnly} style={{border:0,padding:0,minWidth:0}}><form className="research-search" onSubmit={event=>{event.preventDefault();if(!jobsEnabled&&topic.trim())void mutate('Finding papers…',()=>researchApi.search(topic.trim()));}}><label htmlFor="research-topic">Research topic</label><div className="research-row"><input id="research-topic" maxLength={2000} required value={topic} disabled={busy} onChange={e=>setTopic(e.target.value)} placeholder="e.g. vision language robot navigation"/>{!jobsEnabled&&<button className="research-primary" disabled={busy||!topic.trim()}>Find papers</button>}<button type="button" disabled={busy||!topic.trim()} onClick={()=>void mutate('Creating offline record…',()=>researchApi.create(topic.trim()))}>Create offline record</button></div><p className="research-meta">A search creates a new record. Choose papers before analysis.</p></form>

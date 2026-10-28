@@ -1,0 +1,1380 @@
+{
+  "schema_version": 1,
+  "status": "pending",
+  "provenance": {
+    "corpus": "examples/conformal-prediction/outputs/run.json",
+    "corpus_sha256": "3b369660d5fa5067640aeda84a1dcee16a1c1d8c0cd702701399041d509ef7ba",
+    "sources_sha256": "79e79b0076ea6947f1a89123992094b486b61b295fcd06718fd6c8efb6418a7f",
+    "text_hash_encoding": "UTF-8 with LF newlines; original PDF hashes remain byte hashes",
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "python": "3.12.8",
+    "implementation_sha256": {
+      "evaluation/evaluate_research_tasks.py": "13abcaea98837bd854d0d64b2920be6ba07167a1cf9dd261a0708dab6e3aa6c8",
+      "services/research_tasks.py": "549e700181c7fec7a1341ea6c53965dded5f77953126eadf01b7f147b2bf7277",
+      "schemas/research_tasks.py": "dfa784e452a9ee84be880c5068ead58f05757b5f9b9df6e4c00882fd3612f983"
+    },
+    "papers": [
+      {
+        "key": "zaffran23a",
+        "filename": "zaffran23a.pdf",
+        "title": "Conformal Prediction with Missing Values",
+        "authors": [
+          "Margaux Zaffran",
+          "Aymeric Dieuleveut",
+          "Julie Josse",
+          "Yaniv Romano"
+        ],
+        "year": 2023,
+        "publication": "Proceedings of Machine Learning Research 202:40578–40604",
+        "landing_url": "https://proceedings.mlr.press/v202/zaffran23a.html",
+        "pdf_url": "https://proceedings.mlr.press/v202/zaffran23a/zaffran23a.pdf",
+        "sha256": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15"
+      },
+      {
+        "key": "ghosh23a",
+        "filename": "ghosh23a.pdf",
+        "title": "Probabilistically robust conformal prediction",
+        "authors": [
+          "Subhankar Ghosh",
+          "Yuanjie Shi",
+          "Taha Belkhouja",
+          "Yan Yan",
+          "Jana Doppa",
+          "Brian Jones"
+        ],
+        "year": 2023,
+        "publication": "Proceedings of Machine Learning Research 216:681–690",
+        "landing_url": "https://proceedings.mlr.press/v216/ghosh23a.html",
+        "pdf_url": "https://proceedings.mlr.press/v216/ghosh23a/ghosh23a.pdf",
+        "sha256": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533"
+      },
+      {
+        "key": "cruz-cabezas25a",
+        "filename": "cruz-cabezas25a.pdf",
+        "title": "Epistemic Uncertainty in Conformal Scores: A Unified Approach",
+        "authors": [
+          "Luben Miguel Cruz Cabezas",
+          "Vagner Silva Santos",
+          "Thiago Ramos",
+          "Rafael Izbicki"
+        ],
+        "year": 2025,
+        "publication": "Proceedings of Machine Learning Research 286:443–470",
+        "landing_url": "https://proceedings.mlr.press/v286/cruz-cabezas25a.html",
+        "pdf_url": "https://raw.githubusercontent.com/mlresearch/v286/main/assets/cruz-cabezas25a/cruz-cabezas25a.pdf",
+        "sha256": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e"
+      }
+    ]
+  },
+  "instructions": "An independent human must inspect the saved page in the pinned corpus and question before recording judgments. True/false/null judgments are not inferred from lexical metrics. Do not treat this packet as manuscript approval.",
+  "case_reviews": [
+    {
+      "case_id": "missing_inputs",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "reviewer": null,
+      "status": "pending",
+      "missing_evidence": null,
+      "comparison_validity": null,
+      "scientific_accuracy": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "reviewer": null,
+      "status": "pending",
+      "missing_evidence": null,
+      "comparison_validity": null,
+      "scientific_accuracy": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "reviewer": null,
+      "status": "pending",
+      "missing_evidence": null,
+      "comparison_validity": null,
+      "scientific_accuracy": null
+    },
+    {
+      "case_id": "lexical_decoy",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "reviewer": null,
+      "status": "pending",
+      "missing_evidence": null,
+      "comparison_validity": null,
+      "scientific_accuracy": null
+    },
+    {
+      "case_id": "absent_topic",
+      "question": "zygomorphic quasicrystals",
+      "reviewer": null,
+      "status": "pending",
+      "missing_evidence": null,
+      "comparison_validity": null,
+      "scientific_accuracy": null
+    }
+  ],
+  "items": [
+    {
+      "case_id": "missing_inputs",
+      "method": "baseline",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "baseline",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "baseline",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 1,
+        "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "baseline",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "baseline",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "baseline",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 2,
+        "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "executor",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "executor",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:12",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "However, this line of work focuses on point predic-\ntion with missing values that aim to predict the most likely\noutcome."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "executor",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:15",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 2,
+        "quote": "Settings are given in Section 7, in a nutshell: data follows a Gaussian linear model where missing\nvalues are independent of everything else and of proportion 20%; the dimension of the problem is 3 in Figure 1a while in 1b it is 10."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "executor",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:10",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "The drawback of this “impute-then-predict” approach is\nthat single imputation can distort the joint and marginal\ndistribution of the data."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "executor",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:17",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 3,
+        "quote": "As most predictive algorithms\ncan not directly handle missing values, we impute the\nincomplete data using an imputation functionΦ which maps\nobserved values to themselves and missing values to a func-\ntion of the observed values."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "missing_inputs",
+      "method": "executor",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:19",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 3,
+        "quote": "The imputation\nfunction Φ is the output of an algorithm I treating its input\ndata points symmetrically: I((X (σ(k)), M(σ(k)))n+1\nk=1 )\n(d)\n=\nI((X (k), M(k))n+1\nk=1 ) conditionally on (X (k), M(k))n+1\nk=1\nand for any permutation σ on J1, n+ 1K."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "baseline",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "baseline",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "baseline",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 1,
+        "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "baseline",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "baseline",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "baseline",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 2,
+        "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "executor",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:7",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "The main research question of\nthis paper is: how can we develop probably correct CP al-\ngorithms for ensuring robustness to most perturbations for\n(pre-trained) deep classifiers?"
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "executor",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:8",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 2,
+        "quote": "The goal is to improve the robustness of the CP framework\nto handle perturbations ϵ bounded by r for every input X ∈ X."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "executor",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:53",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 12,
+        "quote": "On the numerical side, preliminary experiments show\npromising results, indicating CP-MDA’s robustness, but a detailed numerical study is needed."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "executor",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:32",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 5,
+        "quote": "The following formal result guarantees the probabilistically\nrobust coverage for the aPRCP algorithm."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "executor",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:58",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 8,
+        "quote": "CP is a general framework for un-\ncertainty quantification that provides marginal coverage\nguarantees without any assumptions on the underlying data\ndistribution [Shafer and V ovk, 2008]."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "method": "executor",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:6",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "Conformal prediction (CP) [V ovk et al., 1999,\n2005, Shafer and V ovk, 2008] is a framework for UQ that\nprovides formal guarantees for a user-specified coverage:\nground-truth output is contained in the prediction set with a\nhigh probability 1 − α (e.g., 90%)."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "baseline",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "baseline",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "baseline",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 1,
+        "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "baseline",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "baseline",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "baseline",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 2,
+        "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "executor",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:100",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 27,
+        "quote": "D.7 APPLICATION TO DENSITY-BASED CONFORMITY SCORES\nIn this section, we use a simulated experiment to illustrate howEPICSCORE can enhance density-based conformal prediction\nmethods by explicitly incorporating epistemic uncertainty."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "executor",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:102",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 27,
+        "quote": "The experiment is designed to reflect regions with both high epistemic and aleatoric uncertainty, allowing us to\nhighlight the advantages of our method in capturing complex uncertainty structures."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "executor",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:11",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 2,
+        "quote": "1.1 NOVELTY\nWe introduce EPICSCORE (Epistemic Conformal Score),\na novel nonconformity score that explicitly integrates epis-\ntemic uncertainty into the conformal prediction framework."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "executor",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:21",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 4,
+        "quote": "Challenge: NAs induce heteroskedasticity\nTo better understand the interplay between missing values\nand conditional coverage with respect to the mask, we con-\nsider an illustrative example of a Gaussian linear model."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "executor",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:32",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 6,
+        "quote": "The challenge in proving MCV of CP-MDA-Nested is that\nthe augmented calibration and test points are not exchange-\nable conditional on the mask and thus may result in under-\ncoverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "sparse_regions",
+      "method": "executor",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:35",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 7,
+        "quote": "For any missing mechanism, for almost all\nimputation function Φ ∈ FI\n∞, if FY |(Xobs(M),M ) is continu-\nous, a universally consistent quantile regressor trained on\nthe imputed data set yields asymptotic conditional coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "lexical_decoy",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "subquestions": [
+        "zygomorphic quasicrystals superconductivity"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "lexical_decoy",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "subquestions": [
+        "zygomorphic quasicrystals superconductivity"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "lexical_decoy",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "subquestions": [
+        "zygomorphic quasicrystals superconductivity"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 1,
+        "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "lexical_decoy",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "subquestions": [
+        "zygomorphic quasicrystals superconductivity"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "lexical_decoy",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "subquestions": [
+        "zygomorphic quasicrystals superconductivity"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "lexical_decoy",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "subquestions": [
+        "zygomorphic quasicrystals superconductivity"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 2,
+        "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "lexical_decoy",
+      "method": "executor",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "subquestions": [
+        "zygomorphic quasicrystals superconductivity"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:35",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 8,
+        "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN CQR CQR-r UACQR-P UACQR-S\nairfoil 19.361 (0.234) 19.704 (0.27) 18.799 (0.29) 20.521 (0.234) 20.535 (0.236) 23.021 (0.337) 20.188 (0.3)\nbike×(101) 44.722 (0.297) 47.818 (0.320)43.858 (0.326)45.628 (0.256) 45.638 (0.258) 53.413 (0.376)43.815 (0.385)\nconcrete 42.765 (0.723) 45.276 (0.764) 44.442 (0.8) 46.882 (0.681) 46.896 (0.683) 52.789 (1.097) 47.324 (1.349)\ncycle 34.435 (0.142) 35.054 (0.131) 34.077 (0.129)39.218 (0.134) 39.408 (0.136) 43.775 (0.181) 35.346 (0.197)\nelectric 0.099 (< 0.001) 0.096 (< 0.001) 0.082 (< 0.001)0.102 (0.001) 0.102 (0.001) 0.111 (0.001) 0.097 (< 0.001)\nhomes×(105) 7.739 (0.066) 8.098 (0.072) 7.225 (0.049) 8.360 (0.075) 8.433 (0.078) 11.427 (0.131) 8.544 (0.107)\nmeps19 65.085 (1.469) 64.907 (1.56) 64.3 (1.528) 64.239 (1.56) 64.239 (1.56) 71.015 (1.763)63.737 (1.461)\nprotein 17.687 (0.019) 18.096 (0.037) 17.417 (0.019) 17.7 (0.015) 17.7 (0.016) 18.149 (0.015) 17.691 (0.015)\nstar×(101) 98.466 (0.768) 98.033 (0.750) 98.725 (0.754) 97.770 (0.725) 97.791 (0.724)99.782 (0.647) 99.809 (0.968)\nsuperconductivity 74.37 (0.222) 80.278 (0.266) 70.212 (0.196)75.496 (0.219) 75.508 (0.218) 87.929 (0.513) 73.971 (0.404)\nWEC×(105) 2.925 (0.009) 2.665 (0.012) 2.374 (0.010) 3.138 (0.009) 3.142 (0.009) 3.517 (0.010) 3.046 (0.010)\nwinered 3.007 (0.058) 3.009 (0.059) 2.977 (0.05) 2.979 (0.069) 2.978 (0.069) 3.059 (0.069) 2.999 (0.063)\nwinewhite 3.334 (0.03) 3.327 (0.034) 3.219 (0.03) 3.316 (0.036) 3.315 (0.036) 3.378 (0.038) 3.2 (0.036)\nTable 2: Regression AISL values for each method and dataset."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "lexical_decoy",
+      "method": "executor",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "subquestions": [
+        "zygomorphic quasicrystals superconductivity"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:36",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 8,
+        "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN Mondrian Reg-split Weighted\nairfoil 19.747 (0.767) 20.287 (0.686) 19.823 (0.675) 21.532 (0.919) 21.201 (0.98) 20.276 (0.819)\nbike×(101) 36.381 (0.463) 41.448 (0.575) 37.041 (0.452) 38.190 (0.403) 43.918 (0.567) 37.773 (0.468)\nconcrete 52.098 (2.237) 52.998 (2.359) 51.648 (2.185) 61.915 (2.815) 54.902 (2.634) 58.399 (3.165)\ncycle 19.418 (0.211) 19.522 (0.221) 19.436 (0.213) 19.403 (0.226) 19.73 (0.208) 19.49 (0.207)\nelectric 0.048 (<0.001) 0.049 (<0.001) 0.048 (<0.001) 0.05 (<0.001) 0.05 (0.001) 0.048 (<0.001)\nhomes×(105) 5.921 (0.0716) 6.192 (0.0689) 5.546 (0.055) 5.710 (0.053) 7.569 (0.098) 5.860 (0.056)\nmeps19 86.039 (2.421) 87.086 (2.405) 75.061 (1.807) 79.192 (1.821) 109.83 (2.695) 92.433 (3.259)\nprotein 18.885 (0.054) 18.772 (0.065) 17.735 (0.055) 17.586 (0.051) 19.423 (0.055) 18.314 (0.065)\nstar×(101) 105.616 (1.255) 106.112 (0.998) 106.368 (1.173) 109.346 (1.119) 105.250 (1.038) 129.492 (1.657)\nsuperconductivity 54.895 (0.364) 59.16 (0.449) 53.406 (0.365) 58.065 (0.313) 68.183 (0.418) 54.981 (0.345)\nWEC×(105) 1.437 (0.010) 1.435 (0.011) 1.283 (0.009) 1.294 (0.009) 1.620 (0.009) 1.410 (0.009)\nwinered 3.152 (0.07) 3.171 (0.064) 3.101 (0.062) 3.262 (0.069) 3.214 (0.063) 3.415 (0.067)\nwinewhite 3.104 (0.027) 3.187 (0.029) 3.129 (0.029) 3.087 (0.023) 3.181 (0.028) 3.189 (0.033)\nmodel in all conformal methods."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "lexical_decoy",
+      "method": "executor",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "subquestions": [
+        "zygomorphic quasicrystals superconductivity"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:38",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 9,
+        "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN CQR CQR-r UACQR-P UACQR-S\nairfoil 1.028 (0.034) 1.01 (0.018) 1.048 (0.04) 1.005 (0.013) 1.004 (0.012) 1.002 (0.01) 1.005 (0.016)\nbike 0.991 (0.007) 1.01 (0.007) 0.989 (0.007) 0.985 (0.007) 0.985 (0.007) 0.99 (0.005) 0.981 (0.01)\nconcrete 0.983 (0.033) 0.995 (0.016) 1.043 (0.029) 0.998 (0.012) 0.998 (0.012) 0.998 (0.008) 0.998 (0.012)\ncycle 0.953 (0.014) 0.966 (0.014) 0.949 (0.014) 0.997 (0.005) 0.997 (0.005) 1.0 (0.004) 0.998 (0.007)\nelectric 1.01 (0.004) 1.01 (0.004) 1.012 (0.008) 1.008 (0.004) 1.007 (0.003) 1.006 (0.003) 1.01 (0.005)\nhomes 1.116 (0.019) 1.101 (0.016) 1.173 (0.027) 1.088 (0.015) 1.081 (0.014) 1.039 (0.006) 1.094 (0.014)\nmeps19 1.052 (0.029) 1.042 (0.025) 1.044 (0.028) 1.04 (0.025) 1.04 (0.025) 1.021 (0.015) 1.045 (0.026)\nprotein 1.001 (0.002) 1.001 (0.003) 1.006 (0.002) 1.002 (0.001) 1.002 (0.001) 1.001 (0.001) 1.002 (0.001)\nstar 0.994 (0.006) 0.994 (0.003) 0.999 (0.007) 0.994 (0.003) 0.993 (0.003) 0.997 (0.003) 0.997 (0.003)\nsuperconductivity 1.021 (0.007) 0.987 (0.006) 1.029 (0.008) 1.041 (0.007) 1.041 (0.007) 1.023 (0.004) 1.049 (0.008)\nWEC 1.012 (0.006) 1.003 (0.008) 1.02 (0.01) 1.016 (0.003) 1.016 (0.003) 1.011 (0.002) 1.021 (0.004)\nwinered 1.008 (0.012) 1.007 (0.008) 1.072 (0.022) 0.993 (0.008) 0.992 (0.008) 0.996 (0.005) 0.992 (0.009)\nwinewhite 1.031 (0.007) 1.024 (0.006) 1.053 (0.014) 1.018 (0.007) 1.018 (0.007) 1.018 (0.006) 1.034 (0.01)\ntimate variance by fitting a Random Forest to (X, Y)."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "absent_topic",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals",
+      "subquestions": [
+        "zygomorphic quasicrystals"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "absent_topic",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals",
+      "subquestions": [
+        "zygomorphic quasicrystals"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "absent_topic",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals",
+      "subquestions": [
+        "zygomorphic quasicrystals"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 1,
+        "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "absent_topic",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals",
+      "subquestions": [
+        "zygomorphic quasicrystals"
+      ],
+      "evidence": {
+        "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+        "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+        "page": 1,
+        "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "absent_topic",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals",
+      "subquestions": [
+        "zygomorphic quasicrystals"
+      ],
+      "evidence": {
+        "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+        "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+        "page": 1,
+        "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    },
+    {
+      "case_id": "absent_topic",
+      "method": "baseline",
+      "question": "zygomorphic quasicrystals",
+      "subquestions": [
+        "zygomorphic quasicrystals"
+      ],
+      "evidence": {
+        "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+        "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+        "page": 2,
+        "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+      },
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "judgments": {
+        "answers_question": null,
+        "semantic_support": null,
+        "assumptions_preserved": null,
+        "bibliography_only": null
+      },
+      "notes": null
+    }
+  ]
+}

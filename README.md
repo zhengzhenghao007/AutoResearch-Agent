@@ -28,7 +28,7 @@ The [research studio guide](docs/research-studio.md) walks through data import, 
 
 See the [public-product comparison and quality review](docs/superpowers/plans/2026-10-27-workbench-quality.md) for the design references, verified improvements and remaining limits.
 
-The current product is a research workbench with bounded automation, not a fully autonomous scientist. See the [agent capability audit and acceptance criteria](docs/agent-readiness-review.md) for implemented capabilities and the remaining planning, recovery, budget and evaluation gaps.
+The current product is a research workbench with bounded automation, not a fully autonomous scientist. In Library, expand **Research tasks** to create a structured saved-paper plan, run checkpointed steps and explicitly increase exhausted budgets. [Execution guide](docs/research-execution.md) · [Real-paper evaluation and observed failures](examples/research-execution/README.md) · [Agent capability audit](docs/agent-readiness-review.md).
 
 ## A real example, including what went wrong
 

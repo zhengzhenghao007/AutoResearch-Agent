@@ -1,0 +1,3888 @@
+{
+  "schema_version": 1,
+  "command": "python -m evaluation.evaluate_research_tasks --output examples/research-execution/results.json --repeats 3",
+  "provenance": {
+    "corpus": "examples/conformal-prediction/outputs/run.json",
+    "corpus_sha256": "3b369660d5fa5067640aeda84a1dcee16a1c1d8c0cd702701399041d509ef7ba",
+    "sources_sha256": "79e79b0076ea6947f1a89123992094b486b61b295fcd06718fd6c8efb6418a7f",
+    "text_hash_encoding": "UTF-8 with LF newlines; original PDF hashes remain byte hashes",
+    "license": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "python": "3.12.8",
+    "implementation_sha256": {
+      "evaluation/evaluate_research_tasks.py": "13abcaea98837bd854d0d64b2920be6ba07167a1cf9dd261a0708dab6e3aa6c8",
+      "services/research_tasks.py": "549e700181c7fec7a1341ea6c53965dded5f77953126eadf01b7f147b2bf7277",
+      "schemas/research_tasks.py": "dfa784e452a9ee84be880c5068ead58f05757b5f9b9df6e4c00882fd3612f983"
+    },
+    "papers": [
+      {
+        "key": "zaffran23a",
+        "filename": "zaffran23a.pdf",
+        "title": "Conformal Prediction with Missing Values",
+        "authors": [
+          "Margaux Zaffran",
+          "Aymeric Dieuleveut",
+          "Julie Josse",
+          "Yaniv Romano"
+        ],
+        "year": 2023,
+        "publication": "Proceedings of Machine Learning Research 202:40578–40604",
+        "landing_url": "https://proceedings.mlr.press/v202/zaffran23a.html",
+        "pdf_url": "https://proceedings.mlr.press/v202/zaffran23a/zaffran23a.pdf",
+        "sha256": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15"
+      },
+      {
+        "key": "ghosh23a",
+        "filename": "ghosh23a.pdf",
+        "title": "Probabilistically robust conformal prediction",
+        "authors": [
+          "Subhankar Ghosh",
+          "Yuanjie Shi",
+          "Taha Belkhouja",
+          "Yan Yan",
+          "Jana Doppa",
+          "Brian Jones"
+        ],
+        "year": 2023,
+        "publication": "Proceedings of Machine Learning Research 216:681–690",
+        "landing_url": "https://proceedings.mlr.press/v216/ghosh23a.html",
+        "pdf_url": "https://proceedings.mlr.press/v216/ghosh23a/ghosh23a.pdf",
+        "sha256": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533"
+      },
+      {
+        "key": "cruz-cabezas25a",
+        "filename": "cruz-cabezas25a.pdf",
+        "title": "Epistemic Uncertainty in Conformal Scores: A Unified Approach",
+        "authors": [
+          "Luben Miguel Cruz Cabezas",
+          "Vagner Silva Santos",
+          "Thiago Ramos",
+          "Rafael Izbicki"
+        ],
+        "year": 2025,
+        "publication": "Proceedings of Machine Learning Research 286:443–470",
+        "landing_url": "https://proceedings.mlr.press/v286/cruz-cabezas25a.html",
+        "pdf_url": "https://raw.githubusercontent.com/mlresearch/v286/main/assets/cruz-cabezas25a/cruz-cabezas25a.pdf",
+        "sha256": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e"
+      }
+    ]
+  },
+  "human_review": {
+    "status": "pending",
+    "semantic_support_rate": null,
+    "scientific_accuracy": null,
+    "rubric": [
+      "Does each quote answer the question?",
+      "Are assumptions and limitations preserved?",
+      "Are cross-paper comparisons justified?",
+      "Which relevant evidence was omitted?"
+    ]
+  },
+  "cases": [
+    {
+      "id": "missing_inputs",
+      "question": "How do conformal methods handle missing values and imputation?",
+      "subquestions": [
+        "missing values",
+        "imputation"
+      ],
+      "facets": [
+        [
+          "missing"
+        ],
+        [
+          "imputation",
+          "impute"
+        ]
+      ]
+    },
+    {
+      "id": "perturbed_inputs",
+      "question": "How does robust conformal prediction handle perturbations and coverage?",
+      "subquestions": [
+        "perturbations robustness",
+        "coverage guarantees"
+      ],
+      "facets": [
+        [
+          "perturbation",
+          "perturbations"
+        ],
+        [
+          "coverage"
+        ]
+      ]
+    },
+    {
+      "id": "sparse_regions",
+      "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+      "subquestions": [
+        "epistemic uncertainty",
+        "conditional coverage"
+      ],
+      "facets": [
+        [
+          "epistemic"
+        ],
+        [
+          "conditional"
+        ]
+      ]
+    },
+    {
+      "id": "lexical_decoy",
+      "question": "zygomorphic quasicrystals superconductivity",
+      "subquestions": [
+        "zygomorphic quasicrystals superconductivity"
+      ],
+      "facets": [
+        [
+          "zygomorphic"
+        ],
+        [
+          "quasicrystals"
+        ],
+        [
+          "superconductivity"
+        ]
+      ]
+    },
+    {
+      "id": "absent_topic",
+      "question": "zygomorphic quasicrystals",
+      "subquestions": [
+        "zygomorphic quasicrystals"
+      ],
+      "facets": [
+        [
+          "zygomorphic"
+        ],
+        [
+          "quasicrystals"
+        ]
+      ]
+    }
+  ],
+  "repeats": 3,
+  "selection_identical_across_repeats": {
+    "missing_inputs/baseline": true,
+    "missing_inputs/executor": true,
+    "perturbed_inputs/baseline": true,
+    "perturbed_inputs/executor": true,
+    "sparse_regions/baseline": true,
+    "sparse_regions/executor": true,
+    "lexical_decoy/baseline": true,
+    "lexical_decoy/executor": true,
+    "absent_topic/baseline": true,
+    "absent_topic/executor": true
+  },
+  "trials": [
+    {
+      "case_id": "missing_inputs",
+      "repeat": 1,
+      "baseline": {
+        "latency_seconds": 0.00021319999359548092,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.5,
+          "omitted_facets": [
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.6505068999249488,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:12",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "However, this line of work focuses on point predic-\ntion with missing values that aim to predict the most likely\noutcome."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:15",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 2,
+            "quote": "Settings are given in Section 7, in a nutshell: data follows a Gaussian linear model where missing\nvalues are independent of everything else and of proportion 20%; the dimension of the problem is 3 in Figure 1a while in 1b it is 10."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:10",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "The drawback of this “impute-then-predict” approach is\nthat single imputation can distort the joint and marginal\ndistribution of the data."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:17",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 3,
+            "quote": "As most predictive algorithms\ncan not directly handle missing values, we impute the\nincomplete data using an imputation functionΦ which maps\nobserved values to themselves and missing values to a func-\ntion of the observed values."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:19",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 3,
+            "quote": "The imputation\nfunction Φ is the output of an algorithm I treating its input\ndata points symmetrically: I((X (σ(k)), M(σ(k)))n+1\nk=1 )\n(d)\n=\nI((X (k), M(k))n+1\nk=1 ) conditionally on (X (k), M(k))n+1\nk=1\nand for any permutation σ on J1, n+ 1K."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 1.0,
+          "omitted_facets": [],
+          "invalid_binding_ids": [],
+          "unique_sources": 1
+        },
+        "task": {
+          "id": "6eb8f4cc6fab42a39b4af8157ea2427d",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "How do conformal methods handle missing values and imputation?",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:42.309842Z",
+          "updated_at": "2026-10-28T22:54:42.890523Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 4,
+            "seconds": 0.27929067611694336,
+            "evidence": 6,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "missing values",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            },
+            {
+              "id": "q2",
+              "question": "imputation",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: missing values",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "559aa5a61e493cb915f1e8db4b9b025282833ad1727111ed88c1390de9a763b2",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:12",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:15"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: missing values",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "a16b7d9354e58669baa116f2c3f39d4778a65be59a7a2b4ab24ec039d8731729",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:12",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:15"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            },
+            {
+              "id": "q2-lexical_retrieve",
+              "question_id": "q2",
+              "title": "lexical retrieve: imputation",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "a68391db0126dfb48e51fe508918677e8049aa1b0921aad9075fd304c507f32a",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:10",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:17",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:19"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q2-inspect_sources",
+              "question_id": "q2",
+              "title": "inspect sources: imputation",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q2-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "711019c9b9663f4d6b29951fa1b1372b6547b5f4d57523538d855a179627115f",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:10",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:17",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:19"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:42.309842Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:42.386428Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:42.460534Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:42.536430Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:42.592137Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:42.680055Z",
+              "type": "step_started",
+              "message": "q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:42.747776Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:42.823070Z",
+              "type": "step_started",
+              "message": "q2-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:42.890523Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "repeat": 1,
+      "baseline": {
+        "latency_seconds": 0.00017199991270899773,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.5,
+          "omitted_facets": [
+            0
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.6532071998808533,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:7",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "The main research question of\nthis paper is: how can we develop probably correct CP al-\ngorithms for ensuring robustness to most perturbations for\n(pre-trained) deep classifiers?"
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:8",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 2,
+            "quote": "The goal is to improve the robustness of the CP framework\nto handle perturbations ϵ bounded by r for every input X ∈ X."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:53",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 12,
+            "quote": "On the numerical side, preliminary experiments show\npromising results, indicating CP-MDA’s robustness, but a detailed numerical study is needed."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:32",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 5,
+            "quote": "The following formal result guarantees the probabilistically\nrobust coverage for the aPRCP algorithm."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:58",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 8,
+            "quote": "CP is a general framework for un-\ncertainty quantification that provides marginal coverage\nguarantees without any assumptions on the underlying data\ndistribution [Shafer and V ovk, 2008]."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:6",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Conformal prediction (CP) [V ovk et al., 1999,\n2005, Shafer and V ovk, 2008] is a framework for UQ that\nprovides formal guarantees for a user-specified coverage:\nground-truth output is contained in the prediction set with a\nhigh probability 1 − α (e.g., 90%)."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 1.0,
+          "omitted_facets": [],
+          "invalid_binding_ids": [],
+          "unique_sources": 2
+        },
+        "task": {
+          "id": "df0b304c6bd040a69307d5bdc8d6371a",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "How does robust conformal prediction handle perturbations and coverage?",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:43.031518Z",
+          "updated_at": "2026-10-28T22:54:43.606316Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 4,
+            "seconds": 0.31720805168151855,
+            "evidence": 6,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "perturbations robustness",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            },
+            {
+              "id": "q2",
+              "question": "coverage guarantees",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: perturbations robustness",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "7236c201a1746526e476212e1f2202d30e7254ad529dcd52cf64b8eb9b37402e",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:7",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:8",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:53"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: perturbations robustness",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "5e37ada25caefcc5a3169f711c47b85615cb1b96894470097075f0f85b56f716",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:7",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:8",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:53"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            },
+            {
+              "id": "q2-lexical_retrieve",
+              "question_id": "q2",
+              "title": "lexical retrieve: coverage guarantees",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "9f1b9f7bd3f9a763c85006f921dd8ce4451478d85c5e614876ba0431e7a58cd3",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:32",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:58",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:6"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q2-inspect_sources",
+              "question_id": "q2",
+              "title": "inspect sources: coverage guarantees",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q2-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "87dcfee7419825b1e6a26fa96b54b63b94a1f56ec7c0b10aec821b148b06035b",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:32",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:58",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:6"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:43.031518Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:43.106160Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:43.177316Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:43.248272Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:43.310243Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:43.389857Z",
+              "type": "step_started",
+              "message": "q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:43.462708Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:43.533566Z",
+              "type": "step_started",
+              "message": "q2-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:43.606316Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sparse_regions",
+      "repeat": 1,
+      "baseline": {
+        "latency_seconds": 0.00017000013031065464,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.6634749001823366,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:100",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 27,
+            "quote": "D.7 APPLICATION TO DENSITY-BASED CONFORMITY SCORES\nIn this section, we use a simulated experiment to illustrate howEPICSCORE can enhance density-based conformal prediction\nmethods by explicitly incorporating epistemic uncertainty."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:102",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 27,
+            "quote": "The experiment is designed to reflect regions with both high epistemic and aleatoric uncertainty, allowing us to\nhighlight the advantages of our method in capturing complex uncertainty structures."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:11",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "1.1 NOVELTY\nWe introduce EPICSCORE (Epistemic Conformal Score),\na novel nonconformity score that explicitly integrates epis-\ntemic uncertainty into the conformal prediction framework."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:21",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 4,
+            "quote": "Challenge: NAs induce heteroskedasticity\nTo better understand the interplay between missing values\nand conditional coverage with respect to the mask, we con-\nsider an illustrative example of a Gaussian linear model."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:32",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 6,
+            "quote": "The challenge in proving MCV of CP-MDA-Nested is that\nthe augmented calibration and test points are not exchange-\nable conditional on the mask and thus may result in under-\ncoverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:35",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 7,
+            "quote": "For any missing mechanism, for almost all\nimputation function Φ ∈ FI\n∞, if FY |(Xobs(M),M ) is continu-\nous, a universally consistent quantile regressor trained on\nthe imputed data set yields asymptotic conditional coverage."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 1.0,
+          "omitted_facets": [],
+          "invalid_binding_ids": [],
+          "unique_sources": 2
+        },
+        "task": {
+          "id": "a663122defe1404abd7ac301da2d1864",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:43.745096Z",
+          "updated_at": "2026-10-28T22:54:44.330939Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 4,
+            "seconds": 0.3187739849090576,
+            "evidence": 6,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "epistemic uncertainty",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            },
+            {
+              "id": "q2",
+              "question": "conditional coverage",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: epistemic uncertainty",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "e829f9f8eed4ce60441ff3bf2ae72e8505e3507e2992faeb9e5003ffaf78b7f8",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:100",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:102",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:11"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: epistemic uncertainty",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "20d0290abc3f849e09732a237361c432f496fa3beb45ef49dc73ddb920f390a3",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:100",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:102",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:11"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            },
+            {
+              "id": "q2-lexical_retrieve",
+              "question_id": "q2",
+              "title": "lexical retrieve: conditional coverage",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "e853a67bf56fe09aed710a14b348ec899d49a1bb5a5dfe3381f608652053fe61",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:21",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:32",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:35"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q2-inspect_sources",
+              "question_id": "q2",
+              "title": "inspect sources: conditional coverage",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q2-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "16d7ee3bb703da355c7bb8bd1018bb77cb02162760874ff32fcaefa17b2f1513",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:21",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:32",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:35"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:43.745096Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:43.810661Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:43.890268Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:43.963445Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:44.030855Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:44.096272Z",
+              "type": "step_started",
+              "message": "q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:44.177615Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:44.255782Z",
+              "type": "step_started",
+              "message": "q2-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:44.330939Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "lexical_decoy",
+      "repeat": 1,
+      "baseline": {
+        "latency_seconds": 0.00016699987463653088,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1,
+            2
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.37065710010938346,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:35",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 8,
+            "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN CQR CQR-r UACQR-P UACQR-S\nairfoil 19.361 (0.234) 19.704 (0.27) 18.799 (0.29) 20.521 (0.234) 20.535 (0.236) 23.021 (0.337) 20.188 (0.3)\nbike×(101) 44.722 (0.297) 47.818 (0.320)43.858 (0.326)45.628 (0.256) 45.638 (0.258) 53.413 (0.376)43.815 (0.385)\nconcrete 42.765 (0.723) 45.276 (0.764) 44.442 (0.8) 46.882 (0.681) 46.896 (0.683) 52.789 (1.097) 47.324 (1.349)\ncycle 34.435 (0.142) 35.054 (0.131) 34.077 (0.129)39.218 (0.134) 39.408 (0.136) 43.775 (0.181) 35.346 (0.197)\nelectric 0.099 (< 0.001) 0.096 (< 0.001) 0.082 (< 0.001)0.102 (0.001) 0.102 (0.001) 0.111 (0.001) 0.097 (< 0.001)\nhomes×(105) 7.739 (0.066) 8.098 (0.072) 7.225 (0.049) 8.360 (0.075) 8.433 (0.078) 11.427 (0.131) 8.544 (0.107)\nmeps19 65.085 (1.469) 64.907 (1.56) 64.3 (1.528) 64.239 (1.56) 64.239 (1.56) 71.015 (1.763)63.737 (1.461)\nprotein 17.687 (0.019) 18.096 (0.037) 17.417 (0.019) 17.7 (0.015) 17.7 (0.016) 18.149 (0.015) 17.691 (0.015)\nstar×(101) 98.466 (0.768) 98.033 (0.750) 98.725 (0.754) 97.770 (0.725) 97.791 (0.724)99.782 (0.647) 99.809 (0.968)\nsuperconductivity 74.37 (0.222) 80.278 (0.266) 70.212 (0.196)75.496 (0.219) 75.508 (0.218) 87.929 (0.513) 73.971 (0.404)\nWEC×(105) 2.925 (0.009) 2.665 (0.012) 2.374 (0.010) 3.138 (0.009) 3.142 (0.009) 3.517 (0.010) 3.046 (0.010)\nwinered 3.007 (0.058) 3.009 (0.059) 2.977 (0.05) 2.979 (0.069) 2.978 (0.069) 3.059 (0.069) 2.999 (0.063)\nwinewhite 3.334 (0.03) 3.327 (0.034) 3.219 (0.03) 3.316 (0.036) 3.315 (0.036) 3.378 (0.038) 3.2 (0.036)\nTable 2: Regression AISL values for each method and dataset."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:36",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 8,
+            "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN Mondrian Reg-split Weighted\nairfoil 19.747 (0.767) 20.287 (0.686) 19.823 (0.675) 21.532 (0.919) 21.201 (0.98) 20.276 (0.819)\nbike×(101) 36.381 (0.463) 41.448 (0.575) 37.041 (0.452) 38.190 (0.403) 43.918 (0.567) 37.773 (0.468)\nconcrete 52.098 (2.237) 52.998 (2.359) 51.648 (2.185) 61.915 (2.815) 54.902 (2.634) 58.399 (3.165)\ncycle 19.418 (0.211) 19.522 (0.221) 19.436 (0.213) 19.403 (0.226) 19.73 (0.208) 19.49 (0.207)\nelectric 0.048 (<0.001) 0.049 (<0.001) 0.048 (<0.001) 0.05 (<0.001) 0.05 (0.001) 0.048 (<0.001)\nhomes×(105) 5.921 (0.0716) 6.192 (0.0689) 5.546 (0.055) 5.710 (0.053) 7.569 (0.098) 5.860 (0.056)\nmeps19 86.039 (2.421) 87.086 (2.405) 75.061 (1.807) 79.192 (1.821) 109.83 (2.695) 92.433 (3.259)\nprotein 18.885 (0.054) 18.772 (0.065) 17.735 (0.055) 17.586 (0.051) 19.423 (0.055) 18.314 (0.065)\nstar×(101) 105.616 (1.255) 106.112 (0.998) 106.368 (1.173) 109.346 (1.119) 105.250 (1.038) 129.492 (1.657)\nsuperconductivity 54.895 (0.364) 59.16 (0.449) 53.406 (0.365) 58.065 (0.313) 68.183 (0.418) 54.981 (0.345)\nWEC×(105) 1.437 (0.010) 1.435 (0.011) 1.283 (0.009) 1.294 (0.009) 1.620 (0.009) 1.410 (0.009)\nwinered 3.152 (0.07) 3.171 (0.064) 3.101 (0.062) 3.262 (0.069) 3.214 (0.063) 3.415 (0.067)\nwinewhite 3.104 (0.027) 3.187 (0.029) 3.129 (0.029) 3.087 (0.023) 3.181 (0.028) 3.189 (0.033)\nmodel in all conformal methods."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:38",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 9,
+            "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN CQR CQR-r UACQR-P UACQR-S\nairfoil 1.028 (0.034) 1.01 (0.018) 1.048 (0.04) 1.005 (0.013) 1.004 (0.012) 1.002 (0.01) 1.005 (0.016)\nbike 0.991 (0.007) 1.01 (0.007) 0.989 (0.007) 0.985 (0.007) 0.985 (0.007) 0.99 (0.005) 0.981 (0.01)\nconcrete 0.983 (0.033) 0.995 (0.016) 1.043 (0.029) 0.998 (0.012) 0.998 (0.012) 0.998 (0.008) 0.998 (0.012)\ncycle 0.953 (0.014) 0.966 (0.014) 0.949 (0.014) 0.997 (0.005) 0.997 (0.005) 1.0 (0.004) 0.998 (0.007)\nelectric 1.01 (0.004) 1.01 (0.004) 1.012 (0.008) 1.008 (0.004) 1.007 (0.003) 1.006 (0.003) 1.01 (0.005)\nhomes 1.116 (0.019) 1.101 (0.016) 1.173 (0.027) 1.088 (0.015) 1.081 (0.014) 1.039 (0.006) 1.094 (0.014)\nmeps19 1.052 (0.029) 1.042 (0.025) 1.044 (0.028) 1.04 (0.025) 1.04 (0.025) 1.021 (0.015) 1.045 (0.026)\nprotein 1.001 (0.002) 1.001 (0.003) 1.006 (0.002) 1.002 (0.001) 1.002 (0.001) 1.001 (0.001) 1.002 (0.001)\nstar 0.994 (0.006) 0.994 (0.003) 0.999 (0.007) 0.994 (0.003) 0.993 (0.003) 0.997 (0.003) 0.997 (0.003)\nsuperconductivity 1.021 (0.007) 0.987 (0.006) 1.029 (0.008) 1.041 (0.007) 1.041 (0.007) 1.023 (0.004) 1.049 (0.008)\nWEC 1.012 (0.006) 1.003 (0.008) 1.02 (0.01) 1.016 (0.003) 1.016 (0.003) 1.011 (0.002) 1.021 (0.004)\nwinered 1.008 (0.012) 1.007 (0.008) 1.072 (0.022) 0.993 (0.008) 0.992 (0.008) 0.996 (0.005) 0.992 (0.009)\nwinewhite 1.031 (0.007) 1.024 (0.006) 1.053 (0.014) 1.018 (0.007) 1.018 (0.007) 1.018 (0.006) 1.034 (0.01)\ntimate variance by fitting a Random Forest to (X, Y)."
+          }
+        ],
+        "metrics": {
+          "selected_count": 3,
+          "valid_binding_count": 3,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.3333333333333333,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 1
+        },
+        "task": {
+          "id": "188974bec2784f87b1a360e51caf143e",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "zygomorphic quasicrystals superconductivity",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:44.472543Z",
+          "updated_at": "2026-10-28T22:54:44.764153Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 2,
+            "seconds": 0.15461206436157227,
+            "evidence": 3,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "zygomorphic quasicrystals superconductivity",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: zygomorphic quasicrystals superconductivity",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "d8489ebd971515545bad9f7c422f5b8e22c5abb11a187fd2b3ed8d34b00ddcd4",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:35",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:36",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:38"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: zygomorphic quasicrystals superconductivity",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "133f14727f158c05e83afaaae738924c56c734ec098f13ff927b53f59df7aa90",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:35",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:36",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:38"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:44.472543Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:44.547521Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:44.615021Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:44.681048Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:44.764153Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "absent_topic",
+      "repeat": 1,
+      "baseline": {
+        "latency_seconds": 0.00016789999790489674,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.3704232999589294,
+        "cost_usd": 0,
+        "status": "incomplete",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [],
+        "metrics": {
+          "selected_count": 0,
+          "valid_binding_count": 0,
+          "exact_binding_rate": null,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 0
+        },
+        "task": {
+          "id": "a8ee33a118f34ad8bd27ad31fffee1d8",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "zygomorphic quasicrystals",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:44.905293Z",
+          "updated_at": "2026-10-28T22:54:45.187563Z",
+          "status": "incomplete",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 2,
+            "seconds": 0.13426637649536133,
+            "evidence": 0,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "zygomorphic quasicrystals",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: zygomorphic quasicrystals",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "603c79c84577a9c96df556270e5cfa3f7d16b26c8c5cee5f8159109be0c3f2f6",
+              "result": {
+                "evidence_ids": [],
+                "gaps": [
+                  "No lexically matching saved evidence; question remains unanswered."
+                ],
+                "summary": "Lexical term-overlap retrieval selected 0 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: zygomorphic quasicrystals",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "21f890161a0432b805e0efaffec680738118c234108d69370c929abeed907b7a",
+              "result": {
+                "evidence_ids": [],
+                "gaps": [
+                  "No lexically matching saved evidence; question remains unanswered."
+                ],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:44.905293Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:44.980447Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:45.046669Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:45.124056Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:45.187563Z",
+              "type": "incomplete",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "missing_inputs",
+      "repeat": 2,
+      "baseline": {
+        "latency_seconds": 0.00022869999520480633,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.5,
+          "omitted_facets": [
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.6691387000028044,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:12",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "However, this line of work focuses on point predic-\ntion with missing values that aim to predict the most likely\noutcome."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:15",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 2,
+            "quote": "Settings are given in Section 7, in a nutshell: data follows a Gaussian linear model where missing\nvalues are independent of everything else and of proportion 20%; the dimension of the problem is 3 in Figure 1a while in 1b it is 10."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:10",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "The drawback of this “impute-then-predict” approach is\nthat single imputation can distort the joint and marginal\ndistribution of the data."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:17",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 3,
+            "quote": "As most predictive algorithms\ncan not directly handle missing values, we impute the\nincomplete data using an imputation functionΦ which maps\nobserved values to themselves and missing values to a func-\ntion of the observed values."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:19",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 3,
+            "quote": "The imputation\nfunction Φ is the output of an algorithm I treating its input\ndata points symmetrically: I((X (σ(k)), M(σ(k)))n+1\nk=1 )\n(d)\n=\nI((X (k), M(k))n+1\nk=1 ) conditionally on (X (k), M(k))n+1\nk=1\nand for any permutation σ on J1, n+ 1K."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 1.0,
+          "omitted_facets": [],
+          "invalid_binding_ids": [],
+          "unique_sources": 1
+        },
+        "task": {
+          "id": "c3ac70633f4744bd87e87599dadb8fba",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "How do conformal methods handle missing values and imputation?",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:45.348337Z",
+          "updated_at": "2026-10-28T22:54:45.926503Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 4,
+            "seconds": 0.29208827018737793,
+            "evidence": 6,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "missing values",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            },
+            {
+              "id": "q2",
+              "question": "imputation",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: missing values",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "559aa5a61e493cb915f1e8db4b9b025282833ad1727111ed88c1390de9a763b2",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:12",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:15"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: missing values",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "a16b7d9354e58669baa116f2c3f39d4778a65be59a7a2b4ab24ec039d8731729",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:12",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:15"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            },
+            {
+              "id": "q2-lexical_retrieve",
+              "question_id": "q2",
+              "title": "lexical retrieve: imputation",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "a68391db0126dfb48e51fe508918677e8049aa1b0921aad9075fd304c507f32a",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:10",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:17",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:19"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q2-inspect_sources",
+              "question_id": "q2",
+              "title": "inspect sources: imputation",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q2-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "711019c9b9663f4d6b29951fa1b1372b6547b5f4d57523538d855a179627115f",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:10",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:17",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:19"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:45.348337Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:45.414177Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:45.492044Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:45.569311Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:45.634277Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:45.709823Z",
+              "type": "step_started",
+              "message": "q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:45.777122Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:45.858495Z",
+              "type": "step_started",
+              "message": "q2-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:45.926503Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "repeat": 2,
+      "baseline": {
+        "latency_seconds": 0.00016959989443421364,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.5,
+          "omitted_facets": [
+            0
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.6767382000107318,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:7",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "The main research question of\nthis paper is: how can we develop probably correct CP al-\ngorithms for ensuring robustness to most perturbations for\n(pre-trained) deep classifiers?"
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:8",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 2,
+            "quote": "The goal is to improve the robustness of the CP framework\nto handle perturbations ϵ bounded by r for every input X ∈ X."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:53",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 12,
+            "quote": "On the numerical side, preliminary experiments show\npromising results, indicating CP-MDA’s robustness, but a detailed numerical study is needed."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:32",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 5,
+            "quote": "The following formal result guarantees the probabilistically\nrobust coverage for the aPRCP algorithm."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:58",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 8,
+            "quote": "CP is a general framework for un-\ncertainty quantification that provides marginal coverage\nguarantees without any assumptions on the underlying data\ndistribution [Shafer and V ovk, 2008]."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:6",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Conformal prediction (CP) [V ovk et al., 1999,\n2005, Shafer and V ovk, 2008] is a framework for UQ that\nprovides formal guarantees for a user-specified coverage:\nground-truth output is contained in the prediction set with a\nhigh probability 1 − α (e.g., 90%)."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 1.0,
+          "omitted_facets": [],
+          "invalid_binding_ids": [],
+          "unique_sources": 2
+        },
+        "task": {
+          "id": "50f70e6b8e394df9a44717c6bcc5010e",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "How does robust conformal prediction handle perturbations and coverage?",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:46.070282Z",
+          "updated_at": "2026-10-28T22:54:46.668695Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 4,
+            "seconds": 0.31725597381591797,
+            "evidence": 6,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "perturbations robustness",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            },
+            {
+              "id": "q2",
+              "question": "coverage guarantees",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: perturbations robustness",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "7236c201a1746526e476212e1f2202d30e7254ad529dcd52cf64b8eb9b37402e",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:7",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:8",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:53"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: perturbations robustness",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "5e37ada25caefcc5a3169f711c47b85615cb1b96894470097075f0f85b56f716",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:7",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:8",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:53"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            },
+            {
+              "id": "q2-lexical_retrieve",
+              "question_id": "q2",
+              "title": "lexical retrieve: coverage guarantees",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "9f1b9f7bd3f9a763c85006f921dd8ce4451478d85c5e614876ba0431e7a58cd3",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:32",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:58",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:6"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q2-inspect_sources",
+              "question_id": "q2",
+              "title": "inspect sources: coverage guarantees",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q2-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "87dcfee7419825b1e6a26fa96b54b63b94a1f56ec7c0b10aec821b148b06035b",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:32",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:58",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:6"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:46.070282Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:46.146313Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:46.217066Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:46.292196Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:46.368653Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:46.448372Z",
+              "type": "step_started",
+              "message": "q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:46.525694Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:46.587917Z",
+              "type": "step_started",
+              "message": "q2-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:46.668695Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sparse_regions",
+      "repeat": 2,
+      "baseline": {
+        "latency_seconds": 0.00016799988225102425,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.6615064998622984,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:100",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 27,
+            "quote": "D.7 APPLICATION TO DENSITY-BASED CONFORMITY SCORES\nIn this section, we use a simulated experiment to illustrate howEPICSCORE can enhance density-based conformal prediction\nmethods by explicitly incorporating epistemic uncertainty."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:102",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 27,
+            "quote": "The experiment is designed to reflect regions with both high epistemic and aleatoric uncertainty, allowing us to\nhighlight the advantages of our method in capturing complex uncertainty structures."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:11",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "1.1 NOVELTY\nWe introduce EPICSCORE (Epistemic Conformal Score),\na novel nonconformity score that explicitly integrates epis-\ntemic uncertainty into the conformal prediction framework."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:21",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 4,
+            "quote": "Challenge: NAs induce heteroskedasticity\nTo better understand the interplay between missing values\nand conditional coverage with respect to the mask, we con-\nsider an illustrative example of a Gaussian linear model."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:32",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 6,
+            "quote": "The challenge in proving MCV of CP-MDA-Nested is that\nthe augmented calibration and test points are not exchange-\nable conditional on the mask and thus may result in under-\ncoverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:35",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 7,
+            "quote": "For any missing mechanism, for almost all\nimputation function Φ ∈ FI\n∞, if FY |(Xobs(M),M ) is continu-\nous, a universally consistent quantile regressor trained on\nthe imputed data set yields asymptotic conditional coverage."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 1.0,
+          "omitted_facets": [],
+          "invalid_binding_ids": [],
+          "unique_sources": 2
+        },
+        "task": {
+          "id": "65853beb0c044348919f6ba045975f3b",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:46.795240Z",
+          "updated_at": "2026-10-28T22:54:47.378862Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 4,
+            "seconds": 0.2913036346435547,
+            "evidence": 6,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "epistemic uncertainty",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            },
+            {
+              "id": "q2",
+              "question": "conditional coverage",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: epistemic uncertainty",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "e829f9f8eed4ce60441ff3bf2ae72e8505e3507e2992faeb9e5003ffaf78b7f8",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:100",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:102",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:11"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: epistemic uncertainty",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "20d0290abc3f849e09732a237361c432f496fa3beb45ef49dc73ddb920f390a3",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:100",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:102",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:11"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            },
+            {
+              "id": "q2-lexical_retrieve",
+              "question_id": "q2",
+              "title": "lexical retrieve: conditional coverage",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "e853a67bf56fe09aed710a14b348ec899d49a1bb5a5dfe3381f608652053fe61",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:21",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:32",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:35"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q2-inspect_sources",
+              "question_id": "q2",
+              "title": "inspect sources: conditional coverage",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q2-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "16d7ee3bb703da355c7bb8bd1018bb77cb02162760874ff32fcaefa17b2f1513",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:21",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:32",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:35"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:46.795240Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:46.874023Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:46.947707Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:47.028707Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:47.094926Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:47.166938Z",
+              "type": "step_started",
+              "message": "q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:47.242407Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:47.316948Z",
+              "type": "step_started",
+              "message": "q2-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:47.378862Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "lexical_decoy",
+      "repeat": 2,
+      "baseline": {
+        "latency_seconds": 0.00017239991575479507,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1,
+            2
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.3707773999776691,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:35",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 8,
+            "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN CQR CQR-r UACQR-P UACQR-S\nairfoil 19.361 (0.234) 19.704 (0.27) 18.799 (0.29) 20.521 (0.234) 20.535 (0.236) 23.021 (0.337) 20.188 (0.3)\nbike×(101) 44.722 (0.297) 47.818 (0.320)43.858 (0.326)45.628 (0.256) 45.638 (0.258) 53.413 (0.376)43.815 (0.385)\nconcrete 42.765 (0.723) 45.276 (0.764) 44.442 (0.8) 46.882 (0.681) 46.896 (0.683) 52.789 (1.097) 47.324 (1.349)\ncycle 34.435 (0.142) 35.054 (0.131) 34.077 (0.129)39.218 (0.134) 39.408 (0.136) 43.775 (0.181) 35.346 (0.197)\nelectric 0.099 (< 0.001) 0.096 (< 0.001) 0.082 (< 0.001)0.102 (0.001) 0.102 (0.001) 0.111 (0.001) 0.097 (< 0.001)\nhomes×(105) 7.739 (0.066) 8.098 (0.072) 7.225 (0.049) 8.360 (0.075) 8.433 (0.078) 11.427 (0.131) 8.544 (0.107)\nmeps19 65.085 (1.469) 64.907 (1.56) 64.3 (1.528) 64.239 (1.56) 64.239 (1.56) 71.015 (1.763)63.737 (1.461)\nprotein 17.687 (0.019) 18.096 (0.037) 17.417 (0.019) 17.7 (0.015) 17.7 (0.016) 18.149 (0.015) 17.691 (0.015)\nstar×(101) 98.466 (0.768) 98.033 (0.750) 98.725 (0.754) 97.770 (0.725) 97.791 (0.724)99.782 (0.647) 99.809 (0.968)\nsuperconductivity 74.37 (0.222) 80.278 (0.266) 70.212 (0.196)75.496 (0.219) 75.508 (0.218) 87.929 (0.513) 73.971 (0.404)\nWEC×(105) 2.925 (0.009) 2.665 (0.012) 2.374 (0.010) 3.138 (0.009) 3.142 (0.009) 3.517 (0.010) 3.046 (0.010)\nwinered 3.007 (0.058) 3.009 (0.059) 2.977 (0.05) 2.979 (0.069) 2.978 (0.069) 3.059 (0.069) 2.999 (0.063)\nwinewhite 3.334 (0.03) 3.327 (0.034) 3.219 (0.03) 3.316 (0.036) 3.315 (0.036) 3.378 (0.038) 3.2 (0.036)\nTable 2: Regression AISL values for each method and dataset."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:36",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 8,
+            "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN Mondrian Reg-split Weighted\nairfoil 19.747 (0.767) 20.287 (0.686) 19.823 (0.675) 21.532 (0.919) 21.201 (0.98) 20.276 (0.819)\nbike×(101) 36.381 (0.463) 41.448 (0.575) 37.041 (0.452) 38.190 (0.403) 43.918 (0.567) 37.773 (0.468)\nconcrete 52.098 (2.237) 52.998 (2.359) 51.648 (2.185) 61.915 (2.815) 54.902 (2.634) 58.399 (3.165)\ncycle 19.418 (0.211) 19.522 (0.221) 19.436 (0.213) 19.403 (0.226) 19.73 (0.208) 19.49 (0.207)\nelectric 0.048 (<0.001) 0.049 (<0.001) 0.048 (<0.001) 0.05 (<0.001) 0.05 (0.001) 0.048 (<0.001)\nhomes×(105) 5.921 (0.0716) 6.192 (0.0689) 5.546 (0.055) 5.710 (0.053) 7.569 (0.098) 5.860 (0.056)\nmeps19 86.039 (2.421) 87.086 (2.405) 75.061 (1.807) 79.192 (1.821) 109.83 (2.695) 92.433 (3.259)\nprotein 18.885 (0.054) 18.772 (0.065) 17.735 (0.055) 17.586 (0.051) 19.423 (0.055) 18.314 (0.065)\nstar×(101) 105.616 (1.255) 106.112 (0.998) 106.368 (1.173) 109.346 (1.119) 105.250 (1.038) 129.492 (1.657)\nsuperconductivity 54.895 (0.364) 59.16 (0.449) 53.406 (0.365) 58.065 (0.313) 68.183 (0.418) 54.981 (0.345)\nWEC×(105) 1.437 (0.010) 1.435 (0.011) 1.283 (0.009) 1.294 (0.009) 1.620 (0.009) 1.410 (0.009)\nwinered 3.152 (0.07) 3.171 (0.064) 3.101 (0.062) 3.262 (0.069) 3.214 (0.063) 3.415 (0.067)\nwinewhite 3.104 (0.027) 3.187 (0.029) 3.129 (0.029) 3.087 (0.023) 3.181 (0.028) 3.189 (0.033)\nmodel in all conformal methods."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:38",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 9,
+            "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN CQR CQR-r UACQR-P UACQR-S\nairfoil 1.028 (0.034) 1.01 (0.018) 1.048 (0.04) 1.005 (0.013) 1.004 (0.012) 1.002 (0.01) 1.005 (0.016)\nbike 0.991 (0.007) 1.01 (0.007) 0.989 (0.007) 0.985 (0.007) 0.985 (0.007) 0.99 (0.005) 0.981 (0.01)\nconcrete 0.983 (0.033) 0.995 (0.016) 1.043 (0.029) 0.998 (0.012) 0.998 (0.012) 0.998 (0.008) 0.998 (0.012)\ncycle 0.953 (0.014) 0.966 (0.014) 0.949 (0.014) 0.997 (0.005) 0.997 (0.005) 1.0 (0.004) 0.998 (0.007)\nelectric 1.01 (0.004) 1.01 (0.004) 1.012 (0.008) 1.008 (0.004) 1.007 (0.003) 1.006 (0.003) 1.01 (0.005)\nhomes 1.116 (0.019) 1.101 (0.016) 1.173 (0.027) 1.088 (0.015) 1.081 (0.014) 1.039 (0.006) 1.094 (0.014)\nmeps19 1.052 (0.029) 1.042 (0.025) 1.044 (0.028) 1.04 (0.025) 1.04 (0.025) 1.021 (0.015) 1.045 (0.026)\nprotein 1.001 (0.002) 1.001 (0.003) 1.006 (0.002) 1.002 (0.001) 1.002 (0.001) 1.001 (0.001) 1.002 (0.001)\nstar 0.994 (0.006) 0.994 (0.003) 0.999 (0.007) 0.994 (0.003) 0.993 (0.003) 0.997 (0.003) 0.997 (0.003)\nsuperconductivity 1.021 (0.007) 0.987 (0.006) 1.029 (0.008) 1.041 (0.007) 1.041 (0.007) 1.023 (0.004) 1.049 (0.008)\nWEC 1.012 (0.006) 1.003 (0.008) 1.02 (0.01) 1.016 (0.003) 1.016 (0.003) 1.011 (0.002) 1.021 (0.004)\nwinered 1.008 (0.012) 1.007 (0.008) 1.072 (0.022) 0.993 (0.008) 0.992 (0.008) 0.996 (0.005) 0.992 (0.009)\nwinewhite 1.031 (0.007) 1.024 (0.006) 1.053 (0.014) 1.018 (0.007) 1.018 (0.007) 1.018 (0.006) 1.034 (0.01)\ntimate variance by fitting a Random Forest to (X, Y)."
+          }
+        ],
+        "metrics": {
+          "selected_count": 3,
+          "valid_binding_count": 3,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.3333333333333333,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 1
+        },
+        "task": {
+          "id": "aa4ed0f639bb4398a2a69893b6e5acc4",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "zygomorphic quasicrystals superconductivity",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:47.525905Z",
+          "updated_at": "2026-10-28T22:54:47.826244Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 2,
+            "seconds": 0.13651466369628906,
+            "evidence": 3,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "zygomorphic quasicrystals superconductivity",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: zygomorphic quasicrystals superconductivity",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "d8489ebd971515545bad9f7c422f5b8e22c5abb11a187fd2b3ed8d34b00ddcd4",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:35",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:36",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:38"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: zygomorphic quasicrystals superconductivity",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "133f14727f158c05e83afaaae738924c56c734ec098f13ff927b53f59df7aa90",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:35",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:36",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:38"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:47.525905Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:47.604586Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:47.668209Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:47.757361Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:47.826244Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "absent_topic",
+      "repeat": 2,
+      "baseline": {
+        "latency_seconds": 0.00017019989900290966,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.36838770005851984,
+        "cost_usd": 0,
+        "status": "incomplete",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [],
+        "metrics": {
+          "selected_count": 0,
+          "valid_binding_count": 0,
+          "exact_binding_rate": null,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 0
+        },
+        "task": {
+          "id": "e301802d32a54eea98421d8d4542aee1",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "zygomorphic quasicrystals",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:47.968991Z",
+          "updated_at": "2026-10-28T22:54:48.253922Z",
+          "status": "incomplete",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 2,
+            "seconds": 0.1471691131591797,
+            "evidence": 0,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "zygomorphic quasicrystals",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: zygomorphic quasicrystals",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "603c79c84577a9c96df556270e5cfa3f7d16b26c8c5cee5f8159109be0c3f2f6",
+              "result": {
+                "evidence_ids": [],
+                "gaps": [
+                  "No lexically matching saved evidence; question remains unanswered."
+                ],
+                "summary": "Lexical term-overlap retrieval selected 0 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: zygomorphic quasicrystals",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "21f890161a0432b805e0efaffec680738118c234108d69370c929abeed907b7a",
+              "result": {
+                "evidence_ids": [],
+                "gaps": [
+                  "No lexically matching saved evidence; question remains unanswered."
+                ],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:47.968991Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:48.031969Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:48.110484Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:48.189016Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:48.253922Z",
+              "type": "incomplete",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "missing_inputs",
+      "repeat": 3,
+      "baseline": {
+        "latency_seconds": 0.0001767999492585659,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.5,
+          "omitted_facets": [
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.6682397001422942,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:12",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "However, this line of work focuses on point predic-\ntion with missing values that aim to predict the most likely\noutcome."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:15",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 2,
+            "quote": "Settings are given in Section 7, in a nutshell: data follows a Gaussian linear model where missing\nvalues are independent of everything else and of proportion 20%; the dimension of the problem is 3 in Figure 1a while in 1b it is 10."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:10",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "The drawback of this “impute-then-predict” approach is\nthat single imputation can distort the joint and marginal\ndistribution of the data."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:17",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 3,
+            "quote": "As most predictive algorithms\ncan not directly handle missing values, we impute the\nincomplete data using an imputation functionΦ which maps\nobserved values to themselves and missing values to a func-\ntion of the observed values."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:19",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 3,
+            "quote": "The imputation\nfunction Φ is the output of an algorithm I treating its input\ndata points symmetrically: I((X (σ(k)), M(σ(k)))n+1\nk=1 )\n(d)\n=\nI((X (k), M(k))n+1\nk=1 ) conditionally on (X (k), M(k))n+1\nk=1\nand for any permutation σ on J1, n+ 1K."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 1.0,
+          "omitted_facets": [],
+          "invalid_binding_ids": [],
+          "unique_sources": 1
+        },
+        "task": {
+          "id": "a9db3c2f02b14392ad01ab8395553acf",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "How do conformal methods handle missing values and imputation?",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:48.397408Z",
+          "updated_at": "2026-10-28T22:54:48.987304Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 4,
+            "seconds": 0.29200053215026855,
+            "evidence": 6,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "missing values",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            },
+            {
+              "id": "q2",
+              "question": "imputation",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: missing values",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "559aa5a61e493cb915f1e8db4b9b025282833ad1727111ed88c1390de9a763b2",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:12",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:15"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: missing values",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "a16b7d9354e58669baa116f2c3f39d4778a65be59a7a2b4ab24ec039d8731729",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:12",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:15"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            },
+            {
+              "id": "q2-lexical_retrieve",
+              "question_id": "q2",
+              "title": "lexical retrieve: imputation",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "a68391db0126dfb48e51fe508918677e8049aa1b0921aad9075fd304c507f32a",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:10",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:17",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:19"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q2-inspect_sources",
+              "question_id": "q2",
+              "title": "inspect sources: imputation",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q2-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "711019c9b9663f4d6b29951fa1b1372b6547b5f4d57523538d855a179627115f",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:10",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:17",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:19"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:48.397408Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:48.485600Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:48.545748Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:48.626479Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:48.697859Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:48.768162Z",
+              "type": "step_started",
+              "message": "q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:48.846711Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:48.919849Z",
+              "type": "step_started",
+              "message": "q2-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:48.987304Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "perturbed_inputs",
+      "repeat": 3,
+      "baseline": {
+        "latency_seconds": 0.00017080013640224934,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.5,
+          "omitted_facets": [
+            0
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.6579547000583261,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:7",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "The main research question of\nthis paper is: how can we develop probably correct CP al-\ngorithms for ensuring robustness to most perturbations for\n(pre-trained) deep classifiers?"
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:8",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 2,
+            "quote": "The goal is to improve the robustness of the CP framework\nto handle perturbations ϵ bounded by r for every input X ∈ X."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:53",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 12,
+            "quote": "On the numerical side, preliminary experiments show\npromising results, indicating CP-MDA’s robustness, but a detailed numerical study is needed."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:32",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 5,
+            "quote": "The following formal result guarantees the probabilistically\nrobust coverage for the aPRCP algorithm."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:58",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 8,
+            "quote": "CP is a general framework for un-\ncertainty quantification that provides marginal coverage\nguarantees without any assumptions on the underlying data\ndistribution [Shafer and V ovk, 2008]."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:6",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Conformal prediction (CP) [V ovk et al., 1999,\n2005, Shafer and V ovk, 2008] is a framework for UQ that\nprovides formal guarantees for a user-specified coverage:\nground-truth output is contained in the prediction set with a\nhigh probability 1 − α (e.g., 90%)."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 1.0,
+          "omitted_facets": [],
+          "invalid_binding_ids": [],
+          "unique_sources": 2
+        },
+        "task": {
+          "id": "fbc1fd9389d7409bb8052ace3c092ec9",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "How does robust conformal prediction handle perturbations and coverage?",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:49.134610Z",
+          "updated_at": "2026-10-28T22:54:49.707839Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 4,
+            "seconds": 0.26972222328186035,
+            "evidence": 6,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "perturbations robustness",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            },
+            {
+              "id": "q2",
+              "question": "coverage guarantees",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: perturbations robustness",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "7236c201a1746526e476212e1f2202d30e7254ad529dcd52cf64b8eb9b37402e",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:7",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:8",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:53"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: perturbations robustness",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "5e37ada25caefcc5a3169f711c47b85615cb1b96894470097075f0f85b56f716",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:7",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:8",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:53"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            },
+            {
+              "id": "q2-lexical_retrieve",
+              "question_id": "q2",
+              "title": "lexical retrieve: coverage guarantees",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "9f1b9f7bd3f9a763c85006f921dd8ce4451478d85c5e614876ba0431e7a58cd3",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:32",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:58",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:6"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q2-inspect_sources",
+              "question_id": "q2",
+              "title": "inspect sources: coverage guarantees",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q2-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "87dcfee7419825b1e6a26fa96b54b63b94a1f56ec7c0b10aec821b148b06035b",
+              "result": {
+                "evidence_ids": [
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:32",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:58",
+                  "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:6"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:49.134610Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:49.205229Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:49.269135Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:49.347924Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:49.414460Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:49.494787Z",
+              "type": "step_started",
+              "message": "q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:49.554168Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:49.630746Z",
+              "type": "step_started",
+              "message": "q2-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:49.707839Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "sparse_regions",
+      "repeat": 3,
+      "baseline": {
+        "latency_seconds": 0.00016930000856518745,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.6568706999532878,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:100",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 27,
+            "quote": "D.7 APPLICATION TO DENSITY-BASED CONFORMITY SCORES\nIn this section, we use a simulated experiment to illustrate howEPICSCORE can enhance density-based conformal prediction\nmethods by explicitly incorporating epistemic uncertainty."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:102",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 27,
+            "quote": "The experiment is designed to reflect regions with both high epistemic and aleatoric uncertainty, allowing us to\nhighlight the advantages of our method in capturing complex uncertainty structures."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:11",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "1.1 NOVELTY\nWe introduce EPICSCORE (Epistemic Conformal Score),\na novel nonconformity score that explicitly integrates epis-\ntemic uncertainty into the conformal prediction framework."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:21",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 4,
+            "quote": "Challenge: NAs induce heteroskedasticity\nTo better understand the interplay between missing values\nand conditional coverage with respect to the mask, we con-\nsider an illustrative example of a Gaussian linear model."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:32",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 6,
+            "quote": "The challenge in proving MCV of CP-MDA-Nested is that\nthe augmented calibration and test points are not exchange-\nable conditional on the mask and thus may result in under-\ncoverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:35",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 7,
+            "quote": "For any missing mechanism, for almost all\nimputation function Φ ∈ FI\n∞, if FY |(Xobs(M),M ) is continu-\nous, a universally consistent quantile regressor trained on\nthe imputed data set yields asymptotic conditional coverage."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 1.0,
+          "omitted_facets": [],
+          "invalid_binding_ids": [],
+          "unique_sources": 2
+        },
+        "task": {
+          "id": "5852f2e62ecf461da38004eb960f0ccb",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:49.837149Z",
+          "updated_at": "2026-10-28T22:54:50.414504Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 4,
+            "seconds": 0.2861621379852295,
+            "evidence": 6,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "epistemic uncertainty",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            },
+            {
+              "id": "q2",
+              "question": "conditional coverage",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: epistemic uncertainty",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "e829f9f8eed4ce60441ff3bf2ae72e8505e3507e2992faeb9e5003ffaf78b7f8",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:100",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:102",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:11"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: epistemic uncertainty",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "20d0290abc3f849e09732a237361c432f496fa3beb45ef49dc73ddb920f390a3",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:100",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:102",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:11"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            },
+            {
+              "id": "q2-lexical_retrieve",
+              "question_id": "q2",
+              "title": "lexical retrieve: conditional coverage",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "e853a67bf56fe09aed710a14b348ec899d49a1bb5a5dfe3381f608652053fe61",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:21",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:32",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:35"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q2-inspect_sources",
+              "question_id": "q2",
+              "title": "inspect sources: conditional coverage",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q2-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "16d7ee3bb703da355c7bb8bd1018bb77cb02162760874ff32fcaefa17b2f1513",
+              "result": {
+                "evidence_ids": [
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:21",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:32",
+                  "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:35"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:49.837149Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:49.925798Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:49.995362Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:50.069570Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:50.131360Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:50.207010Z",
+              "type": "step_started",
+              "message": "q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:50.286224Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q2-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:50.349477Z",
+              "type": "step_started",
+              "message": "q2-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:50.414504Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "lexical_decoy",
+      "repeat": 3,
+      "baseline": {
+        "latency_seconds": 0.0002521001733839512,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1,
+            2
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.3790585999377072,
+        "cost_usd": 0,
+        "status": "completed",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:35",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 8,
+            "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN CQR CQR-r UACQR-P UACQR-S\nairfoil 19.361 (0.234) 19.704 (0.27) 18.799 (0.29) 20.521 (0.234) 20.535 (0.236) 23.021 (0.337) 20.188 (0.3)\nbike×(101) 44.722 (0.297) 47.818 (0.320)43.858 (0.326)45.628 (0.256) 45.638 (0.258) 53.413 (0.376)43.815 (0.385)\nconcrete 42.765 (0.723) 45.276 (0.764) 44.442 (0.8) 46.882 (0.681) 46.896 (0.683) 52.789 (1.097) 47.324 (1.349)\ncycle 34.435 (0.142) 35.054 (0.131) 34.077 (0.129)39.218 (0.134) 39.408 (0.136) 43.775 (0.181) 35.346 (0.197)\nelectric 0.099 (< 0.001) 0.096 (< 0.001) 0.082 (< 0.001)0.102 (0.001) 0.102 (0.001) 0.111 (0.001) 0.097 (< 0.001)\nhomes×(105) 7.739 (0.066) 8.098 (0.072) 7.225 (0.049) 8.360 (0.075) 8.433 (0.078) 11.427 (0.131) 8.544 (0.107)\nmeps19 65.085 (1.469) 64.907 (1.56) 64.3 (1.528) 64.239 (1.56) 64.239 (1.56) 71.015 (1.763)63.737 (1.461)\nprotein 17.687 (0.019) 18.096 (0.037) 17.417 (0.019) 17.7 (0.015) 17.7 (0.016) 18.149 (0.015) 17.691 (0.015)\nstar×(101) 98.466 (0.768) 98.033 (0.750) 98.725 (0.754) 97.770 (0.725) 97.791 (0.724)99.782 (0.647) 99.809 (0.968)\nsuperconductivity 74.37 (0.222) 80.278 (0.266) 70.212 (0.196)75.496 (0.219) 75.508 (0.218) 87.929 (0.513) 73.971 (0.404)\nWEC×(105) 2.925 (0.009) 2.665 (0.012) 2.374 (0.010) 3.138 (0.009) 3.142 (0.009) 3.517 (0.010) 3.046 (0.010)\nwinered 3.007 (0.058) 3.009 (0.059) 2.977 (0.05) 2.979 (0.069) 2.978 (0.069) 3.059 (0.069) 2.999 (0.063)\nwinewhite 3.334 (0.03) 3.327 (0.034) 3.219 (0.03) 3.316 (0.036) 3.315 (0.036) 3.378 (0.038) 3.2 (0.036)\nTable 2: Regression AISL values for each method and dataset."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:36",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 8,
+            "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN Mondrian Reg-split Weighted\nairfoil 19.747 (0.767) 20.287 (0.686) 19.823 (0.675) 21.532 (0.919) 21.201 (0.98) 20.276 (0.819)\nbike×(101) 36.381 (0.463) 41.448 (0.575) 37.041 (0.452) 38.190 (0.403) 43.918 (0.567) 37.773 (0.468)\nconcrete 52.098 (2.237) 52.998 (2.359) 51.648 (2.185) 61.915 (2.815) 54.902 (2.634) 58.399 (3.165)\ncycle 19.418 (0.211) 19.522 (0.221) 19.436 (0.213) 19.403 (0.226) 19.73 (0.208) 19.49 (0.207)\nelectric 0.048 (<0.001) 0.049 (<0.001) 0.048 (<0.001) 0.05 (<0.001) 0.05 (0.001) 0.048 (<0.001)\nhomes×(105) 5.921 (0.0716) 6.192 (0.0689) 5.546 (0.055) 5.710 (0.053) 7.569 (0.098) 5.860 (0.056)\nmeps19 86.039 (2.421) 87.086 (2.405) 75.061 (1.807) 79.192 (1.821) 109.83 (2.695) 92.433 (3.259)\nprotein 18.885 (0.054) 18.772 (0.065) 17.735 (0.055) 17.586 (0.051) 19.423 (0.055) 18.314 (0.065)\nstar×(101) 105.616 (1.255) 106.112 (0.998) 106.368 (1.173) 109.346 (1.119) 105.250 (1.038) 129.492 (1.657)\nsuperconductivity 54.895 (0.364) 59.16 (0.449) 53.406 (0.365) 58.065 (0.313) 68.183 (0.418) 54.981 (0.345)\nWEC×(105) 1.437 (0.010) 1.435 (0.011) 1.283 (0.009) 1.294 (0.009) 1.620 (0.009) 1.410 (0.009)\nwinered 3.152 (0.07) 3.171 (0.064) 3.101 (0.062) 3.262 (0.069) 3.214 (0.063) 3.415 (0.067)\nwinewhite 3.104 (0.027) 3.187 (0.029) 3.129 (0.029) 3.087 (0.023) 3.181 (0.028) 3.189 (0.033)\nmodel in all conformal methods."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:38",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 9,
+            "quote": "Dataset EPIC-BART EPIC-GP EPIC-MDN CQR CQR-r UACQR-P UACQR-S\nairfoil 1.028 (0.034) 1.01 (0.018) 1.048 (0.04) 1.005 (0.013) 1.004 (0.012) 1.002 (0.01) 1.005 (0.016)\nbike 0.991 (0.007) 1.01 (0.007) 0.989 (0.007) 0.985 (0.007) 0.985 (0.007) 0.99 (0.005) 0.981 (0.01)\nconcrete 0.983 (0.033) 0.995 (0.016) 1.043 (0.029) 0.998 (0.012) 0.998 (0.012) 0.998 (0.008) 0.998 (0.012)\ncycle 0.953 (0.014) 0.966 (0.014) 0.949 (0.014) 0.997 (0.005) 0.997 (0.005) 1.0 (0.004) 0.998 (0.007)\nelectric 1.01 (0.004) 1.01 (0.004) 1.012 (0.008) 1.008 (0.004) 1.007 (0.003) 1.006 (0.003) 1.01 (0.005)\nhomes 1.116 (0.019) 1.101 (0.016) 1.173 (0.027) 1.088 (0.015) 1.081 (0.014) 1.039 (0.006) 1.094 (0.014)\nmeps19 1.052 (0.029) 1.042 (0.025) 1.044 (0.028) 1.04 (0.025) 1.04 (0.025) 1.021 (0.015) 1.045 (0.026)\nprotein 1.001 (0.002) 1.001 (0.003) 1.006 (0.002) 1.002 (0.001) 1.002 (0.001) 1.001 (0.001) 1.002 (0.001)\nstar 0.994 (0.006) 0.994 (0.003) 0.999 (0.007) 0.994 (0.003) 0.993 (0.003) 0.997 (0.003) 0.997 (0.003)\nsuperconductivity 1.021 (0.007) 0.987 (0.006) 1.029 (0.008) 1.041 (0.007) 1.041 (0.007) 1.023 (0.004) 1.049 (0.008)\nWEC 1.012 (0.006) 1.003 (0.008) 1.02 (0.01) 1.016 (0.003) 1.016 (0.003) 1.011 (0.002) 1.021 (0.004)\nwinered 1.008 (0.012) 1.007 (0.008) 1.072 (0.022) 0.993 (0.008) 0.992 (0.008) 0.996 (0.005) 0.992 (0.009)\nwinewhite 1.031 (0.007) 1.024 (0.006) 1.053 (0.014) 1.018 (0.007) 1.018 (0.007) 1.018 (0.006) 1.034 (0.01)\ntimate variance by fitting a Random Forest to (X, Y)."
+          }
+        ],
+        "metrics": {
+          "selected_count": 3,
+          "valid_binding_count": 3,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.3333333333333333,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 1
+        },
+        "task": {
+          "id": "7f5f433ab0e344788aa923b5aea9932d",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "zygomorphic quasicrystals superconductivity",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:50.574621Z",
+          "updated_at": "2026-10-28T22:54:50.872551Z",
+          "status": "completed",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 2,
+            "seconds": 0.15638184547424316,
+            "evidence": 3,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "zygomorphic quasicrystals superconductivity",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: zygomorphic quasicrystals superconductivity",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "d8489ebd971515545bad9f7c422f5b8e22c5abb11a187fd2b3ed8d34b00ddcd4",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:35",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:36",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:38"
+                ],
+                "gaps": [],
+                "summary": "Lexical term-overlap retrieval selected 3 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: zygomorphic quasicrystals superconductivity",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "133f14727f158c05e83afaaae738924c56c734ec098f13ff927b53f59df7aa90",
+              "result": {
+                "evidence_ids": [
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:35",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:36",
+                  "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:38"
+                ],
+                "gaps": [],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:50.574621Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:50.647698Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:50.727059Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:50.802699Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:50.872551Z",
+              "type": "completed",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "absent_topic",
+      "repeat": 3,
+      "baseline": {
+        "latency_seconds": 0.00024199998006224632,
+        "cost_usd": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "selected": [
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:1",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "Conformal Prediction with Missing Values\nMargaux Zaffran 1 2 3 Aymeric Dieuleveut3 Julie Josse 2 Yaniv Romano4\nAbstract\nConformal prediction is a theoretically grounded\nframework for constructing predictive intervals."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:1",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "Abstract\nConformal prediction (CP) is a framework to quan-\ntify uncertainty of machine learning classifiers in-\ncluding deep neural networks."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:3",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 1,
+            "quote": "Unlike probabilistic models that rely on asymp-\ntotic assumptions or priors, conformal methods provide a\ndistribution-free framework with guaranteed coverage."
+          },
+          {
+            "id": "e:80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15:3",
+            "source_id": "80d2a6482a415d424e8cc77f4bcac0da0a4e45413cf77c2d60f00e858e0d5a15",
+            "page": 1,
+            "quote": "This motivates our novel generalized conformal-\nized quantile regression framework, missing data\naugmentation, which yields prediction intervals\nthat are valid conditionally to the patterns of miss-\ning values, despite their exponential number."
+          },
+          {
+            "id": "e:9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533:3",
+            "source_id": "9f37139214aa91dc67b1cc622cfa53331a1edd04d379cf73aba7944b0546e533",
+            "page": 1,
+            "quote": "We propose a novel adaptive PRCP\n(aPRCP) algorithm to achieve probabilistically ro-\nbust coverage."
+          },
+          {
+            "id": "e:c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e:8",
+            "source_id": "c1de719f04cef9e2edf5ed75d9cc61341db27deb97812678deaf985d36f3f91e",
+            "page": 2,
+            "quote": "As shown in the figure, our method\n(EPICSCORE) successfully expands the predictive regions\nwhere data is scarce, providing a more reliable uncertainty\nquantification."
+          }
+        ],
+        "metrics": {
+          "selected_count": 6,
+          "valid_binding_count": 6,
+          "exact_binding_rate": 1.0,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 3
+        }
+      },
+      "executor": {
+        "latency_seconds": 0.37124969996511936,
+        "cost_usd": 0,
+        "status": "incomplete",
+        "stop_reason": "Plan finished; human semantic review remains required.",
+        "selected": [],
+        "metrics": {
+          "selected_count": 0,
+          "valid_binding_count": 0,
+          "exact_binding_rate": null,
+          "lexical_facet_coverage": 0.0,
+          "omitted_facets": [
+            0,
+            1
+          ],
+          "invalid_binding_ids": [],
+          "unique_sources": 0
+        },
+        "task": {
+          "id": "b984d4e9b6574f3db03fc628d4da90fd",
+          "run_id": "50d5f881c9804e0489528fa935611bbc",
+          "question": "zygomorphic quasicrystals",
+          "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
+          "created_at": "2026-10-28T22:54:51.015493Z",
+          "updated_at": "2026-10-28T22:54:51.305668Z",
+          "status": "incomplete",
+          "stop_reason": "Plan finished; human semantic review remains required.",
+          "budget": {
+            "max_steps": 20,
+            "max_seconds": 60.0,
+            "max_evidence": 6
+          },
+          "usage": {
+            "steps": 2,
+            "seconds": 0.16871309280395508,
+            "evidence": 0,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0
+          },
+          "subquestions": [
+            {
+              "id": "q1",
+              "question": "zygomorphic quasicrystals",
+              "requirements": [
+                "Exact saved-source quotations",
+                "Heuristic intent: general",
+                "Lexical relevance; human semantic review required"
+              ]
+            }
+          ],
+          "steps": [
+            {
+              "id": "q1-lexical_retrieve",
+              "question_id": "q1",
+              "title": "lexical retrieve: zygomorphic quasicrystals",
+              "tool": "lexical_retrieve",
+              "depends_on": [],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "603c79c84577a9c96df556270e5cfa3f7d16b26c8c5cee5f8159109be0c3f2f6",
+              "result": {
+                "evidence_ids": [],
+                "gaps": [
+                  "No lexically matching saved evidence; question remains unanswered."
+                ],
+                "summary": "Lexical term-overlap retrieval selected 0 quotations; not semantic verification."
+              }
+            },
+            {
+              "id": "q1-inspect_sources",
+              "question_id": "q1",
+              "title": "inspect sources: zygomorphic quasicrystals",
+              "tool": "inspect_sources",
+              "depends_on": [
+                "q1-lexical_retrieve"
+              ],
+              "status": "completed",
+              "attempts": 1,
+              "input_sha256": "21f890161a0432b805e0efaffec680738118c234108d69370c929abeed907b7a",
+              "result": {
+                "evidence_ids": [],
+                "gaps": [
+                  "No lexically matching saved evidence; question remains unanswered."
+                ],
+                "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+              }
+            }
+          ],
+          "events": [
+            {
+              "at": "2026-10-28T22:54:51.015493Z",
+              "type": "planned",
+              "message": "Offline lexical retrieval plan; no semantic verification or model calls."
+            },
+            {
+              "at": "2026-10-28T22:54:51.091213Z",
+              "type": "step_started",
+              "message": "q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:51.166457Z",
+              "type": "paused",
+              "message": "Checkpoint saved: q1-lexical_retrieve"
+            },
+            {
+              "at": "2026-10-28T22:54:51.226893Z",
+              "type": "step_started",
+              "message": "q1-inspect_sources"
+            },
+            {
+              "at": "2026-10-28T22:54:51.305668Z",
+              "type": "incomplete",
+              "message": "Plan finished; human semantic review remains required."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Purposive three-paper corpus; not a search-recall or scientific-validity benchmark.",
+    "Whole-word facet coverage is a retrieval proxy; no expert relevance gold labels.",
+    "Baseline is bounded fixed method-category selection, not a model or complete workflow timing.",
+    "Executor latency includes planning, SQLite persistence and reload; baseline latency is selection only.",
+    "Zero model/network calls; costs and tokens zero. Local CPU/storage costs not estimated.",
+    "Raw PDF hashes are inherited provenance; this offline run verifies saved text, not original PDF bytes."
+  ]
+}
