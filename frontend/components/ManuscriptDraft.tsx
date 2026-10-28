@@ -47,7 +47,7 @@ function DraftPanel({runId}:{runId:string}) {
           </details>}
         </div>)}
       </article>)}
-      <p>This preview is not saved as a manuscript revision. Narrative editing, linked contradiction review and approved publication export are later P4 work.</p>
+      <p>This preview is source material. Use the manuscript editor to save your writing, inspect references beside it, and review an exact revision before export.</p>
     </>}
   </section>;
 }

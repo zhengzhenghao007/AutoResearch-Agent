@@ -16,7 +16,7 @@ class Contract(BaseModel):
 class Sentence(Contract):
     id: Identifier
     text: Text
-    kind: Literal['paper_report', 'user_observation', 'hypothesis', 'suggestion', 'placeholder']
+    kind: Literal['paper_report', 'user_observation', 'hypothesis', 'suggestion', 'placeholder', 'research_asset']
     reference_ids: list[str] = Field(default_factory=list, max_length=100)
 
 

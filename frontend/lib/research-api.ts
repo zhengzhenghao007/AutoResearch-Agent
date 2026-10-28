@@ -9,6 +9,7 @@ import type {SourceDuplicateReport} from '@/types/source-duplicates';
 import type {SourceIdentitiesView,SourceIdentityRequest} from '@/types/source-identities';
 import type { CandidateDecision, ResearchHistory, ResearchRun } from '@/types/research';
 import type { CitationRegistry, BibtexExport } from '@/types/citations';
+import type {WorkspaceItemRequest,WorkspacePreview} from '@/types/workspace';
 const base = (process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
 export const REQUEST_TIMEOUT_MS = 120_000;
 export class ResearchApiError extends Error {
@@ -31,7 +32,7 @@ function detailText(value: unknown): string {
   return '';
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+async function request<T>(path: string, init?: RequestInit, binary = false): Promise<T> {
   const controller = new AbortController();
   let timedOut = false;
   const timer = setTimeout(() => { timedOut = true; controller.abort(); }, REQUEST_TIMEOUT_MS);
@@ -44,7 +45,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       try { message = detailText(await response.json()); } catch { /* Fall back to HTTP status. */ }
       throw new ResearchApiError(message || `Request failed (${response.status}).`, response.status);
     }
-    return await response.json() as T;
+    return await (binary ? response.blob() : response.json()) as T;
   } catch (error) {
     if (timedOut) throw new Error('Request timed out. The server may still be processing this operation. Refresh history and reopen the record to check its state before starting another operation.');
     if (error instanceof TypeError) throw new Error('Connection lost. The operation may still be running on the server. Refresh history and reopen the record to check its state.');
@@ -53,6 +54,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  saveWorkspaceItem: (id:string,body:WorkspaceItemRequest) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}/workspace/items`,json(body)),
+  previewWorkspaceItem: (id:string,body:WorkspaceItemRequest) => request<WorkspacePreview>(`/runs/${encodeURIComponent(id)}/workspace/preview`,json(body)),
+  workspaceItem: (id:string,itemId:string) => request<WorkspacePreview>(`/runs/${encodeURIComponent(id)}/workspace/items/${encodeURIComponent(itemId)}`),
+  manuscriptBundle: (id:string,revisionId:string) => request<Blob>(`/runs/${encodeURIComponent(id)}/manuscript/bundle?revision_id=${encodeURIComponent(revisionId)}`,undefined,true),
   session: () => request<ResearchSession>('/session'),
   jobs: () => request<{items:ResearchJob[]}>('/jobs'),
   submitJob: (body:JobRequest) => request<ResearchJob>('/jobs',json(body)),

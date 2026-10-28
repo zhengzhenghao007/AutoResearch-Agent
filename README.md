@@ -10,20 +10,25 @@ Bring a research question and a small collection of papers. Keep quotations atta
 
 [Explore the complete example](examples/conformal-prediction/README.md) · [中文使用指南](docs/local-quickstart.md) · [Engineering reference](docs/engineering-guide.md)
 
-## One record, four places to work
+## One record, five places to work
 
 | Workspace | What you do |
 |---|---|
 | **Library** | Search arXiv, choose candidates or import PDFs. Reopen saved research from history. |
 | **Reading & evidence** | Select a paper, search its extracts, and inspect a quotation beside its extracted page. |
 | **Compare** | Compare categories across papers. Follow extracts back to evidence; missing material stays visible. |
-| **Writing** | Assemble an attributed outline, edit and save revisions, then explicitly review and approve an export. |
+| **Data & figures** | Import CSV/JSON observations, inspect rows, preview and save tables or figures, and keep experiment notes. |
+| **Writing** | Keep searchable sources beside the document, insert referenced material into a chapter, save revisions, then explicitly review and approve an export. |
 
 Advanced source checks, screening records and category corrections are available when needed. Local mode opens without a token prompt. The older interface lives separately at `/legacy`.
 
-The Library overview highlights truncated papers, missing extraction categories and sources without quotations, with links to inspect each one. Workflow links retain your current stage on reload. Unsaved manuscript changes block record/session switches and trigger the browser's close warning; save a revision before closing, or explicitly discard edits. Browser crash recovery is not provided.
+The Library overview highlights truncated papers, missing extraction categories and sources without quotations, with links to inspect each one. Workflow links retain your current stage on reload. Unsaved manuscript and material drafts warn before leaving; save before closing, or explicitly discard edits. Browser crash recovery is not provided.
+
+The [research studio guide](docs/research-studio.md) walks through data import, saved materials, writing beside sources, and approved ZIP export. Try the [synthetic CSV format example](examples/research-studio/README.md) to exercise the workflow without claiming experimental results.
 
 See the [public-product comparison and quality review](docs/superpowers/plans/2026-10-27-workbench-quality.md) for the design references, verified improvements and remaining limits.
+
+The current product is a research workbench with bounded automation, not a fully autonomous scientist. See the [agent capability audit and acceptance criteria](docs/agent-readiness-review.md) for implemented capabilities and the remaining planning, recovery, budget and evaluation gaps.
 
 ## A real example, including what went wrong
 
@@ -75,7 +80,7 @@ For macOS/Linux, use `.venv/bin/python` and `export NAME=value` instead of Power
 
 Rule extraction is reproducible and requires no model, but can miss statements, mix PDF columns and misclassify quotations. There is no OCR; the importer accepts text PDFs up to 20 MiB and parses at most 50 pages by default. Comparisons do not rank incompatible experiments. The tool does not autonomously run experiments or establish novelty, causality or scientific validity. Human scientific evaluation remains incomplete; the example is not a replacement for it.
 
-Optional model-based review is explicit and may incur provider costs. See [data and deployment boundaries](docs/p5-deployment.md) before sharing an instance.
+Uploaded PDF binaries are not retained: reading shows extracted page text. Observation import supports CSV/JSON, not XLSX. Material search stays within the current research record. Optional model-based review is explicit and may incur provider costs. See [data and deployment boundaries](docs/p5-deployment.md) before sharing an instance.
 
 ## For contributors
 

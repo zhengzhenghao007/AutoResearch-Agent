@@ -1,5 +1,6 @@
 import type {ExperimentDataset} from './experiments';
 import type {SourceIdentityAnnotation} from './source-identities';
+import type {WorkspaceItem} from './workspace';
 /** Mirrors schemas/research.py, schema version 1. */
 export type Category = 'problem' | 'method' | 'dataset' | 'experiment' | 'result' | 'limitation' | 'future_work';
 export interface Source { id: string; title: string; kind: 'paper' | 'user_data'; uri: string; sha256: string; collected_at: string }
@@ -13,6 +14,6 @@ export interface Candidate { id: string; title: string; pdf_url: string; summary
 export interface Artifact { kind: 'literature_summary' | 'method_comparison' | 'research_ideas' | 'coverage_gaps'; title: string; content: string; claim_ids: string[]; evidence_ids: string[] }
 export interface CandidateDecision { candidate_id: string; decision: "include" | "exclude"; reason: string; decided_at: string }
 export interface CategoryRevision {claim_id:string;before:PaperEvidence;after:PaperEvidence;reason:string;revised_at:string}
-export interface ResearchRun { experiments?:ExperimentDataset[]; category_revisions?:CategoryRevision[]; source_identity_annotations?: SourceIdentityAnnotation[]; candidate_decisions?: CandidateDecision[]; schema_version: 1; id: string; topic: string; plan: string[]; candidates: Candidate[]; selected_ids: string[]; papers: PaperEvidence[]; generated_claims: Claim[]; artifacts: Artifact[]; review: Review }
+export interface ResearchRun { workspace_items?:WorkspaceItem[]; experiments?:ExperimentDataset[]; category_revisions?:CategoryRevision[]; source_identity_annotations?: SourceIdentityAnnotation[]; candidate_decisions?: CandidateDecision[]; schema_version: 1; id: string; topic: string; plan: string[]; candidates: Candidate[]; selected_ids: string[]; papers: PaperEvidence[]; generated_claims: Claim[]; artifacts: Artifact[]; review: Review }
 export interface ResearchRunSummary { id: string; topic: string; candidate_count: number; selected_count: number; paper_count: number; updated_at: string; source_support_passed: boolean }
 export interface ResearchHistory { items: ResearchRunSummary[]; total: number; page: number; page_size: number }

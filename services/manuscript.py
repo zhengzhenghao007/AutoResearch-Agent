@@ -8,6 +8,8 @@ import json
 import os
 import re
 import tempfile
+import io
+import zipfile
 from decimal import Decimal, InvalidOperation
 from datetime import datetime, timezone
 from threading import RLock
@@ -30,8 +32,14 @@ def _json(value):
 
 
 def _hash(sections, source):
+    legacy_source = source.model_dump(mode='json')
+    # Preserve byte-for-byte historical canonical hashing for pre-asset manuscripts.
+    for section in legacy_source['sections']:
+        for block in section['blocks']:
+            if block.get('asset') is None:
+                block.pop('asset', None)
     return hashlib.sha256(_json({'sections':[s.model_dump(mode='json') for s in sections],
-        'source':source.model_dump(mode='json')}).encode('utf-8')).hexdigest()
+        'source':legacy_source}).encode('utf-8')).hexdigest()
 
 
 def _blocks(source):
@@ -43,6 +51,15 @@ def _validate_sections(sections, source):
     if len(blocks) != sum(len(s.blocks) for s in source.sections):
         raise ValueError('Duplicate source block IDs')
     for block in blocks.values():
+        if block.kind == 'research_asset':
+            asset = block.asset
+            if (not asset or block.paper or block.computation or asset.item.kind not in ('figure', 'table')
+                    or block.id != f'asset:{asset.item_id}' or asset.title != asset.item.title
+                    or block.text != (asset.item.text or asset.title) or not asset.dataset_sha256
+                    or not asset.item.dataset_id):
+                raise ValueError('Invalid research asset binding')
+        elif block.asset is not None:
+            raise ValueError('Only research asset blocks may bind an asset')
         if block.kind == 'paper_claim' and (not block.paper or block.computation or not block.paper.evidence):
             raise ValueError('Invalid paper binding')
         if block.kind == 'user_statistics' and (not block.computation or block.paper or block.computation.column.observed_count < 1):
@@ -87,6 +104,11 @@ def _validate_sections(sections, source):
         if len(refs) != len(set(refs)) or not set(refs) <= blocks.keys():
             raise ValueError('Unknown or duplicate evidence references')
         kind = {'paper_report':'paper_claim', 'user_observation':'user_statistics'}.get(sentence.kind)
+        if sentence.kind == 'research_asset' and (len(refs) != 1 or blocks[refs[0]].kind != 'research_asset'
+                or sentence.text != blocks[refs[0]].text):
+            raise ValueError('Research asset sentences require exactly one matching asset and unchanged caption')
+        if sentence.kind != 'research_asset' and any(blocks[r].kind == 'research_asset' for r in refs):
+            raise ValueError('Research assets require the research_asset sentence kind')
         if kind and (not refs or any(blocks[r].kind != kind for r in refs)):
             raise ValueError('Factual sentences require matching evidence references')
         for ref in refs:
@@ -199,7 +221,8 @@ def save_revision(store, run_id, expected_revision, expected_input_sha256, reaso
             raise ValueError('Manuscript revision limit reached (20)')
         sections = request.sections
         if sections is None:
-            kinds = {'paper_claim':'paper_report', 'user_statistics':'user_observation', 'placeholder':'placeholder'}
+            kinds = {'paper_claim':'paper_report', 'user_statistics':'user_observation', 'placeholder':'placeholder',
+                     'research_asset':'research_asset'}
             # Preserve every binding when a real multi-paper outline exceeds a
             # section's 200-sentence bound. The document-wide bound still applies.
             sections = []
@@ -301,12 +324,18 @@ def export_manuscript(store, run_id, revision_id):
         lines = ['# Manuscript', '', 'Scientific validation: not_assessed. Human approval is an attestation, not independent validation.',
                  '', f'Revision: {revision.id}; content SHA256: {revision.content_sha256}; input SHA256: {revision.input_sha256}', '']
         labels = {'paper_report':'Paper report', 'user_observation':'User observation',
-                  'hypothesis':'Hypothesis', 'suggestion':'Suggestion', 'placeholder':'Missing material'}
+                  'hypothesis':'Hypothesis', 'suggestion':'Suggestion', 'placeholder':'Missing material',
+                  'research_asset':'Research asset'}
         for section in revision.sections:
             lines += ['## ' + _escape(section.title), '']
             for sentence in section.sentences:
                 lines += [f'**{labels[sentence.kind]}:** {_escape(sentence.text)} '
                           + ('References: ' + ', '.join(_escape(r) for r in sentence.reference_ids) if sentence.reference_ids else ''), '']
+                if sentence.kind == 'research_asset':
+                    asset = _blocks(revision.source)[sentence.reference_ids[0]].asset
+                    if asset.svg:
+                        lines += [f'![Research figure](assets/{asset.item_id}.svg)', '']
+                    lines += [asset.markdown, '']
         lines += ['## Evidence and computation references', '']
         for block in _blocks(revision.source).values():
             lines += ['- ' + _escape(block.id) + ': ' + _escape(_json(block.model_dump(mode='json')))]
@@ -317,3 +346,30 @@ def export_manuscript(store, run_id, revision_id):
         lines += ['- ' + _escape(_json(a.model_dump(mode='json'))) for a in approvals]
         return ManuscriptExport(filename=f'manuscript-{run_id}-r{revision.number}.md', markdown='\n'.join(lines)+'\n',
             revision_id=revision.id, content_sha256=revision.content_sha256)
+
+
+def export_manuscript_bundle(store, run_id, revision_id):
+    with _lock(store):
+        exported = export_manuscript(store, run_id, revision_id)
+        state = get_manuscript(store, run_id)
+        revision = _current(state, revision_id)
+        run = store.load(run_id)
+        blocks = _blocks(revision.source)
+        used = {ref for section in revision.sections for sentence in section.sentences for ref in sentence.reference_ids}
+        assets = [b.asset for b in blocks.values() if b.asset and b.id in used]
+        dataset_ids = {a.item.dataset_id for a in assets}
+        dataset_ids.update(b.computation.dataset_id for b in blocks.values() if b.computation and b.id in used)
+        provenance = {'run_id':run_id, 'revision_id':revision.id, 'content_sha256':revision.content_sha256,
+            'input_sha256':revision.input_sha256, 'scientific_validation':'not_assessed',
+            'datasets':[d.model_dump(mode='json') for d in run.experiments if d.id in dataset_ids],
+            'assets':[a.model_dump(mode='json') for a in assets],
+            'approvals':[a.model_dump(mode='json') for a in state.approvals if a.revision_id == revision_id]}
+        output = io.BytesIO()
+        with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED) as bundle:
+            bundle.writestr('manuscript.md', exported.markdown)
+            bundle.writestr('references.json', _json([b.model_dump(mode='json') for b in blocks.values()]))
+            bundle.writestr('provenance.json', _json(provenance))
+            for asset in assets:
+                if asset.svg:
+                    bundle.writestr(f'assets/{asset.item_id}.svg', asset.svg)
+        return exported.filename.removesuffix('.md') + '.zip', output.getvalue()
