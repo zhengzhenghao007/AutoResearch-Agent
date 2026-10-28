@@ -4,6 +4,7 @@ from typing import Literal
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, PrivateAttr
 from schemas.source_identity import SourceIdentityAnnotation
 from schemas.experiments import ExperimentDataset
+from schemas.workspace import WorkspaceItem
 
 Category = Literal['problem', 'method', 'dataset', 'experiment', 'result', 'limitation', 'future_work']
 CATEGORIES = ('problem', 'method', 'dataset', 'experiment', 'result', 'limitation', 'future_work')
@@ -117,6 +118,7 @@ class ResearchRun(Contract):
     source_identity_annotations: list[SourceIdentityAnnotation] = Field(default_factory=list)
     category_revisions: list[CategoryRevision] = Field(default_factory=list, max_length=20)
     experiments: list[ExperimentDataset] = Field(default_factory=list, max_length=20)
+    workspace_items: list[WorkspaceItem] = Field(default_factory=list, max_length=100)
     papers: list[PaperEvidence] = Field(default_factory=list)
     generated_claims: list[Claim] = Field(default_factory=list)
     artifacts: list[Artifact] = Field(default_factory=list)

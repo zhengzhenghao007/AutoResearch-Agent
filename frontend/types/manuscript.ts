@@ -1,5 +1,5 @@
 import type {ManuscriptDraftData} from './manuscript-draft';
-export type SentenceKind='paper_report'|'user_observation'|'hypothesis'|'suggestion'|'placeholder';
+export type SentenceKind='paper_report'|'user_observation'|'hypothesis'|'suggestion'|'placeholder'|'research_asset';
 export interface ManuscriptSentence {id:string;text:string;kind:SentenceKind;reference_ids:string[]}
 export interface ManuscriptSection {id:string;title:string;sentences:ManuscriptSentence[]}
 export interface ManuscriptRevision {id:string;number:number;created_at:string;reason:string;content_sha256:string;input_sha256:string;sections:ManuscriptSection[];source:ManuscriptDraftData}

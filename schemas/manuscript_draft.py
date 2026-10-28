@@ -1,8 +1,9 @@
 """Read-only drafting material; approval and scientific validity are never inferred."""
 from typing import Literal
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_serializer
 from schemas.research import Source, Evidence
 from schemas.experiment_statistics import ColumnStatistics
+from schemas.workspace import AssetBinding
 
 
 class DraftContract(BaseModel):
@@ -28,10 +29,18 @@ class ComputationBinding(DraftContract):
 
 class DraftBlock(DraftContract):
     id: str
-    kind: Literal['paper_claim', 'user_statistics', 'placeholder']
+    kind: Literal['paper_claim', 'user_statistics', 'placeholder', 'research_asset']
     text: str
     paper: PaperBinding | None = None
     computation: ComputationBinding | None = None
+    asset: AssetBinding | None = None
+
+    @model_serializer(mode='wrap')
+    def preserve_legacy_shape(self, handler):
+        value = handler(self)
+        if self.asset is None:
+            value.pop('asset', None)
+        return value
 
 
 class DraftSection(DraftContract):

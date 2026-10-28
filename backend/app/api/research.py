@@ -28,6 +28,10 @@ from schemas.manuscript_draft import ManuscriptDraft
 from services.manuscript_draft import build_manuscript_draft
 from schemas.manuscript import ManuscriptState, RevisionRequest, ReviewRequest, ApprovalRequest, ManuscriptExport
 from services.manuscript import get_manuscript, save_revision, review_manuscript, approve_manuscript, export_manuscript
+from services.manuscript import export_manuscript_bundle
+from schemas.workspace import WorkspaceItemRequest, WorkspacePreview
+from services.workspace import preview_workspace, save_workspace_item, get_workspace_item
+from fastapi.responses import Response
 
 router = APIRouter(prefix='/api/research', tags=['research evidence'])
 
@@ -45,6 +49,31 @@ def session(request: Request):
 
 def get_manuscript_reviewer():
     return review_manuscript
+
+
+@router.post('/runs/{run_id}/workspace/items', response_model=ResearchRun)
+def workspace_save(run_id: str, request: WorkspaceItemRequest,
+                   flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: save_workspace_item(flow.store, run_id, request))
+
+
+@router.post('/runs/{run_id}/workspace/preview', response_model=WorkspacePreview)
+def workspace_preview(run_id: str, request: WorkspaceItemRequest,
+                      flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: preview_workspace(flow.store.load(run_id), request))
+
+
+@router.get('/runs/{run_id}/workspace/items/{item_id}', response_model=WorkspacePreview)
+def workspace_item(run_id: str, item_id: str,
+                   flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: get_workspace_item(flow.store, run_id, item_id))
+
+
+@router.get('/runs/{run_id}/manuscript/bundle')
+def manuscript_bundle(run_id: str, revision_id: str,
+                      flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    filename, content = invoke(lambda: export_manuscript_bundle(flow.store, run_id, revision_id))
+    return Response(content, media_type='application/zip', headers={'Content-Disposition':f'attachment; filename="{filename}"'})
 
 
 @router.get('/runs/{run_id}/manuscript', response_model=ManuscriptState)

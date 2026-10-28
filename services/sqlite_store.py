@@ -69,6 +69,10 @@ class SQLiteResearchStore(ResearchStore):
                     raise ConflictError('Research record changed; reload before saving') from exc
                 revision = 1
             else:
+                from services.workspace import validate_append_only
+                previous = db.execute('SELECT data FROM runs WHERE id=?', (run.id,)).fetchone()
+                if previous is not None:
+                    validate_append_only(ResearchRun.model_validate_json(previous['data']), validated)
                 cursor = db.execute('UPDATE runs SET revision=revision+1,data=?,updated=? WHERE id=? AND revision=?',
                                     (payload, now, run.id, expected))
                 if cursor.rowcount != 1:

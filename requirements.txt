@@ -10,3 +10,4 @@ uvicorn[standard]
 python-multipart
 requests
 pydantic>=2,<3
+matplotlib>=3.9,<4

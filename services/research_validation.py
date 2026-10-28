@@ -8,6 +8,8 @@ from services.experiments import validate_experiments
 
 def validate_run(run: ResearchRun) -> None:
     validate_experiments(run.experiments)
+    from services.workspace import validate_workspace
+    validate_workspace(run)
     for event in run.category_revisions:
         validate_revision(event)
     candidate_ids = [c.id for c in run.candidates]

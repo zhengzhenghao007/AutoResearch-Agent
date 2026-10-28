@@ -8,11 +8,11 @@ vi.mock('@/lib/research-api',()=>({researchApi:{list:vi.fn(),get:vi.fn()}}));
 vi.mock('@/components/ManuscriptEditor',()=>({default:({onBusyChange}:{onBusyChange?:(value:boolean)=>void})=> <><label>Draft text<textarea onChange={()=>onBusyChange?.(true)}/></label><button onClick={()=>onBusyChange?.(false)}>Release draft lock</button></>}));
 const record:ResearchRun={schema_version:1,id:'a'.repeat(32),topic:'Example study',plan:[],candidates:[],selected_ids:[],papers:[],generated_claims:[],artifacts:[],review:{approved:false,scope:'Literal only',issues:[]}};
 beforeEach(()=>{vi.resetAllMocks();window.history.replaceState({},'',`/?run=${record.id}`);vi.mocked(researchApi.list).mockResolvedValue({items:[],total:0,page:1,page_size:10});vi.mocked(researchApi.get).mockResolvedValue(record);});
-test('four stages preserve unsaved writing and hide unrelated controls',async()=>{
+test('five stages preserve unsaved writing and hide unrelated controls',async()=>{
  render(<EvidenceWorkspace/>);
  await screen.findByRole('heading',{name:'Example study'});
  const nav=screen.getByRole('navigation',{name:'Research workflow'});
- expect(within(nav).getAllByRole('button')).toHaveLength(4);
+ expect(within(nav).getAllByRole('button')).toHaveLength(5);
  expect(screen.getByLabelText('Research topic')).toBeVisible();
  await userEvent.click(within(nav).getByRole('button',{name:'Writing'}));
  expect(screen.getByLabelText('Research topic')).not.toBeVisible();
@@ -56,6 +56,23 @@ test('browser navigation cannot silently discard a dirty manuscript',async()=>{
  expect(draft).toBeVisible();expect(draft).toHaveValue('Unsaved');
  expect(new URL(window.location.href).searchParams.get('run')).toBe(record.id);
  expect(screen.getByRole('alert')).toHaveTextContent('Save or discard');
+});
+
+test('material notes guard record and browser navigation until discarded',async()=>{
+ const leave=vi.fn();
+ window.history.replaceState({},'',`/?run=${record.id}&stage=materials`);
+ render(<EvidenceWorkspace onLeaveBlockedChange={leave}/>);
+ const title=await screen.findByLabelText('Material title');
+ await userEvent.type(title,'Unsaved lab note');
+ expect(screen.getByRole('button',{name:'New record'})).toBeDisabled();
+ expect(leave).toHaveBeenLastCalledWith(true);
+ act(()=>{window.history.replaceState({},'','/');window.dispatchEvent(new PopStateEvent('popstate'));});
+ expect(title).toHaveValue('Unsaved lab note');
+ expect(new URL(window.location.href).searchParams.get('run')).toBe(record.id);
+ const confirm=vi.spyOn(window,'confirm').mockReturnValue(true);
+ await userEvent.click(screen.getByRole('button',{name:'Discard material draft'}));
+ expect(screen.getByRole('button',{name:'New record'})).toBeEnabled();
+ confirm.mockRestore();
 });
 
 test('stage changes during a slow record load keep the URL consistent',async()=>{

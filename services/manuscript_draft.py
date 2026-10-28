@@ -6,6 +6,8 @@ from schemas.research import ResearchRun
 from schemas.manuscript_draft import ManuscriptDraft, DraftSection, DraftBlock, PaperBinding, ComputationBinding
 from services.research_validation import validate_run
 from services.experiment_statistics import build_experiment_statistics
+from schemas.workspace import AssetBinding
+from services.workspace import preview_workspace, _request
 
 
 SECTIONS = (
@@ -26,6 +28,9 @@ def build_manuscript_draft(run: ResearchRun) -> ManuscriptDraft:
     statistics = build_experiment_statistics(run)
     material = {'topic':run.topic, 'papers':[p.model_dump(mode='json') for p in run.papers],
                 'experiments':[d.model_dump(mode='json') for d in run.experiments]}
+    assets = [item for item in run.workspace_items if item.kind in ('figure', 'table')]
+    if assets:
+        material['workspace_items'] = [item.model_dump(mode='json') for item in assets]
     digest = hashlib.sha256(json.dumps(material, ensure_ascii=False, sort_keys=True,
                                        separators=(',', ':')).encode('utf-8')).hexdigest()
     sections = {id:DraftSection(id=id,title=title,purpose=purpose,blocks=[]) for id,title,purpose in SECTIONS}
@@ -59,6 +64,11 @@ def build_manuscript_draft(run: ResearchRun) -> ManuscriptDraft:
                 kind = 'user_statistics'
             sections['user_results'].blocks.append(DraftBlock(id=f'data:{dataset.dataset_id}:{column.name}',
                                                               kind=kind,text=text,computation=binding))
+    for item in assets:
+        rendering = preview_workspace(run, _request(item))
+        sections['user_results'].blocks.append(DraftBlock(id=f'asset:{item.id}', kind='research_asset',
+            text=item.text or item.title,
+            asset=AssetBinding(item_id=item.id, title=item.title, **rendering.model_dump())))
     for section in sections.values():
         if not section.blocks:
             text = ('No user experimental observations were supplied. Add real data before drafting user results.'

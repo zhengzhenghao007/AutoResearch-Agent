@@ -18,6 +18,14 @@ class ResearchStore:
         return self.root / f'{run_id}.json'
 
     def save(self, run: ResearchRun):
+        from services.workspace import _LOCK, validate_append_only
+        with _LOCK:
+            path = self._path(run.id)
+            if path.exists():
+                validate_append_only(self.load(run.id), run)
+            self._save_unlocked(run)
+
+    def _save_unlocked(self, run: ResearchRun):
         run = ResearchRun.model_validate(run.model_dump())
         validate_run(run)
         path = self._path(run.id)

@@ -1,0 +1,9 @@
+{
+  "title": "Synthetic interface demonstration — not experimental results",
+  "protocol": "Invented values solely to demonstrate CSV import, missing observations and chart/table rendering. No experiment was conducted.",
+  "statistical_method": null,
+  "columns": [
+    {"name": "elapsed_minutes", "unit": "min"},
+    {"name": "reading", "unit": "arbitrary units"}
+  ]
+}

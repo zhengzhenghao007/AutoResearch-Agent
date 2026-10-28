@@ -8,6 +8,18 @@ const source={schema_version:1 as const,builder:'evidence-draft-v1' as const,run
 const revision={id:'r1',number:1,created_at:'today',reason:'Initial',content_sha256:'content',input_sha256:'hash',sections:[{id:'intro',title:'Introduction',sentences:[{id:'s1',text:'Original hypothesis',kind:'hypothesis' as const,reference_ids:[]}]}],source};
 const state={run_id:'run',current_input_sha256:'hash',revisions:[revision],reviews:[],approvals:[]};
 afterEach(()=>vi.resetAllMocks());
+test('inserting from the writing sidebar retains the evidence binding in the saved revision',async()=>{
+ const block={id:'paper:c1',kind:'paper_claim' as const,text:'Exact quoted finding.',paper:{claim_id:'c1',source:{id:'p1',kind:'paper' as const,title:'Source paper',uri:'upload:paper',sha256:'a'.repeat(64),collected_at:''},evidence:[{id:'e1',source_id:'p1',page:1,quote:'Exact quoted finding.'}],parsed_pages:1,total_pages:1,truncated:false},computation:null};
+ const withSource={...state,revisions:[{...revision,source:{...source,sections:[{id:'background',title:'Background',purpose:'Read',blocks:[block]}]}}]};
+ vi.mocked(researchApi.manuscript).mockResolvedValue(withSource);
+ vi.mocked(researchApi.saveManuscript).mockImplementation(async(_id,body)=>({...withSource,revisions:[{...withSource.revisions[0],id:'r2',number:2,sections:body.sections!}]}));
+ render(<ManuscriptEditor runId="run" revision={0}/>);await screen.findByLabelText('Sentence s1');
+ await userEvent.click(screen.getByRole('button',{name:'Inspect source: Source paper'}));
+ await userEvent.click(screen.getByRole('button',{name:'Insert with reference'}));
+ await userEvent.type(screen.getByLabelText('Revision reason'),'Add evidence');
+ await userEvent.click(screen.getByRole('button',{name:'Save manuscript revision'}));
+ expect(researchApi.saveManuscript).toHaveBeenCalledWith('run',expect.objectContaining({sections:[expect.objectContaining({sentences:[expect.anything(),expect.objectContaining({text:block.text,kind:'paper_report',reference_ids:['paper:c1']})]})]}));
+});
 test('dirty writing blocks page close and confirmed discard releases the guard',async()=>{
  vi.mocked(researchApi.manuscript).mockResolvedValue(state);
  const confirm=vi.spyOn(window,'confirm').mockReturnValue(false);
