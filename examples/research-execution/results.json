@@ -3,15 +3,16 @@
   "command": "python -m evaluation.evaluate_research_tasks --output examples/research-execution/results.json --repeats 3",
   "provenance": {
     "corpus": "examples/conformal-prediction/outputs/run.json",
-    "corpus_sha256": "d0bb988421e5f7deed831ca810f948de760a4cfe9058a07cc533546f1a0e330f",
-    "sources_sha256": "3aaf59978af25444dbbebd1373f767beb2e7ba865f674fa396a1292690db7a9d",
+    "corpus_sha256": "3b369660d5fa5067640aeda84a1dcee16a1c1d8c0cd702701399041d509ef7ba",
+    "sources_sha256": "79e79b0076ea6947f1a89123992094b486b61b295fcd06718fd6c8efb6418a7f",
+    "text_hash_encoding": "UTF-8 with LF newlines; original PDF hashes remain byte hashes",
     "license": "CC-BY-4.0",
     "license_url": "https://creativecommons.org/licenses/by/4.0/",
     "python": "3.12.8",
     "implementation_sha256": {
-      "evaluation/evaluate_research_tasks.py": "a9636a5a638f511176d6c4204d0bd90db4a7a255a71a1204dba5401204a89146",
-      "services/research_tasks.py": "ee0fdfb0c502483ffba7a3aeac7b65b8c4c57804757eaa7ebbad7f0ee2df059f",
-      "schemas/research_tasks.py": "78a237bbfa86031e0a9c7e0df5f2ef63ed339bee4341ff84311a29a7cd244872"
+      "evaluation/evaluate_research_tasks.py": "13abcaea98837bd854d0d64b2920be6ba07167a1cf9dd261a0708dab6e3aa6c8",
+      "services/research_tasks.py": "549e700181c7fec7a1341ea6c53965dded5f77953126eadf01b7f147b2bf7277",
+      "schemas/research_tasks.py": "dfa784e452a9ee84be880c5068ead58f05757b5f9b9df6e4c00882fd3612f983"
     },
     "papers": [
       {
@@ -180,7 +181,7 @@
       "case_id": "missing_inputs",
       "repeat": 1,
       "baseline": {
-        "latency_seconds": 0.0002264000941067934,
+        "latency_seconds": 0.00021319999359548092,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -235,7 +236,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.7570638000033796,
+        "latency_seconds": 0.6505068999249488,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -287,12 +288,12 @@
           "unique_sources": 1
         },
         "task": {
-          "id": "5dfcc10e1cff4552bcfc423d221f77c3",
+          "id": "6eb8f4cc6fab42a39b4af8157ea2427d",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "How do conformal methods handle missing values and imputation?",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:19.271124Z",
-          "updated_at": "2026-10-28T22:49:19.933716Z",
+          "created_at": "2026-10-28T22:54:42.309842Z",
+          "updated_at": "2026-10-28T22:54:42.890523Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -302,7 +303,7 @@
           },
           "usage": {
             "steps": 4,
-            "seconds": 0.34755873680114746,
+            "seconds": 0.27929067611694336,
             "evidence": 6,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -412,47 +413,47 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:19.271124Z",
+              "at": "2026-10-28T22:54:42.309842Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:19.364235Z",
+              "at": "2026-10-28T22:54:42.386428Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:19.444310Z",
+              "at": "2026-10-28T22:54:42.460534Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:19.527147Z",
+              "at": "2026-10-28T22:54:42.536430Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:19.610233Z",
+              "at": "2026-10-28T22:54:42.592137Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:19.693542Z",
+              "at": "2026-10-28T22:54:42.680055Z",
               "type": "step_started",
               "message": "q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:19.776388Z",
+              "at": "2026-10-28T22:54:42.747776Z",
               "type": "paused",
               "message": "Checkpoint saved: q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:19.856764Z",
+              "at": "2026-10-28T22:54:42.823070Z",
               "type": "step_started",
               "message": "q2-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:19.933716Z",
+              "at": "2026-10-28T22:54:42.890523Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -464,7 +465,7 @@
       "case_id": "perturbed_inputs",
       "repeat": 1,
       "baseline": {
-        "latency_seconds": 0.00017290003597736359,
+        "latency_seconds": 0.00017199991270899773,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -519,7 +520,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.71688920003362,
+        "latency_seconds": 0.6532071998808533,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -571,12 +572,12 @@
           "unique_sources": 2
         },
         "task": {
-          "id": "236dd31a8e044c1ba7786b0b86dda9ab",
+          "id": "df0b304c6bd040a69307d5bdc8d6371a",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "How does robust conformal prediction handle perturbations and coverage?",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:20.084974Z",
-          "updated_at": "2026-10-28T22:49:20.717682Z",
+          "created_at": "2026-10-28T22:54:43.031518Z",
+          "updated_at": "2026-10-28T22:54:43.606316Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -586,7 +587,7 @@
           },
           "usage": {
             "steps": 4,
-            "seconds": 0.3151862621307373,
+            "seconds": 0.31720805168151855,
             "evidence": 6,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -696,47 +697,47 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:20.084974Z",
+              "at": "2026-10-28T22:54:43.031518Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:20.171968Z",
+              "at": "2026-10-28T22:54:43.106160Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:20.243227Z",
+              "at": "2026-10-28T22:54:43.177316Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:20.331769Z",
+              "at": "2026-10-28T22:54:43.248272Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:20.402897Z",
+              "at": "2026-10-28T22:54:43.310243Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:20.475345Z",
+              "at": "2026-10-28T22:54:43.389857Z",
               "type": "step_started",
               "message": "q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:20.554577Z",
+              "at": "2026-10-28T22:54:43.462708Z",
               "type": "paused",
               "message": "Checkpoint saved: q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:20.634144Z",
+              "at": "2026-10-28T22:54:43.533566Z",
               "type": "step_started",
               "message": "q2-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:20.717682Z",
+              "at": "2026-10-28T22:54:43.606316Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -748,7 +749,7 @@
       "case_id": "sparse_regions",
       "repeat": 1,
       "baseline": {
-        "latency_seconds": 0.00017030001617968082,
+        "latency_seconds": 0.00017000013031065464,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -804,7 +805,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.7450588000938296,
+        "latency_seconds": 0.6634749001823366,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -856,12 +857,12 @@
           "unique_sources": 2
         },
         "task": {
-          "id": "3d2e1f5d93e340edb251b0e5a72365c1",
+          "id": "a663122defe1404abd7ac301da2d1864",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:20.871218Z",
-          "updated_at": "2026-10-28T22:49:21.525867Z",
+          "created_at": "2026-10-28T22:54:43.745096Z",
+          "updated_at": "2026-10-28T22:54:44.330939Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -871,7 +872,7 @@
           },
           "usage": {
             "steps": 4,
-            "seconds": 0.33073949813842773,
+            "seconds": 0.3187739849090576,
             "evidence": 6,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -981,47 +982,47 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:20.871218Z",
+              "at": "2026-10-28T22:54:43.745096Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:20.950665Z",
+              "at": "2026-10-28T22:54:43.810661Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:21.035593Z",
+              "at": "2026-10-28T22:54:43.890268Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:21.120731Z",
+              "at": "2026-10-28T22:54:43.963445Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:21.191393Z",
+              "at": "2026-10-28T22:54:44.030855Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:21.279148Z",
+              "at": "2026-10-28T22:54:44.096272Z",
               "type": "step_started",
               "message": "q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:21.358062Z",
+              "at": "2026-10-28T22:54:44.177615Z",
               "type": "paused",
               "message": "Checkpoint saved: q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:21.448356Z",
+              "at": "2026-10-28T22:54:44.255782Z",
               "type": "step_started",
               "message": "q2-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:21.525867Z",
+              "at": "2026-10-28T22:54:44.330939Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -1033,7 +1034,7 @@
       "case_id": "lexical_decoy",
       "repeat": 1,
       "baseline": {
-        "latency_seconds": 0.00017390004359185696,
+        "latency_seconds": 0.00016699987463653088,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -1090,7 +1091,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.48618469992652535,
+        "latency_seconds": 0.37065710010938346,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -1127,12 +1128,12 @@
           "unique_sources": 1
         },
         "task": {
-          "id": "ebb7731250104244be9bff71215fc25b",
+          "id": "188974bec2784f87b1a360e51caf143e",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "zygomorphic quasicrystals superconductivity",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:21.726281Z",
-          "updated_at": "2026-10-28T22:49:22.115556Z",
+          "created_at": "2026-10-28T22:54:44.472543Z",
+          "updated_at": "2026-10-28T22:54:44.764153Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -1142,7 +1143,7 @@
           },
           "usage": {
             "steps": 2,
-            "seconds": 0.18139362335205078,
+            "seconds": 0.15461206436157227,
             "evidence": 3,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -1203,27 +1204,27 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:21.726281Z",
+              "at": "2026-10-28T22:54:44.472543Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:21.848984Z",
+              "at": "2026-10-28T22:54:44.547521Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:21.932076Z",
+              "at": "2026-10-28T22:54:44.615021Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:22.031928Z",
+              "at": "2026-10-28T22:54:44.681048Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:22.115556Z",
+              "at": "2026-10-28T22:54:44.764153Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -1235,7 +1236,7 @@
       "case_id": "absent_topic",
       "repeat": 1,
       "baseline": {
-        "latency_seconds": 0.00026130001060664654,
+        "latency_seconds": 0.00016789999790489674,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -1291,7 +1292,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.49431229988113046,
+        "latency_seconds": 0.3704232999589294,
         "cost_usd": 0,
         "status": "incomplete",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -1309,12 +1310,12 @@
           "unique_sources": 0
         },
         "task": {
-          "id": "4b6892c0d62240ff93eaf0f67bea7b8b",
+          "id": "a8ee33a118f34ad8bd27ad31fffee1d8",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "zygomorphic quasicrystals",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:22.327019Z",
-          "updated_at": "2026-10-28T22:49:22.691208Z",
+          "created_at": "2026-10-28T22:54:44.905293Z",
+          "updated_at": "2026-10-28T22:54:45.187563Z",
           "status": "incomplete",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -1324,7 +1325,7 @@
           },
           "usage": {
             "steps": 2,
-            "seconds": 0.1704392433166504,
+            "seconds": 0.13426637649536133,
             "evidence": 0,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -1381,27 +1382,27 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:22.327019Z",
+              "at": "2026-10-28T22:54:44.905293Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:22.449719Z",
+              "at": "2026-10-28T22:54:44.980447Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:22.534234Z",
+              "at": "2026-10-28T22:54:45.046669Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:22.624030Z",
+              "at": "2026-10-28T22:54:45.124056Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:22.691208Z",
+              "at": "2026-10-28T22:54:45.187563Z",
               "type": "incomplete",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -1413,7 +1414,7 @@
       "case_id": "missing_inputs",
       "repeat": 2,
       "baseline": {
-        "latency_seconds": 0.000309899915009737,
+        "latency_seconds": 0.00022869999520480633,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -1468,7 +1469,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.812867300119251,
+        "latency_seconds": 0.6691387000028044,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -1520,12 +1521,12 @@
           "unique_sources": 1
         },
         "task": {
-          "id": "67898fb9742248c2be9b2d4dc66c4841",
+          "id": "c3ac70633f4744bd87e87599dadb8fba",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "How do conformal methods handle missing values and imputation?",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:22.900832Z",
-          "updated_at": "2026-10-28T22:49:23.600643Z",
+          "created_at": "2026-10-28T22:54:45.348337Z",
+          "updated_at": "2026-10-28T22:54:45.926503Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -1535,7 +1536,7 @@
           },
           "usage": {
             "steps": 4,
-            "seconds": 0.37658166885375977,
+            "seconds": 0.29208827018737793,
             "evidence": 6,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -1645,47 +1646,47 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:22.900832Z",
+              "at": "2026-10-28T22:54:45.348337Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:22.992489Z",
+              "at": "2026-10-28T22:54:45.414177Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:23.072597Z",
+              "at": "2026-10-28T22:54:45.492044Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:23.156353Z",
+              "at": "2026-10-28T22:54:45.569311Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:23.248124Z",
+              "at": "2026-10-28T22:54:45.634277Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:23.337086Z",
+              "at": "2026-10-28T22:54:45.709823Z",
               "type": "step_started",
               "message": "q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:23.429101Z",
+              "at": "2026-10-28T22:54:45.777122Z",
               "type": "paused",
               "message": "Checkpoint saved: q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:23.519525Z",
+              "at": "2026-10-28T22:54:45.858495Z",
               "type": "step_started",
               "message": "q2-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:23.600643Z",
+              "at": "2026-10-28T22:54:45.926503Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -1697,7 +1698,7 @@
       "case_id": "perturbed_inputs",
       "repeat": 2,
       "baseline": {
-        "latency_seconds": 0.00017070001922547817,
+        "latency_seconds": 0.00016959989443421364,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -1752,7 +1753,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.7752850998658687,
+        "latency_seconds": 0.6767382000107318,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -1804,12 +1805,12 @@
           "unique_sources": 2
         },
         "task": {
-          "id": "f2ebc080636647339fc14fc52f9858b1",
+          "id": "50f70e6b8e394df9a44717c6bcc5010e",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "How does robust conformal prediction handle perturbations and coverage?",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:23.762116Z",
-          "updated_at": "2026-10-28T22:49:24.449892Z",
+          "created_at": "2026-10-28T22:54:46.070282Z",
+          "updated_at": "2026-10-28T22:54:46.668695Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -1819,7 +1820,7 @@
           },
           "usage": {
             "steps": 4,
-            "seconds": 0.3416464328765869,
+            "seconds": 0.31725597381591797,
             "evidence": 6,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -1929,47 +1930,47 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:23.762116Z",
+              "at": "2026-10-28T22:54:46.070282Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:23.851695Z",
+              "at": "2026-10-28T22:54:46.146313Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:23.932298Z",
+              "at": "2026-10-28T22:54:46.217066Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:24.018770Z",
+              "at": "2026-10-28T22:54:46.292196Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:24.105955Z",
+              "at": "2026-10-28T22:54:46.368653Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:24.193289Z",
+              "at": "2026-10-28T22:54:46.448372Z",
               "type": "step_started",
               "message": "q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:24.270867Z",
+              "at": "2026-10-28T22:54:46.525694Z",
               "type": "paused",
               "message": "Checkpoint saved: q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:24.363666Z",
+              "at": "2026-10-28T22:54:46.587917Z",
               "type": "step_started",
               "message": "q2-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:24.449892Z",
+              "at": "2026-10-28T22:54:46.668695Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -1981,7 +1982,7 @@
       "case_id": "sparse_regions",
       "repeat": 2,
       "baseline": {
-        "latency_seconds": 0.00019049993716180325,
+        "latency_seconds": 0.00016799988225102425,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -2037,7 +2038,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.8518300999421626,
+        "latency_seconds": 0.6615064998622984,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -2089,12 +2090,12 @@
           "unique_sources": 2
         },
         "task": {
-          "id": "3b52f84efb814e7694b521e1a8450956",
+          "id": "65853beb0c044348919f6ba045975f3b",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:24.602315Z",
-          "updated_at": "2026-10-28T22:49:25.367741Z",
+          "created_at": "2026-10-28T22:54:46.795240Z",
+          "updated_at": "2026-10-28T22:54:47.378862Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -2104,7 +2105,7 @@
           },
           "usage": {
             "steps": 4,
-            "seconds": 0.3795928955078125,
+            "seconds": 0.2913036346435547,
             "evidence": 6,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -2214,47 +2215,47 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:24.614670Z",
+              "at": "2026-10-28T22:54:46.795240Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:24.710164Z",
+              "at": "2026-10-28T22:54:46.874023Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:24.786927Z",
+              "at": "2026-10-28T22:54:46.947707Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:24.886996Z",
+              "at": "2026-10-28T22:54:47.028707Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:24.967276Z",
+              "at": "2026-10-28T22:54:47.094926Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:25.065870Z",
+              "at": "2026-10-28T22:54:47.166938Z",
               "type": "step_started",
               "message": "q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:25.169822Z",
+              "at": "2026-10-28T22:54:47.242407Z",
               "type": "paused",
               "message": "Checkpoint saved: q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:25.273199Z",
+              "at": "2026-10-28T22:54:47.316948Z",
               "type": "step_started",
               "message": "q2-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:25.367741Z",
+              "at": "2026-10-28T22:54:47.378862Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -2266,7 +2267,7 @@
       "case_id": "lexical_decoy",
       "repeat": 2,
       "baseline": {
-        "latency_seconds": 0.00019110017456114292,
+        "latency_seconds": 0.00017239991575479507,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -2323,7 +2324,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.5115406999830157,
+        "latency_seconds": 0.3707773999776691,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -2360,12 +2361,12 @@
           "unique_sources": 1
         },
         "task": {
-          "id": "c40d1195d0494ccd9408d00f5020465c",
+          "id": "aa4ed0f639bb4398a2a69893b6e5acc4",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "zygomorphic quasicrystals superconductivity",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:25.569465Z",
-          "updated_at": "2026-10-28T22:49:25.966286Z",
+          "created_at": "2026-10-28T22:54:47.525905Z",
+          "updated_at": "2026-10-28T22:54:47.826244Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -2375,7 +2376,7 @@
           },
           "usage": {
             "steps": 2,
-            "seconds": 0.19780206680297852,
+            "seconds": 0.13651466369628906,
             "evidence": 3,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -2436,27 +2437,27 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:25.569465Z",
+              "at": "2026-10-28T22:54:47.525905Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:25.684804Z",
+              "at": "2026-10-28T22:54:47.604586Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:25.801774Z",
+              "at": "2026-10-28T22:54:47.668209Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:25.898960Z",
+              "at": "2026-10-28T22:54:47.757361Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:25.966286Z",
+              "at": "2026-10-28T22:54:47.826244Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -2468,7 +2469,7 @@
       "case_id": "absent_topic",
       "repeat": 2,
       "baseline": {
-        "latency_seconds": 0.0002793001476675272,
+        "latency_seconds": 0.00017019989900290966,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -2524,7 +2525,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.46163600008003414,
+        "latency_seconds": 0.36838770005851984,
         "cost_usd": 0,
         "status": "incomplete",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -2542,12 +2543,12 @@
           "unique_sources": 0
         },
         "task": {
-          "id": "44f4cf1d4f6444069a96565d2ef97f50",
+          "id": "e301802d32a54eea98421d8d4542aee1",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "zygomorphic quasicrystals",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:26.144056Z",
-          "updated_at": "2026-10-28T22:49:26.514822Z",
+          "created_at": "2026-10-28T22:54:47.968991Z",
+          "updated_at": "2026-10-28T22:54:48.253922Z",
           "status": "incomplete",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -2557,7 +2558,7 @@
           },
           "usage": {
             "steps": 2,
-            "seconds": 0.19435453414916992,
+            "seconds": 0.1471691131591797,
             "evidence": 0,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -2614,27 +2615,27 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:26.144056Z",
+              "at": "2026-10-28T22:54:47.968991Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:26.234672Z",
+              "at": "2026-10-28T22:54:48.031969Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:26.319023Z",
+              "at": "2026-10-28T22:54:48.110484Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:26.424965Z",
+              "at": "2026-10-28T22:54:48.189016Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:26.514822Z",
+              "at": "2026-10-28T22:54:48.253922Z",
               "type": "incomplete",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -2646,7 +2647,7 @@
       "case_id": "missing_inputs",
       "repeat": 3,
       "baseline": {
-        "latency_seconds": 0.00030489987693727016,
+        "latency_seconds": 0.0001767999492585659,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -2701,7 +2702,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.9634424999821931,
+        "latency_seconds": 0.6682397001422942,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -2753,12 +2754,12 @@
           "unique_sources": 1
         },
         "task": {
-          "id": "a0d5437519c2410da48218eb6231f674",
+          "id": "a9db3c2f02b14392ad01ab8395553acf",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "How do conformal methods handle missing values and imputation?",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:26.701373Z",
-          "updated_at": "2026-10-28T22:49:27.555448Z",
+          "created_at": "2026-10-28T22:54:48.397408Z",
+          "updated_at": "2026-10-28T22:54:48.987304Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -2768,7 +2769,7 @@
           },
           "usage": {
             "steps": 4,
-            "seconds": 0.42652106285095215,
+            "seconds": 0.29200053215026855,
             "evidence": 6,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -2878,47 +2879,47 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:26.701373Z",
+              "at": "2026-10-28T22:54:48.397408Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:26.793533Z",
+              "at": "2026-10-28T22:54:48.485600Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:26.892235Z",
+              "at": "2026-10-28T22:54:48.545748Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:27.008465Z",
+              "at": "2026-10-28T22:54:48.626479Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:27.103191Z",
+              "at": "2026-10-28T22:54:48.697859Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:27.222362Z",
+              "at": "2026-10-28T22:54:48.768162Z",
               "type": "step_started",
               "message": "q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:27.342376Z",
+              "at": "2026-10-28T22:54:48.846711Z",
               "type": "paused",
               "message": "Checkpoint saved: q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:27.463281Z",
+              "at": "2026-10-28T22:54:48.919849Z",
               "type": "step_started",
               "message": "q2-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:27.555448Z",
+              "at": "2026-10-28T22:54:48.987304Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -2930,7 +2931,7 @@
       "case_id": "perturbed_inputs",
       "repeat": 3,
       "baseline": {
-        "latency_seconds": 0.0002321999054402113,
+        "latency_seconds": 0.00017080013640224934,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -2985,7 +2986,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 1.2026593000628054,
+        "latency_seconds": 0.6579547000583261,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -3037,12 +3038,12 @@
           "unique_sources": 2
         },
         "task": {
-          "id": "be192d84f67443469d9393f01bbb740e",
+          "id": "fbc1fd9389d7409bb8052ace3c092ec9",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "How does robust conformal prediction handle perturbations and coverage?",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:27.744581Z",
-          "updated_at": "2026-10-28T22:49:28.839455Z",
+          "created_at": "2026-10-28T22:54:49.134610Z",
+          "updated_at": "2026-10-28T22:54:49.707839Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -3052,7 +3053,7 @@
           },
           "usage": {
             "steps": 4,
-            "seconds": 0.5526218414306641,
+            "seconds": 0.26972222328186035,
             "evidence": 6,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -3162,47 +3163,47 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:27.744581Z",
+              "at": "2026-10-28T22:54:49.134610Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:27.860493Z",
+              "at": "2026-10-28T22:54:49.205229Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:27.978205Z",
+              "at": "2026-10-28T22:54:49.269135Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:28.150011Z",
+              "at": "2026-10-28T22:54:49.347924Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:28.278473Z",
+              "at": "2026-10-28T22:54:49.414460Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:28.422622Z",
+              "at": "2026-10-28T22:54:49.494787Z",
               "type": "step_started",
               "message": "q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:28.555361Z",
+              "at": "2026-10-28T22:54:49.554168Z",
               "type": "paused",
               "message": "Checkpoint saved: q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:28.700576Z",
+              "at": "2026-10-28T22:54:49.630746Z",
               "type": "step_started",
               "message": "q2-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:28.839455Z",
+              "at": "2026-10-28T22:54:49.707839Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -3214,7 +3215,7 @@
       "case_id": "sparse_regions",
       "repeat": 3,
       "baseline": {
-        "latency_seconds": 0.00035370001569390297,
+        "latency_seconds": 0.00016930000856518745,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -3270,7 +3271,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 1.3223435999825597,
+        "latency_seconds": 0.6568706999532878,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -3322,12 +3323,12 @@
           "unique_sources": 2
         },
         "task": {
-          "id": "947314fb1e684461a19aa437505f0679",
+          "id": "5852f2e62ecf461da38004eb960f0ccb",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "How does epistemic uncertainty relate to training data and conditional coverage?",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:29.138594Z",
-          "updated_at": "2026-10-28T22:49:30.298285Z",
+          "created_at": "2026-10-28T22:54:49.837149Z",
+          "updated_at": "2026-10-28T22:54:50.414504Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -3337,7 +3338,7 @@
           },
           "usage": {
             "steps": 4,
-            "seconds": 0.5786094665527344,
+            "seconds": 0.2861621379852295,
             "evidence": 6,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -3447,47 +3448,47 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:29.138594Z",
+              "at": "2026-10-28T22:54:49.837149Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:29.328873Z",
+              "at": "2026-10-28T22:54:49.925798Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:29.483501Z",
+              "at": "2026-10-28T22:54:49.995362Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:29.644087Z",
+              "at": "2026-10-28T22:54:50.069570Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:29.778218Z",
+              "at": "2026-10-28T22:54:50.131360Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:29.913211Z",
+              "at": "2026-10-28T22:54:50.207010Z",
               "type": "step_started",
               "message": "q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:30.047604Z",
+              "at": "2026-10-28T22:54:50.286224Z",
               "type": "paused",
               "message": "Checkpoint saved: q2-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:30.181004Z",
+              "at": "2026-10-28T22:54:50.349477Z",
               "type": "step_started",
               "message": "q2-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:30.298285Z",
+              "at": "2026-10-28T22:54:50.414504Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -3499,7 +3500,7 @@
       "case_id": "lexical_decoy",
       "repeat": 3,
       "baseline": {
-        "latency_seconds": 0.00033510010689496994,
+        "latency_seconds": 0.0002521001733839512,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -3556,7 +3557,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.5546814000699669,
+        "latency_seconds": 0.3790585999377072,
         "cost_usd": 0,
         "status": "completed",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -3593,12 +3594,12 @@
           "unique_sources": 1
         },
         "task": {
-          "id": "61b74851ee634674a191ddaaa42a069a",
+          "id": "7f5f433ab0e344788aa923b5aea9932d",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "zygomorphic quasicrystals superconductivity",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:30.484656Z",
-          "updated_at": "2026-10-28T22:49:30.936808Z",
+          "created_at": "2026-10-28T22:54:50.574621Z",
+          "updated_at": "2026-10-28T22:54:50.872551Z",
           "status": "completed",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -3608,7 +3609,7 @@
           },
           "usage": {
             "steps": 2,
-            "seconds": 0.23808646202087402,
+            "seconds": 0.15638184547424316,
             "evidence": 3,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -3669,27 +3670,27 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:30.484656Z",
+              "at": "2026-10-28T22:54:50.574621Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:30.604539Z",
+              "at": "2026-10-28T22:54:50.647698Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:30.716116Z",
+              "at": "2026-10-28T22:54:50.727059Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:30.824831Z",
+              "at": "2026-10-28T22:54:50.802699Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:30.936808Z",
+              "at": "2026-10-28T22:54:50.872551Z",
               "type": "completed",
               "message": "Plan finished; human semantic review remains required."
             }
@@ -3701,7 +3702,7 @@
       "case_id": "absent_topic",
       "repeat": 3,
       "baseline": {
-        "latency_seconds": 0.00032439990900456905,
+        "latency_seconds": 0.00024199998006224632,
         "cost_usd": 0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -3757,7 +3758,7 @@
         }
       },
       "executor": {
-        "latency_seconds": 0.5338055999018252,
+        "latency_seconds": 0.37124969996511936,
         "cost_usd": 0,
         "status": "incomplete",
         "stop_reason": "Plan finished; human semantic review remains required.",
@@ -3775,12 +3776,12 @@
           "unique_sources": 0
         },
         "task": {
-          "id": "bcb04379688b4eeebeb18cabc56f6e05",
+          "id": "b984d4e9b6574f3db03fc628d4da90fd",
           "run_id": "50d5f881c9804e0489528fa935611bbc",
           "question": "zygomorphic quasicrystals",
           "source_sha256": "7aba1af36cf22012940668f18fdfdfcb2520808d83cfd54568a1cbc4a15f11dd",
-          "created_at": "2026-10-28T22:49:31.166819Z",
-          "updated_at": "2026-10-28T22:49:31.576555Z",
+          "created_at": "2026-10-28T22:54:51.015493Z",
+          "updated_at": "2026-10-28T22:54:51.305668Z",
           "status": "incomplete",
           "stop_reason": "Plan finished; human semantic review remains required.",
           "budget": {
@@ -3790,7 +3791,7 @@
           },
           "usage": {
             "steps": 2,
-            "seconds": 0.19800782203674316,
+            "seconds": 0.16871309280395508,
             "evidence": 0,
             "input_tokens": 0,
             "output_tokens": 0,
@@ -3847,27 +3848,27 @@
           ],
           "events": [
             {
-              "at": "2026-10-28T22:49:31.166819Z",
+              "at": "2026-10-28T22:54:51.015493Z",
               "type": "planned",
               "message": "Offline lexical retrieval plan; no semantic verification or model calls."
             },
             {
-              "at": "2026-10-28T22:49:31.281095Z",
+              "at": "2026-10-28T22:54:51.091213Z",
               "type": "step_started",
               "message": "q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:31.366579Z",
+              "at": "2026-10-28T22:54:51.166457Z",
               "type": "paused",
               "message": "Checkpoint saved: q1-lexical_retrieve"
             },
             {
-              "at": "2026-10-28T22:49:31.476696Z",
+              "at": "2026-10-28T22:54:51.226893Z",
               "type": "step_started",
               "message": "q1-inspect_sources"
             },
             {
-              "at": "2026-10-28T22:49:31.576555Z",
+              "at": "2026-10-28T22:54:51.305668Z",
               "type": "incomplete",
               "message": "Plan finished; human semantic review remains required."
             }

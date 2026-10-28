@@ -11,6 +11,8 @@ Run from the repository root, with project dependencies installed:
 
 The corpus is the three licensed papers in [the conformal-prediction case](../conformal-prediction/README.md). Their authors, titles, publisher links, original PDF hashes and CC-BY-4.0 attribution are preserved in the raw provenance. The saved corpus JSON and license/source manifest are hashed during evaluation. Original PDF bytes are not re-downloaded or verified by this offline command. Extracted quotations remain CC-BY-4.0; the software license does not replace that license.
 
+Text provenance hashes use UTF-8 with LF newlines so Windows and Linux checkouts can be compared. Original PDF hashes remain byte hashes; this normalization does not apply to PDFs.
+
 ## Comparison and observed results
 
 The fixed baseline selects existing method-category evidence, round robin across papers, capped at six quotations. This is a bounded version of the existing comparison workflow's category input, not a claim to benchmark its entire UI or generation pipeline. The executor receives explicit subquestions and the same six-quotation cap. Cases and lexical facet synonyms are visible in the evaluator and raw output; they are not expert relevance labels.
@@ -23,7 +25,7 @@ The fixed baseline selects existing method-category evidence, round robin across
 | Lexical decoy | 0.00 | 0.33 | completed |
 | Absent topic | 0.00 | 0.00 | incomplete |
 
-All nonempty selections have exact saved-ID/source/page/quote binding and literal page support. The empty executor selection has a **null**, not perfect, binding rate. All five cases select the same evidence IDs across three repetitions. Model tokens and API cost are exactly zero. In the committed run median baseline selection time was approximately 0.00023 seconds; median executor time was 0.75 seconds. Executor timing includes planning, persistence and service reloads; baseline timing only includes selection. These are local observed timings, not general speed claims. Use raw per-trial times when comparing another run.
+All nonempty selections have exact saved-ID/source/page/quote binding and literal page support. The empty executor selection has a **null**, not perfect, binding rate. All five cases select the same evidence IDs across three repetitions. Model tokens and API cost are exactly zero. In the committed run median baseline selection time was approximately 0.00017 seconds; median executor time was 0.65 seconds. Executor timing includes planning, persistence and service reloads; baseline timing only includes selection. These are local observed timings, not general speed claims. Use raw per-trial times when comparing another run.
 
 ## Errors, omissions and limits
 

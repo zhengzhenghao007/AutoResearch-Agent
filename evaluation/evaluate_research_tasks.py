@@ -10,6 +10,10 @@ import tempfile
 from time import perf_counter
 from schemas.research import ResearchRun
 
+def text_sha256(path):
+    """Hash UTF-8 text with LF newlines, matching Git across checkout platforms."""
+    return hashlib.sha256(Path(path).read_text(encoding='utf-8').encode('utf-8')).hexdigest()
+
 CASES = [
     {'id': 'missing_inputs', 'question': 'How do conformal methods handle missing values and imputation?', 'subquestions': ['missing values', 'imputation'], 'facets': [['missing'], ['imputation', 'impute']]},
     {'id': 'perturbed_inputs', 'question': 'How does robust conformal prediction handle perturbations and coverage?', 'subquestions': ['perturbations robustness', 'coverage guarantees'], 'facets': [['perturbation', 'perturbations'], ['coverage']]},
@@ -118,11 +122,11 @@ def evaluate(root: Path, repeats=3, work_dir=None):
             signatures[f'{case["id"]}/{method}'] = all(v == values[0] for v in values)
     return {'schema_version': 1, 'command': 'python -m evaluation.evaluate_research_tasks --output examples/research-execution/results.json --repeats 3',
             'provenance': {'corpus': str(corpus_path.relative_to(root)).replace('\\', '/'),
-                           'corpus_sha256': hashlib.sha256(corpus_path.read_bytes()).hexdigest(),
-                           'sources_sha256': hashlib.sha256(sources_path.read_bytes()).hexdigest(),
-                           'license': sources['license'], 'license_url': sources['license_url'],
+                           'corpus_sha256': text_sha256(corpus_path),
+                           'sources_sha256': text_sha256(sources_path),
+                           'text_hash_encoding': 'UTF-8 with LF newlines; original PDF hashes remain byte hashes', 'license': sources['license'], 'license_url': sources['license_url'],
                            'python': platform.python_version(),
-                           'implementation_sha256': {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in ('evaluation/evaluate_research_tasks.py', 'services/research_tasks.py', 'schemas/research_tasks.py')},
+                           'implementation_sha256': {name: text_sha256(root / name) for name in ('evaluation/evaluate_research_tasks.py', 'services/research_tasks.py', 'schemas/research_tasks.py')},
                            'papers': sources['papers']},
             'human_review': {'status': 'pending', 'semantic_support_rate': None, 'scientific_accuracy': None,
                              'rubric': ['Does each quote answer the question?', 'Are assumptions and limitations preserved?', 'Are cross-paper comparisons justified?', 'Which relevant evidence was omitted?']},

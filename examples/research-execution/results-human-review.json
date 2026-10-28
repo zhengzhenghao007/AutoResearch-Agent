@@ -3,15 +3,16 @@
   "status": "pending",
   "provenance": {
     "corpus": "examples/conformal-prediction/outputs/run.json",
-    "corpus_sha256": "d0bb988421e5f7deed831ca810f948de760a4cfe9058a07cc533546f1a0e330f",
-    "sources_sha256": "3aaf59978af25444dbbebd1373f767beb2e7ba865f674fa396a1292690db7a9d",
+    "corpus_sha256": "3b369660d5fa5067640aeda84a1dcee16a1c1d8c0cd702701399041d509ef7ba",
+    "sources_sha256": "79e79b0076ea6947f1a89123992094b486b61b295fcd06718fd6c8efb6418a7f",
+    "text_hash_encoding": "UTF-8 with LF newlines; original PDF hashes remain byte hashes",
     "license": "CC-BY-4.0",
     "license_url": "https://creativecommons.org/licenses/by/4.0/",
     "python": "3.12.8",
     "implementation_sha256": {
-      "evaluation/evaluate_research_tasks.py": "a9636a5a638f511176d6c4204d0bd90db4a7a255a71a1204dba5401204a89146",
-      "services/research_tasks.py": "ee0fdfb0c502483ffba7a3aeac7b65b8c4c57804757eaa7ebbad7f0ee2df059f",
-      "schemas/research_tasks.py": "78a237bbfa86031e0a9c7e0df5f2ef63ed339bee4341ff84311a29a7cd244872"
+      "evaluation/evaluate_research_tasks.py": "13abcaea98837bd854d0d64b2920be6ba07167a1cf9dd261a0708dab6e3aa6c8",
+      "services/research_tasks.py": "549e700181c7fec7a1341ea6c53965dded5f77953126eadf01b7f147b2bf7277",
+      "schemas/research_tasks.py": "dfa784e452a9ee84be880c5068ead58f05757b5f9b9df6e4c00882fd3612f983"
     },
     "papers": [
       {

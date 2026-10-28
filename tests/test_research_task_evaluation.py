@@ -59,3 +59,10 @@ def test_pending_packet_keeps_quote_binding_and_never_invents_reviewer():
         assert item['reviewer'] is None
         assert item['status'] == 'pending'
         assert all(value is None for value in item['judgments'].values())
+def test_text_provenance_hash_is_stable_across_checkout_line_endings(tmp_path):
+    from evaluation.evaluate_research_tasks import text_sha256
+    first, second = tmp_path / 'lf.txt', tmp_path / 'crlf.txt'
+    first.write_bytes(b'first\nsecond\n')
+    second.write_bytes(b'first\r\nsecond\r\n')
+    assert text_sha256(first) == text_sha256(second)
+
