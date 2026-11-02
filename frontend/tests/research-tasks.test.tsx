@@ -4,9 +4,46 @@ import userEvent from '@testing-library/user-event';
 import ResearchTasks from '@/components/ResearchTasks';
 import {researchApi} from '@/lib/research-api';
 import type {ResearchTask} from '@/types/research-tasks';
-vi.mock('@/lib/research-api',()=>({researchApi:{researchTasks:vi.fn(),createResearchTask:vi.fn(),researchTask:vi.fn(),nextResearchTask:vi.fn(),cancelResearchTask:vi.fn(),increaseResearchTaskBudget:vi.fn()}}));
+vi.mock('@/lib/research-api',()=>({researchApi:{researchTasks:vi.fn(),createResearchTask:vi.fn(),researchTask:vi.fn(),nextResearchTask:vi.fn(),cancelResearchTask:vi.fn(),increaseResearchTaskBudget:vi.fn(),researchTaskReport:vi.fn()}}));
 const task:ResearchTask={id:'a'.repeat(32),run_id:'b'.repeat(32),question:'How do missing inputs affect coverage?',source_sha256:'hash',created_at:'2026-10-28',updated_at:'2026-10-28',status:'ready',stop_reason:null,budget:{max_steps:20,max_seconds:60,max_evidence:30},usage:{steps:0,seconds:0,evidence:0,input_tokens:0,output_tokens:0,cost_usd:0},subquestions:[{id:'q1',question:'What fails with missing inputs?',requirements:['Find source quotations']}],steps:[{id:'s1',question_id:'q1',title:'Inspect source evidence',tool:'retrieve',depends_on:[],status:'pending',attempts:0,input_sha256:'hash',result:null}],events:[]};
 beforeEach(()=>{vi.resetAllMocks();vi.mocked(researchApi.researchTasks).mockResolvedValue({items:[task]});vi.mocked(researchApi.researchTask).mockResolvedValue(task);});
+
+test('read-only readers can download working notes in both formats',async()=>{
+ const clicks:string[]=[];
+ const click=vi.spyOn(HTMLAnchorElement.prototype,'click').mockImplementation(function(this:HTMLAnchorElement){clicks.push(this.download);});
+ vi.stubGlobal('URL',Object.assign(URL,{createObjectURL:vi.fn(()=> 'blob:report'),revokeObjectURL:vi.fn()}));
+ vi.mocked(researchApi.researchTaskReport).mockResolvedValue(new Blob(['working notes']));
+ render(<ResearchTasks runId={task.run_id} topic={task.question} readOnly/>);
+ await userEvent.click(await screen.findByRole('button',{name:'Download task report (Markdown)'}));
+ await screen.findByRole('status');
+ await userEvent.click(screen.getByRole('button',{name:'Download task report (JSON)'}));
+ await waitFor(()=>expect(clicks).toEqual([`research-task-${task.id}.md`,`research-task-${task.id}.json`]));
+ expect(screen.getByRole('status')).toHaveTextContent('Working notes downloaded');
+ click.mockRestore();
+});
+
+test('export errors permit retry without changing execution state',async()=>{
+ vi.mocked(researchApi.researchTaskReport).mockRejectedValue(new Error('Export unavailable'));
+ render(<ResearchTasks runId={task.run_id} topic={task.question}/>);
+ await userEvent.click(await screen.findByRole('button',{name:'Download task report (JSON)'}));
+ expect(await screen.findByRole('alert')).toHaveTextContent('Export unavailable');
+ expect(screen.getByRole('button',{name:'Run next step'})).toBeEnabled();
+ expect(screen.getByRole('button',{name:'Download task report (JSON)'})).toBeEnabled();
+});
+
+test('export arriving after a record switch does not download',async()=>{
+ let resolve!:(value:Blob)=>void;
+ vi.mocked(researchApi.researchTaskReport).mockReturnValue(new Promise(r=>{resolve=r;}));
+ const click=vi.spyOn(HTMLAnchorElement.prototype,'click').mockImplementation(()=>{});
+ const view=render(<ResearchTasks runId={task.run_id} topic={task.question}/>);
+ await userEvent.click(await screen.findByRole('button',{name:'Download task report (JSON)'}));
+ vi.mocked(researchApi.researchTasks).mockResolvedValue({items:[]});
+ view.rerender(<ResearchTasks runId={'c'.repeat(32)} topic="New record"/>);
+ await screen.findByText('No research tasks yet.');
+ await act(async()=>resolve(new Blob(['old report'])));
+ expect(click).not.toHaveBeenCalled();
+ click.mockRestore();
+});
 test('loads durable plans without automatically executing and respects read-only mode',async()=>{
  render(<ResearchTasks runId={task.run_id} topic={task.question} readOnly/>);
  await screen.findByText('What fails with missing inputs?');

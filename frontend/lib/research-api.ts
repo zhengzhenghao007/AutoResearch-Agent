@@ -55,6 +55,7 @@ async function request<T>(path: string, init?: RequestInit, binary = false): Pro
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  researchTaskReport:(id:string,taskId:string,format:'json'|'markdown')=>request<Blob>(`/runs/${encodeURIComponent(id)}/tasks/${encodeURIComponent(taskId)}/report?format=${format}`,undefined,true),
   researchTasks:(id:string)=>request<{items:ResearchTask[]}>(`/runs/${encodeURIComponent(id)}/tasks`),
   createResearchTask:(id:string,body:CreateResearchTask)=>request<ResearchTask>(`/runs/${encodeURIComponent(id)}/tasks`,json(body)),
   researchTask:(id:string,taskId:string)=>request<ResearchTask>(`/runs/${encodeURIComponent(id)}/tasks/${encodeURIComponent(taskId)}`),

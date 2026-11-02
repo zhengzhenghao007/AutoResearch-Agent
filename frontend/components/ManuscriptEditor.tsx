@@ -4,6 +4,7 @@ import {researchApi} from '@/lib/research-api';
 import type {ManuscriptDraftData,DraftBlock} from '@/types/manuscript-draft';
 import type {ResearchRun} from '@/types/research';
 import WritingSources from './WritingSources';
+import WritingCoach from './WritingCoach';
 import ResearchAssetPreview from './ResearchAssetPreview';
 import type {ManuscriptState,ManuscriptSection,ManuscriptSentence,SentenceKind} from '@/types/manuscript';
 interface Props {runId:string;revision:number;run?:ResearchRun;readOnly?:boolean;blocked?:boolean;onBusyChange?:(busy:boolean)=>void}
@@ -47,9 +48,18 @@ function Editor({runId,run,readOnly=false,blocked=false,onBusyChange}:Props) {
  function save(reset:boolean){if(!state)return;if(reset&&dirty&&!window.confirm('Replace unsaved manuscript changes with the current evidence preview?'))return;void action('Saving manuscript…',async()=>{const value=await researchApi.saveManuscript(runId,{expected_revision:latest?.id??null,expected_input_sha256:state.current_input_sha256,reason:reason.trim(),sections:reset?null:sections});if(alive.current){accept(value,true);setReason('');setNote('');}});}
  useEffect(()=>{onBusyChange?.((Boolean(pending)&&pending!=='Loading manuscript…')||dirty);},[pending,dirty,onBusyChange]);
  const blocks=latest?.source.sections.flatMap(s=>s.blocks)??[];
+ function locate(sectionId:string,sentenceId?:string){
+  setReveal(current=>({id:sectionId,version:current.version+1}));
+  requestAnimationFrame(()=>{
+   const label=sentenceId?`Sentence ${sentenceId}`:`Chapter ${sectionId} title`;
+   const field=Array.from(document.querySelectorAll<HTMLInputElement|HTMLTextAreaElement>('input,textarea')).find(element=>element.getAttribute('aria-label')===label);
+   field?.focus();field?.scrollIntoView({block:'center',behavior:'instant'});
+  });
+ }
  return <section className="research-panel" aria-label="Manuscript editor"><div className="writing-toolbar"><h3>Manuscript editor</h3>{latest&&<button aria-expanded={drawerOpen} onClick={()=>setDrawerOpen(value=>!value)}>{drawerOpen?'Hide sources':'Show sources'}</button>}</div><div className={`writing-studio${drawerOpen&&latest?' with-sources':''}`}><div className="writing-document">
  <p>Develop your draft chapter by chapter. Check each factual sentence against its references. Missing observations remain visible; scientific review is still needed.</p>
  {pending&&<p role="status">{pending}</p>}{error&&<p role="alert" className="research-error">{error}</p>}
+ {latest&&<WritingCoach runId={runId} revisionId={latest.id} inputSha256={latest.input_sha256} sections={sections} blocks={blocks} stale={stale} dirty={dirty} onLocate={locate}/>}
  {!state&&!pending&&<button disabled={busy} onClick={()=>void action('Loading manuscript…',async()=>{const value=await researchApi.manuscript(runId);if(alive.current)accept(value,true);})}>Retry manuscript load</button>}
  {state&&<><label>Revision reason<input aria-label="Revision reason" maxLength={10000} value={reason} disabled={busy} onChange={e=>setReason(e.target.value)}/></label>
  <button disabled={busy||!reason.trim()||state.revisions.length>=20} onClick={()=>save(true)}>{latest?'Reset from current preview':'Initialize from current preview'}</button>

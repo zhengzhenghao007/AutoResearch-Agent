@@ -68,6 +68,21 @@ function TaskPanel({runId,topic,papers=[],readOnly=false,onEvidence}:Props){
    return current;
   },false);
  }
+ async function downloadReport(format:'json'|'markdown'){
+  if(!task||lock.current)return;
+  lock.current=true;setBusy(true);setError('');setNotice('');
+  try{
+   const blob=await researchApi.researchTaskReport(runId,task.id,format);
+   if(!active.current)return;
+   const url=URL.createObjectURL(blob);
+   try{
+    const link=document.createElement('a');link.href=url;
+    link.download=`research-task-${task.id}.${format==='markdown'?'md':'json'}`;
+    link.click();setNotice('Working notes downloaded. Scientific validation remains unassessed; check the report’s source status and gaps.');
+   }finally{setTimeout(()=>URL.revokeObjectURL(url),1000);}
+  }catch(e){if(active.current)setError(errorText(e));}
+  finally{lock.current=false;if(active.current)setBusy(false);}
+ }
  const validBudget=Number.isInteger(budget.max_steps)&&budget.max_steps>=1&&budget.max_steps<=200&&Number.isFinite(budget.max_seconds)&&budget.max_seconds>=1&&budget.max_seconds<=3600&&Number.isInteger(budget.max_evidence)&&budget.max_evidence>=1&&budget.max_evidence<=500;
  const subquestions=questions.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
  const locked=busy||readOnly||uncertain;
@@ -102,6 +117,8 @@ function TaskPanel({runId,topic,papers=[],readOnly=false,onEvidence}:Props){
   {task&&<>
    <div className="task-state"><strong>{task.status.replaceAll('_',' ')}</strong><span>{task.steps.filter(s=>s.status==='completed').length} / {task.steps.length} checkpoints</span><span>{task.usage.steps} / {task.budget.max_steps} attempts</span><span>{task.usage.seconds.toFixed(2)} / {task.budget.max_seconds}s</span><span>{task.usage.evidence} / {task.budget.max_evidence} evidence items</span></div>
    {task.stop_reason&&<p className="research-notice">{task.stop_reason}</p>}
+   <div className="task-actions" aria-label="Research task reports"><button disabled={busy} onClick={()=>void downloadReport('markdown')}>Download task report (Markdown)</button><button disabled={busy} onClick={()=>void downloadReport('json')}>Download task report (JSON)</button></div>
+   <p className="research-meta">Export working notes with quotations, source pages, gaps and budget usage. These are not approved manuscripts. Changed sources withhold quotations.</p>
    <div className="task-actions"><button disabled={locked||!resumable(task)} onClick={()=>void execute(false)}>Run next step</button><button disabled={locked||!resumable(task)} onClick={()=>void execute(true)}>Continue task</button>{busy&&<button onClick={()=>{continuing.current=false;setNotice('Will stop requesting steps after the current step is saved.');}}>Pause after this step</button>}<button disabled={locked||['cancelled','completed','incomplete','stale','failed'].includes(task.status)} onClick={()=>void action(()=>researchApi.cancelResearchTask(runId,task.id))}>Cancel task</button></div>
    <div className="task-plan"><section><h4>Evidence questions</h4><ol>{task.subquestions.map(q=><li key={q.id}><strong>{q.question}</strong><ul>{q.requirements.map((r,i)=><li key={i}>{r}</li>)}</ul></li>)}</ol></section>
     <section><h4>Execution checkpoints</h4>{task.steps.map(step=><details key={step.id} className="task-step"><summary><span>{stepLabel(step)}</span><small>{step.status} · {step.attempts} attempts</small></summary><p className="research-meta">{step.depends_on.length?'Starts after its evidence search checkpoint.':'Runs against the saved source snapshot.'}</p>{step.result?<><p>{step.result.summary}</p>{step.result.gaps.length>0&&<ul className="task-gaps">{step.result.gaps.map((gap,i)=><li key={i}>{gap}</li>)}</ul>}{step.result.evidence_ids.map(id=><button key={id} disabled={busy||!onEvidence||task.status==='stale'} onClick={()=>void inspectEvidence(id)}>Inspect evidence {evidenceLabel(id)}</button>)}</>:<p>No committed result yet.</p>}</details>)}</section></div>
