@@ -134,6 +134,12 @@ class ResearchTaskExecutor:
         with self._db() as db:
             return self._refresh_stale(db, self._read(db, run_id, task_id)[0], run)
 
+    def snapshot(self, run_id, task_id):
+        """Read committed task data without changing execution state for exports."""
+        self.store.load(run_id)
+        with self._db() as db:
+            return self._read(db, run_id, task_id)[0]
+
     def list(self, run_id):
         run = self.store.load(run_id)
         with self._db() as db:

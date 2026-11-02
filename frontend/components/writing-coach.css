@@ -1,0 +1,13 @@
+.writing-coach { margin: 1rem 0; border-block: 1px solid #ccd8de; padding: .9rem 0; }
+.writing-coach > summary { cursor: pointer; font-weight: 650; }
+.coach-toolbar { display: flex; gap: 1rem; flex-wrap: wrap; align-items: end; }
+.coach-toolbar label { flex: 1 1 16rem; }
+.coach-findings { padding-left: 1.4rem; }
+.coach-findings > li { padding: .8rem 0; border-bottom: 1px solid #dce4e8; }
+.coach-findings li > div { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem; }
+.coach-findings blockquote { margin: .6rem 0; padding-left: .8rem; border-left: 3px solid #9aabb5; overflow-wrap: anywhere; }
+.coach-findings p { margin: .5rem 0; }
+.coach-priority { font-size: .8rem; color: #425563; }
+.coach-priority.repair { color: #923d24; }
+.coach-questions { padding-left: 1.4rem; }
+.coach-questions li { padding: .4rem 0; }

@@ -26,6 +26,8 @@ The Library overview highlights truncated papers, missing extraction categories 
 
 The [research studio guide](docs/research-studio.md) walks through data import, saved materials, writing beside sources, and approved ZIP export. Try the [synthetic CSV format example](examples/research-studio/README.md) to exercise the workflow without claiming experimental results.
 
+In Writing, expand **Writing coach** for live reference checks, unfinished-draft prompts and research-approach-specific questions. Jump to the affected paragraph or download guidance notes for a supervisor discussion. These offline checks do not assess scientific validity or rewrite your paper. [Guide and public design references](docs/writing-coach.md).
+
 See the [public-product comparison and quality review](docs/superpowers/plans/2026-10-27-workbench-quality.md) for the design references, verified improvements and remaining limits.
 
 The current product is a research workbench with bounded automation, not a fully autonomous scientist. In Library, expand **Research tasks** to create a structured saved-paper plan, run checkpointed steps and explicitly increase exhausted budgets. [Execution guide](docs/research-execution.md) · [Real-paper evaluation and observed failures](examples/research-execution/README.md) · [Agent capability audit](docs/agent-readiness-review.md).
