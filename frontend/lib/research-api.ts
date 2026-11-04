@@ -33,10 +33,10 @@ function detailText(value: unknown): string {
   return '';
 }
 
-async function request<T>(path: string, init?: RequestInit, binary = false): Promise<T> {
+async function request<T>(path: string, init?: RequestInit, binary = false, timeoutMs = REQUEST_TIMEOUT_MS): Promise<T> {
   const controller = new AbortController();
   let timedOut = false;
-  const timer = setTimeout(() => { timedOut = true; controller.abort(); }, REQUEST_TIMEOUT_MS);
+  const timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeoutMs);
   try {
     const headers = new Headers(init?.headers);
     if (accessToken) headers.set('Authorization', `Bearer ${accessToken}`);
@@ -100,5 +100,5 @@ export const researchApi = {
   get: (id: string) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}`),
   search: (topic: string) => request<ResearchRun>('/search', json({topic,max_results:5})),
   analyze: (id: string, selected: string[]) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}/analyze`,json({selected_ids:selected})),
-  upload: (file: File, runId?: string) => { const body=new FormData(); body.append('file',file); if(runId) body.append('run_id',runId); return request<ResearchRun>('/upload',{method:'POST',body}); },
+  upload: (file: File, runId?: string) => { const body=new FormData(); body.append('file',file); if(runId) body.append('run_id',runId); return request<ResearchRun>('/upload',{method:'POST',body},false,720_000); },
 };

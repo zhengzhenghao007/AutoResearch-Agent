@@ -14,16 +14,32 @@ def main():
     reader = PdfReader(BytesIO(data))
     if reader.is_encrypted:
         return 1
-    pages, characters = [], 0
+    pages, characters, ocr_candidates = [], 0, []
     total = len(reader.pages)
     for i in range(min(total, int(sys.argv[1]))):
         text = reader.pages[i].extract_text() or ''
+        # Blank pages must not make otherwise readable PDFs depend on OCR.
+        if not text.strip() and contains_image(reader.pages[i].get('/Resources')):
+            ocr_candidates.append(i + 1)
         characters += len(text)
         if characters > 1_000_000:
             return 1
         pages.append({'number': i + 1, 'text': text})
-    sys.stdout.buffer.write(json.dumps({'total_pages': total, 'pages': pages}).encode('utf-8'))
+    sys.stdout.buffer.write(json.dumps({'total_pages': total, 'pages': pages, 'ocr_candidates': ocr_candidates}).encode('utf-8'))
     return 0
+
+
+def contains_image(resources, depth=0):
+    if resources is None or depth > 10:
+        return False
+    objects = resources.get_object().get('/XObject', {})
+    for ref in list(objects.get_object().values() if hasattr(objects, 'get_object') else objects.values())[:1000]:
+        obj = ref.get_object()
+        if obj.get('/Subtype') == '/Image':
+            return True
+        if obj.get('/Subtype') == '/Form' and contains_image(obj.get('/Resources'), depth + 1):
+            return True
+    return False
 
 
 if __name__ == '__main__':

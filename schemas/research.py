@@ -1,7 +1,7 @@
 """Versioned evidence contracts. A citation is support, not proof of truth."""
 from datetime import datetime, timezone
 from typing import Literal
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, PrivateAttr
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, PrivateAttr, model_serializer
 from schemas.source_identity import SourceIdentityAnnotation
 from schemas.experiments import ExperimentDataset
 from schemas.workspace import WorkspaceItem
@@ -33,6 +33,15 @@ class Document(Contract):
     pages: list[Page]
     total_pages: int = Field(ge=1)
     truncated: bool = False
+    ocr_pages: list[int] = Field(default_factory=list, max_length=500)
+
+    @model_serializer(mode='wrap')
+    def serialize_document(self, handler):
+        value = handler(self)
+        # Preserve legacy native-document hashes and saved manuscript bindings.
+        if not self.ocr_pages:
+            value.pop('ocr_pages', None)
+        return value
 
 
 class Evidence(Contract):

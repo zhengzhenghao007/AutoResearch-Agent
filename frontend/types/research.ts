@@ -5,7 +5,7 @@ import type {WorkspaceItem} from './workspace';
 export type Category = 'problem' | 'method' | 'dataset' | 'experiment' | 'result' | 'limitation' | 'future_work';
 export interface Source { id: string; title: string; kind: 'paper' | 'user_data'; uri: string; sha256: string; collected_at: string }
 export interface Page { number: number; text: string }
-export interface Document { source: Source; pages: Page[]; total_pages: number; truncated: boolean }
+export interface Document { source: Source; pages: Page[]; total_pages: number; truncated: boolean; ocr_pages?: number[] }
 export interface Evidence { id: string; source_id: string; page: number; quote: string }
 export interface Claim { id: string; text: string; category: Category; claim_type: 'paper_report' | 'user_observation' | 'synthesis' | 'hypothesis' | 'suggestion'; evidence_ids: string[]; created_by: string; timestamp: string }
 export interface PaperEvidence { document: Document; evidence: Evidence[]; claims: Claim[]; missing_fields: Category[]; extractor: string }

@@ -32,11 +32,22 @@ class PaperProcessor:
             pages = [Page.model_validate(p) for p in parsed['pages']]
         except (ValueError, subprocess.TimeoutExpired, OSError) as exc:
             raise ValueError('Unable to read PDF; supply an unencrypted text PDF') from exc
+        ocr_pages = []
+        empty_pages = [p.number for p in pages if not p.text.strip() and p.number in parsed.get('ocr_candidates', [])]
+        if empty_pages:
+            from services.pdf_ocr import recognize_pages
+            recognized = recognize_pages(data, empty_pages)
+            for page in pages:
+                if page.number in recognized and recognized[page.number].strip():
+                    page.text = recognized[page.number]
+                    ocr_pages.append(page.number)
+        if sum(len(p.text) for p in pages) > 1_000_000:
+            raise ValueError('PDF exceeds the combined extracted-text character limit')
         if not any(p.text.strip() for p in pages):
-            raise ValueError('No readable text in selected pages; OCR is not implemented')
+            raise ValueError('No readable text found, including after local OCR. Supply a clearer scan or a text-based PDF.')
         digest = hashlib.sha256(data).hexdigest()
         return Document(source=Source(id=digest, title=title, uri=uri, sha256=digest),
-                        pages=pages, total_pages=total, truncated=total > len(pages))
+                        pages=pages, total_pages=total, truncated=total > len(pages), ocr_pages=ocr_pages)
 
     def parse_local(self, path: str) -> Document:
         file = Path(path)
