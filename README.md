@@ -80,7 +80,7 @@ For macOS/Linux, use `.venv/bin/python` and `export NAME=value` instead of Power
 
 ## Current boundaries
 
-Rule extraction is reproducible and requires no model, but can miss statements, mix PDF columns and misclassify quotations. There is no OCR; the importer accepts text PDFs up to 20 MiB and parses at most 50 pages by default. Comparisons do not rank incompatible experiments. The tool does not autonomously run experiments or establish novelty, causality or scientific validity. Human scientific evaluation remains incomplete; the example is not a replacement for it.
+Rule extraction is reproducible and requires no model, but can miss statements, mix PDF columns and misclassify quotations. The importer accepts PDFs up to 20 MiB and parses at most 50 pages by default. Image-only pages use bounded local OCR (up to 20 pages per upload); recognition may take several minutes and needs manual verification. See [scanned PDF support](docs/scanned-pdf.md). Comparisons do not rank incompatible experiments. The tool does not autonomously run experiments or establish novelty, causality or scientific validity. Human scientific evaluation remains incomplete; the example is not a replacement for it.
 
 Uploaded PDF binaries are not retained: reading shows extracted page text. Observation import supports CSV/JSON, not XLSX. Material search stays within the current research record. Optional model-based review is explicit and may incur provider costs. See [data and deployment boundaries](docs/p5-deployment.md) before sharing an instance.
 

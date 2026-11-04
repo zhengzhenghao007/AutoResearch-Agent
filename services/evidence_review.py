@@ -10,6 +10,8 @@ def review_paper(paper: PaperEvidence) -> Review:
     issues = []
     doc = paper.document
     pages = {p.number: p.text for p in doc.pages}
+    if len(set(doc.ocr_pages)) != len(doc.ocr_pages) or any(n not in pages for n in doc.ocr_pages):
+        issues.append('Invalid OCR page provenance')
     evidence = {e.id: e for e in paper.evidence}
     present = {c.category for c in paper.claims}
     missing = set(paper.missing_fields)

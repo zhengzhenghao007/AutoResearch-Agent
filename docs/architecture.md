@@ -18,7 +18,7 @@
 
 主题 → 结构化研究计划 → arXiv 候选列表 → **显式用户选择** → PDF 获取 → 逐页解析 → problem / method / dataset / experiment / result / limitation / future_work 分类原文证据 → 持久化 → 多论文对照表、文献摘要、探索性问题/实验建议 → 来源校验。
 
-本地 PDF 和在线论文共用 `PaperProcessor`，本地 CLI 接受路径，HTTP 只接受上传内容，不开放任意服务器文件路径。在线入口只接受 arXiv 的 HTTPS PDF，限制大小并拒绝重定向；未来通过 PaperSource 接口扩展其他来源。解析器为 pypdf，不提供 OCR；空白/扫描 PDF 明确报错，不用模型补造文本。
+本地 PDF 和在线论文共用 `PaperProcessor`，本地 CLI 接受路径，HTTP 只接受上传内容，不开放任意服务器文件路径。在线入口只接受 arXiv 的 HTTPS PDF，限制大小并拒绝重定向；未来通过 PaperSource 接口扩展其他来源。原生解析使用 pypdf；2026-11-04 起，无文字的图片页通过独立本地 OCR 进程识别并记录页码。仍不可读的文档明确报错，不补造文本。安装、资源限制与核验要求见 [扫描 PDF 导入](scanned-pdf.md)。
 
 第一版是研究证据工作台，不是投稿级自动论文系统。规则提取器返回字面引文，准确性优先于召回率；显式 LLM 模式使用现有 LLMClient，模型只能选择原文片段和分类，伪造片段被拒绝。没有实验输入时不会生成用户实验结果。分类可能不精确，来源校验不等于科学结论正确。
 

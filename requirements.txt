@@ -4,6 +4,7 @@ langgraph
 python-dotenv
 arxiv
 pypdf
+-r requirements-ocr.txt
 streamlit
 fastapi
 uvicorn[standard]

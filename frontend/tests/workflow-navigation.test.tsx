@@ -34,6 +34,15 @@ test('opens the selected paper even without extracts and allows reading unquoted
  expect(screen.getByLabelText('Extracted page 2')).toHaveTextContent('Important material omitted by the extractor.');
 });
 
+test('OCR pages retain an explicit recognition warning in library and reading',async()=>{
+ const paper={document:{source:{id:'scan',title:'Scan',kind:'paper' as const,uri:'upload:scan.pdf',sha256:'0'.repeat(64),collected_at:''},pages:[{number:1,text:'Recognized method.'}],total_pages:1,truncated:false,ocr_pages:[1]},claims:[],evidence:[],missing_fields:[],extractor:'literal-rule-v1'};
+ vi.mocked(researchApi.get).mockResolvedValue({...record,papers:[paper]});
+ render(<EvidenceWorkspace/>);
+ expect(await screen.findByText('1 page(s) recognized with local OCR')).toBeVisible();
+ await userEvent.click(screen.getByRole('button',{name:'Read paper'}));
+ expect(screen.getByText(/This page was recognized with local OCR/)).toBeVisible();
+});
+
 test('restores a writing deep link and same-record back navigation without refetching',async()=>{
  window.history.replaceState({},'',`/?run=${record.id}&stage=writing`);
  render(<EvidenceWorkspace/>);

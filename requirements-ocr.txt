@@ -1,0 +1,5 @@
+# Bundled Chinese/English models: inference runs locally without model downloads.
+rapidocr-onnxruntime==1.4.4
+pypdfium2==4.30.0
+onnxruntime==1.31.1
+opencv-python==5.0.0.93
