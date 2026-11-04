@@ -86,3 +86,22 @@ def test_real_ocr_timeout_terminates_worker_promptly(monkeypatch):
     with pytest.raises(ValueError, match='exceeded'):
         pdf_ocr.recognize_pages(scan(), [1])
     assert time.monotonic() - started < 8
+
+
+def test_outlined_text_without_image_objects_also_uses_ocr():
+    import matplotlib
+    matplotlib.use('Agg')
+    from matplotlib import pyplot as plt
+    from matplotlib.textpath import TextPath
+    from matplotlib.patches import PathPatch
+    figure, axes = plt.subplots(figsize=(10, 2))
+    axes.add_patch(PathPatch(TextPath((10, 25), 'Our method improves prediction accuracy.', size=14), color='black'))
+    axes.set_xlim(0, 320); axes.set_ylim(0, 60); axes.axis('off')
+    data = BytesIO()
+    figure.savefig(data, format='pdf'); plt.close(figure)
+    page = PdfReader(BytesIO(data.getvalue())).pages[0]
+    assert not page.extract_text().strip()
+    assert len(page.images) == 0
+    document = PaperProcessor().parse_bytes(data.getvalue(), 'Outlined text', 'upload:outlines.pdf')
+    assert document.ocr_pages == [1]
+    assert 'prediction accuracy' in document.pages[0].text.lower()

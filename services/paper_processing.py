@@ -44,7 +44,7 @@ class PaperProcessor:
         if sum(len(p.text) for p in pages) > 1_000_000:
             raise ValueError('PDF exceeds the combined extracted-text character limit')
         if not any(p.text.strip() for p in pages):
-            raise ValueError('No readable text found, including after local OCR. Supply a clearer scan or a text-based PDF.')
+            raise ValueError('No readable text found. Supply a clearer scan or a text-based PDF.')
         digest = hashlib.sha256(data).hexdigest()
         return Document(source=Source(id=digest, title=title, uri=uri, sha256=digest),
                         pages=pages, total_pages=total, truncated=total > len(pages), ocr_pages=ocr_pages)

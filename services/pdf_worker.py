@@ -19,7 +19,7 @@ def main():
     for i in range(min(total, int(sys.argv[1]))):
         text = reader.pages[i].extract_text() or ''
         # Blank pages must not make otherwise readable PDFs depend on OCR.
-        if not text.strip() and contains_image(reader.pages[i].get('/Resources')):
+        if not text.strip() and has_visual_content(reader.pages[i]):
             ocr_candidates.append(i + 1)
         characters += len(text)
         if characters > 1_000_000:
@@ -29,17 +29,13 @@ def main():
     return 0
 
 
-def contains_image(resources, depth=0):
-    if resources is None or depth > 10:
-        return False
-    objects = resources.get_object().get('/XObject', {})
-    for ref in list(objects.get_object().values() if hasattr(objects, 'get_object') else objects.values())[:1000]:
-        obj = ref.get_object()
-        if obj.get('/Subtype') == '/Image':
-            return True
-        if obj.get('/Subtype') == '/Form' and contains_image(obj.get('/Resources'), depth + 1):
-            return True
-    return False
+def has_visual_content(page):
+    # Outlined glyphs, inline images and Form XObjects can all have no text
+    # layer. Check painting operators, not only image resources. Empty text
+    # blocks and genuinely blank pages do not trigger expensive OCR.
+    content = page.get_contents()
+    painting = {b'Do', b'INLINE IMAGE', b'sh', b'S', b's', b'f', b'F', b'f*', b'B', b'B*', b'b', b'b*'}
+    return content is not None and any(operator in painting for _, operator in content.operations)
 
 
 if __name__ == '__main__':
