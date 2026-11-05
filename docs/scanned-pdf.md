@@ -25,3 +25,5 @@ Library 的 Add PDF 先提取文字层；没有文字但含有图像或矢量绘
 OCR 可能损坏公式、表格、空格、多栏顺序和专有名词。来源校验只能证明引文存在于**识别后的页面文字**，不证明与原始像素逐字一致，更不等于科学结论通过。引用前请打开原 PDF 对照。文字转为矢量轮廓、内联图像以及 Form XObject 也会根据页面绘制内容触发 OCR。
 
 实现采用 [RapidOCR 1.x](https://rapidai.github.io/RapidOCRDocs/v1.4.4/install_usage/api/RapidOCR/) 的随包模型及 [pypdfium2](https://pypdfium2.readthedocs.io/en/stable/python_api.html) 页面渲染。
+
+New PDF imports save the original bytes in the project's storage. In Reading or the writing source drawer, choose **View original PDF** to inspect the cited page. Older records can restore their original by selecting the same file. Its SHA-256 must match the imported source. Restoring an original preserves the existing extraction and citations.

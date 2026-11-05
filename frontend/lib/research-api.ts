@@ -56,6 +56,12 @@ async function request<T>(path: string, init?: RequestInit, binary = false, time
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  originalPdf:(id:string,source:string)=>request<Blob>(`/runs/${encodeURIComponent(id)}/papers/${encodeURIComponent(source)}/original`,undefined,true),
+  attachOriginalPdf:(id:string,source:string,file:File)=>{
+    const body=new FormData();
+    body.append('file',file);
+    return request<{saved:boolean}>(`/runs/${encodeURIComponent(id)}/papers/${encodeURIComponent(source)}/original`,{method:'POST',body});
+  },
   quickRead:(id:string,sourceId:string)=>request<PaperQuickRead|null>(`/runs/${encodeURIComponent(id)}/papers/${encodeURIComponent(sourceId)}/quick-read`),
   generateQuickRead:(id:string,sourceId:string)=>request<PaperQuickRead>(`/runs/${encodeURIComponent(id)}/papers/${encodeURIComponent(sourceId)}/quick-read`,json({allow_model:true})),
   updateProject:(id:string,body:{project_name:string;research_goal:string;expected_project_name:string|null;expected_research_goal:string|null})=>request<ResearchRun>(`/runs/${encodeURIComponent(id)}/project`,json(body)),

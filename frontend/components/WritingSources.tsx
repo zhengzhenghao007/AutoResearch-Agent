@@ -4,6 +4,7 @@ import type {DraftBlock} from '@/types/manuscript-draft';
 import type {ManuscriptSection} from '@/types/manuscript';
 import type {ResearchRun} from '@/types/research';
 import ResearchAssetPreview from './ResearchAssetPreview';
+import OriginalPdf from './OriginalPdf';
 import {sourcePdf} from './EvidenceViewer';
 
 type Props={blocks:DraftBlock[];sections:ManuscriptSection[];run?:ResearchRun;disabled:boolean;onInsert:(sectionId:string,block:DraftBlock)=>void};
@@ -24,6 +25,7 @@ export default function WritingSources({blocks,sections,run,disabled,onInsert}:P
   <div className="writing-source-list">{matches.slice(0,limit).map(b=><button key={b.id} aria-label={`Inspect source: ${title(b)}`} aria-pressed={b.id===selectedId} onClick={()=>setSelectedId(b.id)}><strong>{title(b)}</strong><span>{b.paper?`PDF page ${b.paper.evidence.map(e=>e.page).join(', ')}`:b.asset?'Saved research material':'Computed user observations'}</span><p>{b.text}</p></button>)}{!matches.length&&<p>No matching source material.</p>}{matches.length>limit&&<button onClick={()=>setLimit(n=>n+15)}>Show more sources</button>}</div>
   {selected&&<div className="writing-source-detail"><h4>{title(selected)}</h4>
    {paper?<>{paper.evidence.map(e=><blockquote key={e.id}><p>{e.quote}</p><footer>PDF page {e.page}</footer></blockquote>)}{paper.truncated&&<p className="research-notice">This paper was only partially extracted.</p>}{sourcePdf(paper.source.uri,paper.evidence[0]?.page)&&<a href={sourcePdf(paper.source.uri,paper.evidence[0]?.page)!} target="_blank" rel="noopener noreferrer">Open original source PDF</a>}
+    {run&&document?.source.uri.startsWith('upload:')&&<OriginalPdf key={document.source.id} runId={run.id} source={document.source.id} page={paper.evidence[0]?.page??1} canAttach={!disabled}/>}
     {document?<details><summary>Read surrounding source pages</summary>{[...new Set(paper.evidence.map(e=>e.page))].map(page=><article key={page}><h5>Page {page}</h5><p className="research-prose">{document.pages.find(p=>p.number===page)?.text??'Page unavailable in the saved extraction.'}</p></article>)}</details>:<p className="research-meta">Saved quotation snapshot. Full page context is unavailable here; inspect the original paper.</p>}
    </>:selected.asset?<ResearchAssetPreview asset={selected.asset}/>:<p>{selected.text}</p>}
    <label>Insert into chapter<select value={section?.id??''} disabled={disabled} onChange={e=>setTarget(e.target.value)}>{sections.map(s=><option key={s.id} value={s.id}>{s.title}</option>)}</select></label>

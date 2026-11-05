@@ -173,4 +173,13 @@ class EvidenceWorkflow:
             if any(p.document.source.id == document.source.id for p in run.papers):
                 raise ValueError('This PDF is already in the research run')
             run.papers.append(paper)
-            return self._finish(run)
+            from services.original_pdf import original_path, save_original
+            path = original_path(self.store, run, document.source.id)
+            already_saved = path.exists()
+            save_original(self.store, run, document.source.id, data)
+            try:
+                return self._finish(run)
+            except Exception:
+                if not already_saved:
+                    path.unlink(missing_ok=True)
+                raise
