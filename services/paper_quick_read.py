@@ -40,7 +40,7 @@ def _read(path, digest, document, goal, run_id, source_id):
     if (report.input_sha256 != digest or report.run_id != run_id or report.source_id != source_id
             or report.source_sha256 != document.source.sha256 or report.goal != goal):
         raise ValueError('Quick-read cache binding is invalid')
-    supplied, coverage = _select_context(document)
+    supplied, coverage = _select_context(document, version=report.context_version)
     if report.coverage != coverage:
         raise ValueError('Quick-read cache coverage is invalid')
     _validate_output(report.output, supplied, goal)
@@ -52,23 +52,35 @@ def get_quick_read(store, run_id, source_id):
     return _read(path, digest, document, goal, run_id, source_id)
 
 
-def _select_context(document):
+def _select_context(document, version=2):
     pages = sorted(document.pages, key=lambda page: page.number)
+    if version == 2:
+        pages = [page for page in pages if page.text.strip()]
     # Evenly spread page selection when page counts alone exceed the budget.
     count = min(len(pages), 40)
     indices = sorted({round(i * (len(pages)-1) / max(count-1, 1)) for i in range(count)})
     selected = [pages[i] for i in indices]
-    allowance = MAX_CONTEXT_CHARACTERS // max(len(selected), 1)
-    supplied = {p.number: p.text[:allowance] for p in selected}
+    if version == 1:
+        # Reconstruct the exact input used for previously saved reports.
+        allowance = MAX_CONTEXT_CHARACTERS // max(len(selected), 1)
+        supplied = {p.number: p.text[:allowance] for p in selected}
+    else:
+        remaining = MAX_CONTEXT_CHARACTERS
+        lengths = {}
+        for index, page in enumerate(sorted(selected, key=lambda page: len(page.text))):
+            share = remaining // (len(selected) - index)
+            lengths[page.number] = min(len(page.text), share)
+            remaining -= lengths[page.number]
+        supplied = {page.number: page.text[:lengths[page.number]] for page in selected}
     included = sorted(supplied)
     omitted = sorted(set(range(1, document.total_pages+1)) - set(included))
-    truncated = [p.number for p in selected if len(p.text) > allowance]
+    truncated = [p.number for p in selected if len(p.text) > len(supplied[p.number])]
     notes = []
     if omitted or truncated or document.truncated:
         notes.append('Partial coverage: omitted pages and truncated page text were not reviewed.')
     if document.ocr_pages:
         notes.append('OCR text may contain recognition errors; check quotations against the PDF.')
-    return supplied, QuickReadCoverage(total_pages=document.total_pages, parsed_pages=len(pages),
+    return supplied, QuickReadCoverage(total_pages=document.total_pages, parsed_pages=len(document.pages),
         included_pages=included, omitted_pages=omitted, truncated_pages=truncated,
         ocr_pages=document.ocr_pages, notes=notes)
 
@@ -149,7 +161,7 @@ def generate_quick_read(store, run_id, source_id, allow_model=False, client=None
         # A goal/source edit during generation invalidates this response.
         if _context(store, run_id, source_id)[2] != digest:
             raise ValueError('Paper or goal changed during quick reading; retry')
-        report = PaperQuickRead(run_id=run_id, source_id=source_id, source_sha256=document.source.sha256,
+        report = PaperQuickRead(context_version=2, run_id=run_id, source_id=source_id, source_sha256=document.source.sha256,
             input_sha256=digest, goal=goal, model=response.model_name, output=output, coverage=coverage,
             usage=QuickReadUsage(**{k:getattr(response,k,0) for k in ['input_tokens','output_tokens','total_tokens']}))
         path.parent.mkdir(parents=True, exist_ok=True)
