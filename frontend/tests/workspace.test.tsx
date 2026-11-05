@@ -138,6 +138,10 @@ test('ignores an old record response after URL changes', async () => {
 });
 test('links claims to quotes to page text and separates suggestions', async () => {
   const rich: ResearchRun = {...run,papers:[{document:{source:{id:'arxiv:2401.12345',title:'Source paper',kind:'paper',uri:'https://arxiv.org/pdf/2401.12345',sha256:'0'.repeat(64),collected_at:''},pages:[{number:2,text:'The full extracted page text.'}],total_pages:10,truncated:true},evidence:[{id:'arxiv:2401.12345:p2:e1',source_id:'arxiv:2401.12345',page:2,quote:'The exact supported quotation.'}],claims:[{id:'arxiv:2401.12345:c1',text:'A reported result',category:'result',claim_type:'paper_report',evidence_ids:['arxiv:2401.12345:p2:e1'],created_by:'extractor',timestamp:''}],missing_fields:['dataset'],extractor:'literal'}],generated_claims:[{id:'idea',text:'Try a new experiment',category:'future_work',claim_type:'suggestion',evidence_ids:['arxiv:2401.12345:p2:e1'],created_by:'composer',timestamp:''}],artifacts:[{kind:'literature_summary',title:'Summary',content:'A supported summary',claim_ids:['arxiv:2401.12345:c1'],evidence_ids:['arxiv:2401.12345:p2:e1']} ]};
+  const first = rich.papers[0];
+  const secondEvidence = {...first.evidence[0], id:'second:e1', source_id:'second'};
+  rich.papers.push({...first, document:{...first.document, source:{...first.document.source,id:'second',title:'Second paper'}}, evidence:[secondEvidence], claims:[]});
+  rich.generated_claims.push({...rich.generated_claims[0], id:'mixed', text:'Compare both experiments', evidence_ids:[first.evidence[0].id,secondEvidence.id]});
   vi.mocked(researchApi.get).mockResolvedValue(rich); window.history.replaceState({},'',`/?run=${run.id}`); render(<EvidenceWorkspace/>);
   await screen.findAllByText('A reported result');
   await userEvent.click(screen.getByRole('button',{name:'Reading & evidence'}));
@@ -147,6 +151,9 @@ test('links claims to quotes to page text and separates suggestions', async () =
   expect(screen.getByText('Truncated document')).toBeVisible();
   await userEvent.click(screen.getByRole('button',{name:'Compare'}));
   await userEvent.click(screen.getByText('Exploratory suggestions'));
+  expect(screen.getByText('Compare both experiments')).toBeVisible();
+  await userEvent.click(screen.getByRole('checkbox',{name:'Source paper'}));
+  expect(screen.queryByText('Compare both experiments')).not.toBeInTheDocument();
   expect(screen.getByText('Try a new experiment')).toBeVisible();
   await userEvent.click(screen.getByRole('button',{name:'Read evidence'}));
   expect(screen.getByText('The exact supported quotation.')).toBeVisible();
