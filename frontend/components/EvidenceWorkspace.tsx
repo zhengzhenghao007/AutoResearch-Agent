@@ -1,5 +1,7 @@
 'use client';
 import ResearchJobs from './ResearchJobs';
+import ProjectHeader from './ProjectHeader';
+import {projectName} from '@/lib/project-name';
 import SemanticReview from './SemanticReview';
 import ManuscriptDraft from './ManuscriptDraft';
 import ManuscriptEditor from './ManuscriptEditor';
@@ -30,12 +32,17 @@ function setUrl(id?: string,stage='library',replace=false) { const url=new URL(w
 
 export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLeaveBlockedChange}:{jobsEnabled?:boolean;readOnly?:boolean;onLeaveBlockedChange?:(value:boolean)=>void}) {
   const [stage,setStage]=useState('library');
+  const [initialized,setInitialized]=useState(false);
   const stageRef=useRef('library');
   const activeHistoryIndex=useRef<number|null>(null);
   const currentUrlRun=useRef<string|null>(null);
   function navigateStage(value:string){stageRef.current=value;setStage(value);if(value==='writing')setWritingVisited(true);const id=run?.id??currentUrlRun.current;if(id)activeHistoryIndex.current=setUrl(id,value);}
   const [focusEvidence,setFocusEvidence]=useState('');
   const [tasksOpen,setTasksOpen]=useState(false);
+  const projectLock=useRef(false);
+  const [projectDirty,setProjectDirty]=useState(false);
+  const projectDirtyChange=useCallback((value:boolean)=>{projectLock.current=value;setProjectDirty(value);},[]);
+  const [compareIds,setCompareIds]=useState<string[]>([]);
   const [focusSource,setFocusSource]=useState('');
   const [readingVisit,setReadingVisit]=useState(0);
   const [writingVisited,setWritingVisited]=useState(false);
@@ -55,7 +62,7 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLe
   const [pending,setPending]=useState(''); const [loading,setLoading]=useState(false); const [error,setError]=useState('');
   const [history,setHistory]=useState<ResearchHistory|null>(null); const [page,setPage]=useState(1); const [historyBusy,setHistoryBusy]=useState(false); const [historyError,setHistoryError]=useState('');
   const generation=useRef(0); const historyGeneration=useRef(0); const mutation=useRef(false);
-  const accept=useCallback((value: ResearchRun)=>{setRun(value);setRevision(current=>current+1);setTopic(value.topic);setSelection(value.selected_ids);setFile(null);if(fileInput.current)fileInput.current.value='';},[]);
+  const accept=useCallback((value: ResearchRun)=>{setRun(value);setRevision(current=>current+1);setSelection(value.selected_ids);setFile(null);if(fileInput.current)fileInput.current.value='';},[setSelection,setFile]);
   const refreshHistory=useCallback(async (target: number)=>{
     const ticket=++historyGeneration.current;setHistoryBusy(true);setHistoryError('');
     try { const result=await researchApi.list(target);if(ticket===historyGeneration.current){setHistory(result);setPage(target);} }
@@ -63,7 +70,7 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLe
     finally{if(ticket===historyGeneration.current)setHistoryBusy(false);}
   },[]);
   const open=useCallback(async(id: string|null)=>{
-    const nextStage=id?urlStage():'library';stageRef.current=nextStage;
+    setInitialized(true);const nextStage=id?urlStage():'library';stageRef.current=nextStage;
     activeHistoryIndex.current=historyIndex();
     currentUrlRun.current=id;setStage(nextStage);setFocusEvidence('');setWritingVisited(nextStage==='writing');
     const ticket=++generation.current;setError('');setRun(null);setSelection([]);setTopic('');setFile(null);if(fileInput.current)fileInput.current.value='';setLoading(Boolean(id));
@@ -80,14 +87,14 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLe
       const id=new URL(window.location.href).searchParams.get('run');
       if(id!==currentUrlRun.current){
         // A browser Back action bypasses disabled in-app record buttons.
-        if(manuscriptLock.current||materialsLock.current){
+        if(manuscriptLock.current||materialsLock.current||projectLock.current){
           const targetIndex=historyIndex();
           if(targetIndex!==null&&activeHistoryIndex.current!==null&&targetIndex!==activeHistoryIndex.current)window.history.go(activeHistoryIndex.current-targetIndex);
           else activeHistoryIndex.current=setUrl(currentUrlRun.current??undefined,stageRef.current);
-          setError('Save or discard manuscript or material changes and wait for manuscript requests before leaving this record.');return;
+          setError('Save or discard project, manuscript or material changes before leaving this record.');return;
         }
         void open(id);
-      }else{activeHistoryIndex.current=historyIndex();const nextStage=id?urlStage():'library';stageRef.current=nextStage;setStage(nextStage);if(nextStage==='writing')setWritingVisited(true);}
+      }else{activeHistoryIndex.current=historyIndex();setInitialized(true);const nextStage=id?urlStage():'library';stageRef.current=nextStage;setStage(nextStage);if(nextStage==='writing')setWritingVisited(true);}
     };
     queueMicrotask(()=>{if(active){if(historyIndex()===null)window.history.replaceState({...window.history.state,researchIndex:0},'',window.location.href);void open(new URL(window.location.href).searchParams.get('run'));void refreshHistory(1);}});
     window.addEventListener('popstate',restore);
@@ -117,7 +124,8 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLe
   }
   const runBusy=Boolean(pending)||loading||screeningPending;
   const busy=runBusy||manuscriptPending;
-  const leaveBlocked=busy||materialsDirty;
+  const leaveBlocked=busy||materialsDirty||projectDirty;
+  useEffect(()=>{if(!projectDirty)return;const warn=(event:BeforeUnloadEvent)=>{event.preventDefault();event.returnValue='';};window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn);},[projectDirty]);
   useEffect(()=>{onLeaveBlockedChange?.(leaveBlocked);return()=>onLeaveBlockedChange?.(false);},[leaveBlocked,onLeaveBlockedChange]);
   return <section className="research-workspace" aria-labelledby="research-title">
     <header className="research-header"><div><h1 id="research-title">Research studio</h1><p>Your papers, experiments, figures and writing in one research record.</p></div><button disabled={leaveBlocked} onClick={()=>{setUrl();void open(null);}}>New record</button></header>
@@ -125,22 +133,28 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLe
       <div id="history-content" className="history-content" data-expanded={historyOpen}>
       {historyBusy && <p role="status">Loading history…</p>}{historyError && <p role="alert">{historyError}</p>}
       {history && history.items.length===0 && <p className="research-meta">No saved records on this page.</p>}
-      <ul>{history?.items.map(item=><li key={item.id}><button disabled={leaveBlocked} aria-current={run?.id===item.id?'page':undefined} onClick={()=>{setUrl(item.id);void open(item.id);}}><strong>{item.topic}</strong><span>{item.paper_count} papers / {item.candidate_count} candidates</span><span>{item.source_support_passed?'Source support passed':'Source support pending'}</span></button></li>)}</ul>
+      <ul>{history?.items.map(item=><li key={item.id}><button disabled={leaveBlocked} aria-current={run?.id===item.id?'page':undefined} onClick={()=>{setUrl(item.id);void open(item.id);}}><strong>{item.project_name||projectName(item)}</strong><span>{item.paper_count} papers / {item.candidate_count} candidates</span><span>{item.source_support_passed?'Extracts matched to text':'Source checks pending'}</span></button></li>)}</ul>
       <nav aria-label="History pages" className="research-row"><button aria-label="Previous history page" disabled={historyBusy||page<=1} onClick={()=>void refreshHistory(page-1)}>Previous</button><span>Page {page}{history ? ` of ${Math.max(1,Math.ceil(history.total/history.page_size))}`:''}</span><button aria-label="Next history page" disabled={historyBusy||!history||page*history.page_size>=history.total} onClick={()=>void refreshHistory(page+1)}>Next</button></nav>
       </div>
     </aside><div className="research-main">
-      <nav className="workflow-nav" aria-label="Research workflow">{[['library','Library'],['reading','Reading & evidence'],['compare','Compare'],['materials','Data & figures'],['writing','Writing']].map(([id,label],i)=><button key={id} aria-current={stage===id?'step':undefined} aria-controls={`stage-${id}`} disabled={id!=='library'&&!run} onClick={()=>navigateStage(id)}><span aria-hidden="true">{i+1}</span>{label}</button>)}</nav>
+      <nav className="workflow-nav" aria-label="Research workflow">{[['library','Library'],['reading','Reading & evidence'],['compare','Compare'],['materials','Data & figures'],['writing','Writing']].map(([id,label])=><button key={id} aria-current={stage===id?'page':undefined} aria-controls={`stage-${id}`} disabled={id!=='library'&&!run} onClick={()=>navigateStage(id)}>{label}</button>)}</nav>
       {error&&<p role="alert" className="research-error">{error}</p>}
-      {run&&<div className="research-record-title"><h2>{run.topic}</h2><p className="research-meta">{run.papers.length} papers · {run.papers.reduce((n,p)=>n+p.evidence.length,0)} quotations · {run.review.approved?'Literal source checks passed':'Source checks pending'}</p></div>}
+      {initialized&&!loading&&<ProjectHeader key={`${run?.id??'new'}:${run?.project_name??''}:${run?.research_goal??''}`} run={run} disabled={busy||readOnly} onDirtyChange={projectDirtyChange} onSave={async(name,goal)=>{
+        if(run)return recordAnnotation(id=>researchApi.updateProject(id,{project_name:name,research_goal:goal,expected_project_name:run.project_name??null,expected_research_goal:run.research_goal??''}));
+        if(readOnly||mutation.current)return false;
+        mutation.current=true;setPending('Creating research space…');
+        try{const value=await researchApi.create('',name,goal);accept(value);currentUrlRun.current=value.id;activeHistoryIndex.current=setUrl(value.id,stageRef.current);void refreshHistory(1);return true;}finally{mutation.current=false;setPending('');}
+      }}/>}
+
       <div id="stage-library" hidden={stage!=='library'}>
       {run&&<ResearchOverview run={run} onStage={navigateStage} onSource={id=>showEvidence('',id)}/>}
-      {run&&<details className="task-panel-entry" onToggle={event=>setTasksOpen(event.currentTarget.open)}><summary>Research tasks: plan, checkpoints and budget</summary>{tasksOpen&&<ResearchTasks key={run.id} runId={run.id} topic={run.topic} papers={run.papers} readOnly={readOnly} onEvidence={id=>showEvidence(id)}/>}</details>}
+      {run&&<details className="task-panel-entry" onToggle={event=>setTasksOpen(event.currentTarget.open)}><summary>Research assistant: plan, checkpoints and budget</summary>{tasksOpen&&<ResearchTasks key={`${run.id}:${run.research_goal??''}`} runId={run.id} topic={run.research_goal??''} papers={run.papers} readOnly={readOnly} onEvidence={id=>showEvidence(id)}/>}</details>}
       <div className="stage-intro"><h3>Build your reading list</h3><p>Search for papers or add PDFs you already have. Each research record keeps its own sources, evidence and drafts.</p></div>
       {jobsEnabled&&<ResearchJobs topic={topic} runId={run?.id} selectedIds={selection} blocked={leaveBlocked} readOnly={readOnly} onOpen={id=>{setUrl(id);void open(id);void refreshHistory(page);}}/>}
-      <fieldset disabled={readOnly} style={{border:0,padding:0,minWidth:0}}><form className="research-search" onSubmit={event=>{event.preventDefault();if(!jobsEnabled&&topic.trim())void mutate('Finding papers…',()=>researchApi.search(topic.trim()));}}><label htmlFor="research-topic">Research topic</label><div className="research-row"><input id="research-topic" maxLength={2000} required value={topic} disabled={busy} onChange={e=>setTopic(e.target.value)} placeholder="e.g. vision language robot navigation"/>{!jobsEnabled&&<button className="research-primary" disabled={busy||!topic.trim()}>Find papers</button>}<button type="button" disabled={busy||!topic.trim()} onClick={()=>void mutate('Creating offline record…',()=>researchApi.create(topic.trim()))}>Create offline record</button></div><p className="research-meta">A search creates a new record. Choose papers before analysis.</p></form>
+      <fieldset disabled={readOnly} style={{border:0,padding:0,minWidth:0}}><form className="research-search" onSubmit={event=>{event.preventDefault();if(!jobsEnabled&&topic.trim())void mutate('Finding papers…',()=>researchApi.search(topic.trim(),run?.id));}}><label htmlFor="research-topic">Research topic</label><div className="research-row"><input id="research-topic" maxLength={2000} value={topic} disabled={busy} onChange={e=>setTopic(e.target.value)} placeholder="e.g. vision language robot navigation"/>{!jobsEnabled&&<button className="research-primary" disabled={busy||!topic.trim()}>Find papers</button>}<button type="button" disabled={busy||Boolean(run)} onClick={()=>void mutate('Creating offline record…',()=>researchApi.create())}>Create offline record</button></div><p className="research-meta">Search adds candidates to this project. Choose papers before analysis; a research goal is optional.</p></form>
       <form className="research-upload" onSubmit={event=>{event.preventDefault();if(file)void mutate('Adding PDF… Scanned pages use local OCR and may take several minutes. Please keep this page open.',()=>researchApi.upload(file,run?.id));}}><label htmlFor="research-pdf">PDF file</label><div className="research-row"><input ref={fileInput} id="research-pdf" type="file" accept=".pdf,application/pdf" disabled={busy} onChange={event=>setFile(event.target.files?.[0]??null)}/><button disabled={busy||!file}>Add PDF</button></div><p className="research-meta">{run?'Adds evidence to the current record. Use New record to start separately.':'Creates a record from a text or scanned PDF. Local OCR supports up to 20 image-only pages per upload.'}</p></form>
       </fieldset>{pending && <p role="status" className="research-notice">{pending} Keep this page open while the request completes.</p>}{loading && <p role="status">Opening research record…</p>}
-      {!run&&!loading&&!error && <p className="research-empty">Start with a research topic, add a PDF, or reopen a saved record.</p>}
+      {!run&&!loading&&!error && <p className="research-empty">Your research space is ready. Add papers now; name your project or set a goal whenever you are ready.</p>}
       {run && <>
         {run.plan.length>0 && <details className="research-plan"><summary>Research plan</summary><ol>{run.plan.map((step,i)=><li key={i}>{step}</li>)}</ol></details>}
         <section aria-label="Candidate papers" hidden={run.candidates.length===0&&run.papers.length>0}><div className="research-row"><h3>Candidate papers</h3><span className="research-meta">{selection.length} selected</span></div>
@@ -152,10 +166,10 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLe
       </>}
       </div>
       {run&&<>
-       <div id="stage-reading" hidden={stage!=='reading'}><ReadingDesk key={`${run.id}:${readingVisit}`} run={run} focusEvidence={focusEvidence} focusSource={focusSource} onFocus={setFocusEvidence}/>
+       <div id="stage-reading" hidden={stage!=='reading'}><ReadingDesk key={`${run.id}:${readingVisit}`} run={run} focusEvidence={focusEvidence} focusSource={focusSource} onFocus={setFocusEvidence} readOnly={readOnly} onDirection={text=>{void recordAnnotation(id=>researchApi.updateProject(id,{project_name:projectName(run),research_goal:text,expected_project_name:run.project_name??null,expected_research_goal:run.research_goal??''})).catch(error=>setError(message(error)));}}/>
         <details className="research-advanced"><summary>Advanced review: source checks and claim categories</summary><p>{run.review.scope}</p>{run.review.issues.map((issue,i)=><p key={i}>{issue}</p>)}{!busy&&<ClaimReview runId={run.id} revision={revision}/>}<fieldset disabled={readOnly} className="research-fieldset"><SemanticReview key={`semantic:${run.id}`} run={run} revision={revision} blocked={busy}/><CategoryRevisions key={`categories:${run.id}`} run={run} busy={busy} onSave={(claim,category,reason)=>recordAnnotation(id=>researchApi.reviseCategory(id,claim,category,reason))}/></fieldset></details>
        </div>
-       <div id="stage-compare" hidden={stage!=='compare'}><ComparisonTable run={run} onEvidence={showEvidence}/></div>
+       <div id="stage-compare" hidden={stage!=='compare'}><ComparisonTable run={run} onEvidence={showEvidence} selectedIds={compareIds} onSelection={setCompareIds}/></div>
        <div id="stage-materials" hidden={stage!=='materials'}><h3>Data, figures and research records</h3><p className="research-meta">Keep original observations, saved tables, reproducible charts and experiment notes together in this research record.</p><details className="research-advanced" open={!(run.experiments?.length)}><summary>Import experiment data and inspect statistics</summary><fieldset disabled={readOnly} className="research-fieldset"><Experiments key={`experiments:${run.id}`} run={run} revision={revision} busy={busy} onImport={(file,format,metadata)=>recordAnnotation(id=>researchApi.importExperiment(id,file,format,metadata))}/></fieldset></details><ResearchMaterials key={`materials:${run.id}`} run={run} busy={busy} readOnly={readOnly} onDirtyChange={materialDirtyChange} onSave={request=>recordAnnotation(id=>researchApi.saveWorkspaceItem(id,request))}/></div>
        <div id="stage-writing" hidden={stage!=='writing'}><h3>Write with your sources open</h3><p className="research-meta">Keep references beside your manuscript. Insert source quotations, statistics and saved figures or tables into a chapter, then save a revision.</p><details className="research-advanced"><summary>Preview source material before starting</summary>{!busy&&<ManuscriptDraft runId={run.id} revision={revision}/>}</details>{writingVisited&&<ManuscriptEditor runId={run.id} run={run} readOnly={readOnly} revision={revision} blocked={runBusy} onBusyChange={manuscriptBusy}/>}</div>
       </>}

@@ -92,9 +92,9 @@ class JobManager:
             if db.execute("SELECT count(*) FROM jobs WHERE status IN ('queued','running','cancel_requested')").fetchone()[0] >= 4:
                 raise ValueError('Job queue capacity reached (4 per user)')
             baseline, revision = None, None
-            if request.kind == 'analyze':
+            if request.run_id:
                 run = self.store.load(request.run_id)
-                if not set(request.selected_ids) <= {c.id for c in run.candidates}:
+                if request.kind == 'analyze' and not set(request.selected_ids) <= {c.id for c in run.candidates}:
                     raise ValueError('Unknown selected candidates')
                 baseline, revision = run.model_dump_json(), run._store_revision
             identity, now = uuid4().hex, time.time()
@@ -201,8 +201,11 @@ class JobManager:
                 if current['status'] != 'running' or current['owner'] != owner:
                     return True
                 result._store_revision = row['revision']
-                if request['kind'] == 'analyze' and result.id != request['run_id']:
+                if request.get('run_id') and result.id != request['run_id']:
                     raise ValueError('Result identity mismatch')
+                if request['kind'] == 'search' and not request.get('run_id'):
+                    from workflow.evidence_workflow import EvidenceWorkflow
+                    result.project_name = EvidenceWorkflow(store=self.store)._default_project_name()
                 self.store.save(result)
                 db.execute("UPDATE jobs SET status='succeeded',result_id=?,updated=? WHERE id=?",
                            (result.id, time.time(), identity))

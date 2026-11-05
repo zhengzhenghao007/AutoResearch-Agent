@@ -12,8 +12,8 @@ class JobRequest(BaseModel):
 
     @model_validator(mode='after')
     def valid_operation(self):
-        if self.kind == 'search' and (not self.topic or self.run_id or self.selected_ids):
-            raise ValueError('Search requires a topic only')
+        if self.kind == 'search' and (not self.topic or self.selected_ids):
+            raise ValueError('Search requires a topic and optional project ID')
         if self.kind == 'analyze' and (not self.run_id or self.topic or not self.selected_ids
                                       or len(set(self.selected_ids)) != len(self.selected_ids)):
             raise ValueError('Analysis requires a run and distinct selected candidates')

@@ -1,0 +1,4 @@
+export interface QuickReadReference {page:number;quote:string}
+export interface QuickReadPoint {text:string;references:QuickReadReference[];kind:'paper_report'|'author_claim'|'hypothesis'|'goal_analysis'}
+export interface QuickReadOutput {one_sentence:QuickReadPoint|null;main_points:QuickReadPoint[];problem:QuickReadPoint[];innovations:QuickReadPoint[];methods:QuickReadPoint[];findings_applications:QuickReadPoint[];limitations:QuickReadPoint[];goal_relevance:QuickReadPoint[];suggested_directions:QuickReadPoint[];missing_information:string[]}
+export interface PaperQuickRead {run_id:string;source_id:string;source_sha256:string;input_sha256:string;goal:string|null;model:string;usage:{input_tokens:number;output_tokens:number;total_tokens:number};coverage:{total_pages:number;parsed_pages:number;included_pages:number[];omitted_pages:number[];truncated_pages:number[];ocr_pages:number[];notes:string[]};output:QuickReadOutput;advisory:string}

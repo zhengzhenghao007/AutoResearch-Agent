@@ -120,6 +120,8 @@ class ResearchRun(Contract):
     schema_version: Literal[1] = 1
     id: str = Field(pattern=r'^[a-f0-9]{32}$')
     topic: str = Field(min_length=1, max_length=2000)
+    project_name: str | None = Field(default=None, min_length=1, max_length=200)
+    research_goal: str | None = Field(default='', max_length=2000)
     plan: list[str]
     candidates: list[Candidate] = Field(default_factory=list)
     selected_ids: list[str] = Field(default_factory=list)
@@ -133,10 +135,25 @@ class ResearchRun(Contract):
     artifacts: list[Artifact] = Field(default_factory=list)
     review: Review = Field(default_factory=lambda: Review(approved=False, issues=['No papers processed']))
 
+    @property
+    def effective_project_name(self):
+        if self.project_name:
+            return self.project_name
+        return 'Research' if self.topic.lower().endswith('.pdf') else self.topic
+
+
+class ProjectUpdateRequest(Contract):
+    project_name: str = Field(min_length=1, max_length=200)
+    research_goal: str = Field(max_length=2000)
+    expected_project_name: str | None = Field(max_length=200)
+    expected_research_goal: str | None = Field(max_length=2000)
+
 
 class ResearchRunSummary(Contract):
     id: str
     topic: str
+    project_name: str
+    research_goal: str | None = ''
     candidate_count: int
     selected_count: int
     paper_count: int
