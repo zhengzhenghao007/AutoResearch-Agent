@@ -22,7 +22,7 @@ def main():
     if data['baseline']:
         store.save(ResearchRun.model_validate_json(data['baseline']))
     flow = EvidenceWorkflow(store=store)
-    result = (flow.search(request.topic, request.max_results) if request.kind == 'search'
+    result = (flow.search(request.topic, request.max_results, request.run_id) if request.kind == 'search'
               else flow.analyze(request.run_id, request.selected_ids))
     output = result.model_dump_json().encode('utf-8')
     if len(output) > 64 * 1024 * 1024:

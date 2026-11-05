@@ -23,6 +23,31 @@ def test_jobs_persist_and_commit_only_success(tmp_path):
     done = m.get(job['id'])
     assert done['status'] == 'succeeded'
     assert m.store.load(done['run_id']).topic == 'Offline'
+    assert m.store.load(done['run_id']).project_name == 'Research'
+    second = m.submit({'kind':'search','topic':'Another'})
+    m.run_once(offline)
+    assert m.store.load(m.get(second['id'])['run_id']).project_name == 'Research 2'
+
+
+def test_search_job_keeps_project_and_rejects_stale_snapshot(tmp_path):
+    from schemas.research import ResearchRun
+    m = manager(tmp_path)
+    run = EvidenceWorkflow(store=m.store).create(project_name='My project')
+    job = m.submit({'kind':'search','topic':'New query','run_id':run.id})
+    def result(request, baseline, directory):
+        return ResearchRun.model_validate_json(baseline)
+    m.run_once(result)
+    assert m.get(job['id'])['status'] == 'succeeded'
+    assert m.store.history().total == 1
+    second = m.submit({'kind':'search','topic':'Another query','run_id':run.id})
+    def stale(request, baseline, directory):
+        current = m.store.load(run.id)
+        current.project_name = 'Updated'
+        m.store.save(current)
+        return result(request, baseline, directory)
+    m.run_once(stale)
+    assert m.get(second['id'])['status'] == 'failed'
+    assert m.store.load(run.id).project_name == 'Updated'
 
 
 def test_cancellation_during_execution_never_commits(tmp_path):

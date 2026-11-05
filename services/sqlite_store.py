@@ -105,7 +105,7 @@ class SQLiteResearchStore(ResearchStore):
             items = []
             for row in rows:
                 run = self.load(row['id'])
-                items.append(ResearchRunSummary(id=run.id, topic=run.topic, candidate_count=len(run.candidates),
+                items.append(ResearchRunSummary(id=run.id, topic=run.topic, project_name=run.effective_project_name, research_goal=run.research_goal, candidate_count=len(run.candidates),
                     selected_count=len(run.selected_ids), paper_count=len(run.papers),
                     updated_at=datetime.fromisoformat(row['updated']), source_support_passed=run.review.approved))
         return ResearchHistory(items=items, total=total, page=page, page_size=page_size)

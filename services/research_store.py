@@ -67,7 +67,7 @@ class ResearchStore:
             except (ValueError, OSError) as exc:
                 raise ValueError(f'Invalid stored research run: {path.stem}') from exc
             rows.append((modified, ResearchRunSummary(
-                id=run.id, topic=run.topic, candidate_count=len(run.candidates),
+                id=run.id, topic=run.topic, project_name=run.effective_project_name, research_goal=run.research_goal, candidate_count=len(run.candidates),
                 selected_count=len(run.selected_ids), paper_count=len(run.papers),
                 updated_at=datetime.fromtimestamp(modified, timezone.utc),
                 source_support_passed=run.review.approved,

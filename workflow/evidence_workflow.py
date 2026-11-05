@@ -32,25 +32,65 @@ class EvidenceWorkflow:
             'Review sources; researcher evaluates relevance and scientific validity.',
         ])
 
-    def create(self, topic):
-        """Start a local record without searching or contacting a model."""
-        run = self._new(topic)
-        self.store.save(run)
-        return run
+    def _mutation(self):
+        from services.workspace import _LOCK
+        return self.store.transaction() if hasattr(self.store, 'transaction') else _LOCK
 
-    def search(self, topic, max_results=5):
-        run = self._new(topic)
+    def _default_project_name(self):
+        history = self.store.history(page_size=50)
+        names = {item.project_name for item in history.items}
+        for page in range(2, (history.total + 49) // 50 + 1):
+            names.update(item.project_name for item in self.store.history(page, 50).items)
+        index = 1
+        while ('Research' if index == 1 else f'Research {index}') in names:
+            index += 1
+        return 'Research' if index == 1 else f'Research {index}'
+
+    def create(self, topic=None, *, project_name=None, research_goal=''):
+        """Create a collection; its display name never supplies a research prompt."""
+        with self._mutation():
+            run = self._new(topic or 'Research')
+            run.project_name = project_name if project_name else (None if topic else self._default_project_name())
+            run.research_goal = research_goal
+            self.store.save(run)
+            return run
+
+    def update_project(self, run_id, project_name, research_goal, expected_project_name, expected_research_goal):
+        from schemas.research import ProjectUpdateRequest
+        from services.sqlite_store import ConflictError
+        request = ProjectUpdateRequest(project_name=project_name, research_goal=research_goal,
+            expected_project_name=expected_project_name, expected_research_goal=expected_research_goal)
+        with self._mutation():
+            run = self.store.load(run_id)
+            if run.project_name != request.expected_project_name or run.research_goal != request.expected_research_goal:
+                raise ConflictError('Project changed; reload before saving')
+            run.project_name, run.research_goal = request.project_name, request.research_goal
+            self.store.save(run)
+            return run
+
+    def search(self, topic, max_results=5, run_id=None):
         if not 1 <= max_results <= 20:
             raise ValueError('max_results must be 1..20')
-        seen = set()
+        if run_id:
+            self.store.load(run_id)
+        # Remote I/O happens before acquiring the write transaction.
+        candidates = []
         for item in self.search_source(topic, max_results=max_results):
             url = canonical_arxiv_pdf_url(item['pdf_url'])
             identity = hashlib.sha256(url.encode()).hexdigest()[:16]
-            if identity not in seen:
-                run.candidates.append(Candidate(id=identity, title=item['title'], pdf_url=url, summary=item.get('summary', ''), authors=item.get('authors', [])))
-                seen.add(identity)
-        self.store.save(run)
-        return run
+            candidates.append(Candidate(id=identity, title=item['title'], pdf_url=url,
+                summary=item.get('summary', ''), authors=item.get('authors', [])))
+        with self._mutation():
+            run = self.store.load(run_id) if run_id else self._new(topic)
+            if not run_id:
+                run.project_name = self._default_project_name()
+            seen = {candidate.id for candidate in run.candidates}
+            for candidate in candidates:
+                if candidate.id not in seen:
+                    run.candidates.append(candidate)
+                    seen.add(candidate.id)
+            self.store.save(run)
+            return run
 
     def record_candidate_decision(self, run_id, candidate_id, decision, reason):
         """Append user-supplied screening rationale without changing analysis selection."""
@@ -103,6 +143,7 @@ class EvidenceWorkflow:
 
     def analyze(self, run_id, selected_ids):
         run = self.store.load(run_id)
+        baseline = run.model_dump(mode='json')
         choices = {c.id: c for c in run.candidates}
         if not selected_ids or len(set(selected_ids)) != len(selected_ids) or any(i not in choices for i in selected_ids):
             raise ValueError('Select distinct candidate IDs from this research run')
@@ -116,12 +157,20 @@ class EvidenceWorkflow:
                 papers.append(self.extractor.extract(document))
                 seen.add(document.source.id)
         run.papers, run.selected_ids = replay_revisions(papers, run.category_revisions), list(selected_ids)
-        return self._finish(run)
+        with self._mutation():
+            if self.store.load(run_id).model_dump(mode='json') != baseline:
+                from services.sqlite_store import ConflictError
+                raise ConflictError('Project changed during analysis; reload before trying again')
+            return self._finish(run)
 
     def import_pdf(self, data, title, run_id=None):
-        run = self.store.load(run_id) if run_id else self._new(title)
         document = self.processor.parse_bytes(data, title, f'upload:{title}')
-        if any(p.document.source.id == document.source.id for p in run.papers):
-            raise ValueError('This PDF is already in the research run')
-        run.papers.append(self.extractor.extract(document))
-        return self._finish(run)
+        paper = self.extractor.extract(document)
+        with self._mutation():
+            run = self.store.load(run_id) if run_id else self._new('Research')
+            if not run_id:
+                run.project_name = self._default_project_name()
+            if any(p.document.source.id == document.source.id for p in run.papers):
+                raise ValueError('This PDF is already in the research run')
+            run.papers.append(paper)
+            return self._finish(run)

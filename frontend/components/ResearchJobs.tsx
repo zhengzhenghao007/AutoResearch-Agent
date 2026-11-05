@@ -12,7 +12,7 @@ export default function ResearchJobs({topic,runId,selectedIds,blocked,readOnly,o
  return <section aria-label="Background jobs"><h3>Background jobs</h3>
  <p>Search and analysis run on the server and survive navigation. Open a completed result when ready. Model reviews are never queued automatically.</p>
  {!readOnly&&<div className="research-row">
- <button disabled={blocked||pending||!topic.trim()} onClick={()=>void action(()=>researchApi.submitJob({kind:'search',topic:topic.trim()}))}>Queue search</button>
+ <button disabled={blocked||pending||!topic.trim()} onClick={()=>void action(()=>researchApi.submitJob({kind:'search',topic:topic.trim(),...(runId?{run_id:runId}:{})}))}>Queue search</button>
  <button disabled={blocked||pending||!runId||!selectedIds.length} onClick={()=>void action(()=>researchApi.submitJob({kind:'analyze',run_id:runId!,selected_ids:selectedIds}))}>Queue analysis</button>
  </div>}
  {error&&<p role="alert">{error}</p>}

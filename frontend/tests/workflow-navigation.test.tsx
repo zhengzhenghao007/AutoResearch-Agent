@@ -4,10 +4,10 @@ import userEvent from '@testing-library/user-event';
 import EvidenceWorkspace from '@/components/EvidenceWorkspace';
 import {researchApi} from '@/lib/research-api';
 import type {ResearchRun} from '@/types/research';
-vi.mock('@/lib/research-api',()=>({researchApi:{list:vi.fn(),get:vi.fn()}}));
+vi.mock('@/lib/research-api',()=>({researchApi:{list:vi.fn(),get:vi.fn(),quickRead:vi.fn().mockResolvedValue(null)}}));
 vi.mock('@/components/ManuscriptEditor',()=>({default:({onBusyChange}:{onBusyChange?:(value:boolean)=>void})=> <><label>Draft text<textarea onChange={()=>onBusyChange?.(true)}/></label><button onClick={()=>onBusyChange?.(false)}>Release draft lock</button></>}));
 const record:ResearchRun={schema_version:1,id:'a'.repeat(32),topic:'Example study',plan:[],candidates:[],selected_ids:[],papers:[],generated_claims:[],artifacts:[],review:{approved:false,scope:'Literal only',issues:[]}};
-beforeEach(()=>{vi.resetAllMocks();window.history.replaceState({},'',`/?run=${record.id}`);vi.mocked(researchApi.list).mockResolvedValue({items:[],total:0,page:1,page_size:10});vi.mocked(researchApi.get).mockResolvedValue(record);});
+beforeEach(()=>{vi.clearAllMocks();window.history.replaceState({},'',`/?run=${record.id}`);vi.mocked(researchApi.list).mockResolvedValue({items:[],total:0,page:1,page_size:10});vi.mocked(researchApi.get).mockResolvedValue(record);});
 test('five stages preserve unsaved writing and hide unrelated controls',async()=>{
  render(<EvidenceWorkspace/>);
  await screen.findByRole('heading',{name:'Example study'});
@@ -105,7 +105,7 @@ test('blocked browser Back preserves the previous record for navigation after sa
  await userEvent.click(screen.getByRole('button',{name:'Writing'}));
  await userEvent.type(await screen.findByLabelText('Draft text'),'Retain this');
  act(()=>window.history.back());
- await waitFor(()=>expect(screen.getByRole('button',{name:'Library'})).toHaveAttribute('aria-current','step'));
+ await waitFor(()=>expect(screen.getByRole('button',{name:'Library'})).toHaveAttribute('aria-current','page'));
  act(()=>window.history.back());
  await screen.findByRole('alert');
  await waitFor(()=>expect(new URL(window.location.href).searchParams.get('run')).toBe(other.id));
@@ -113,7 +113,7 @@ test('blocked browser Back preserves the previous record for navigation after sa
  expect(screen.getByLabelText('Draft text')).toHaveValue('Retain this');
  await userEvent.click(screen.getByRole('button',{name:'Release draft lock'}));
  act(()=>window.history.back());
- await waitFor(()=>expect(screen.getByRole('button',{name:'Library'})).toHaveAttribute('aria-current','step'));
+ await waitFor(()=>expect(screen.getByRole('button',{name:'Library'})).toHaveAttribute('aria-current','page'));
  act(()=>window.history.back());
  await screen.findByRole('heading',{name:record.topic});
 });

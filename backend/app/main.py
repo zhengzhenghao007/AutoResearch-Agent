@@ -15,6 +15,7 @@ from backend.app.api.papers import (
 )
 from backend.app.api.research import router as research_router
 from backend.app.api.jobs import router as jobs_router
+from backend.app.api.paper_quick_read import router as paper_quick_read_router
 from backend.app.api.research_tasks import router as research_tasks_router
 from backend.app.request_limits import RequestBodyLimit
 from backend.app.security import load_config, SecurityMiddleware
@@ -59,6 +60,7 @@ app.include_router(
     analysis_router
 )
 app.include_router(research_router)
+app.include_router(paper_quick_read_router)
 app.include_router(jobs_router)
 app.include_router(research_tasks_router)
 

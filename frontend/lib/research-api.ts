@@ -1,4 +1,5 @@
 import type {ManuscriptState,ManuscriptRevisionRequest,ManuscriptExport} from '@/types/manuscript';
+import type {PaperQuickRead} from '@/types/paper-quick-read';
 import type {SemanticReviewReport} from '@/types/semantic-review';
 import type {ManuscriptDraftData} from '@/types/manuscript-draft';
 import type {CsvMetadata,ExperimentReport,ExperimentStatistics} from '@/types/experiments';
@@ -20,7 +21,7 @@ let accessToken = '';
 export function setResearchToken(token: string) { accessToken = token; }
 export interface ResearchSession { mode:'local'|'deployment'; user_id:string; role:'reader'|'writer'; jobs_enabled:boolean }
 export interface ResearchJob { id:string; kind:'search'|'analyze'; status:string; attempt:number; run_id:string|null; error:string|null; progress:string }
-export type JobRequest = {kind:'search';topic:string}|{kind:'analyze';run_id:string;selected_ids:string[]};
+export type JobRequest = {kind:'search';topic:string;run_id?:string}|{kind:'analyze';run_id:string;selected_ids:string[]};
 
 function detailText(value: unknown): string {
   if (typeof value === 'string') return value;
@@ -55,6 +56,9 @@ async function request<T>(path: string, init?: RequestInit, binary = false, time
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+  quickRead:(id:string,sourceId:string)=>request<PaperQuickRead|null>(`/runs/${encodeURIComponent(id)}/papers/${encodeURIComponent(sourceId)}/quick-read`),
+  generateQuickRead:(id:string,sourceId:string)=>request<PaperQuickRead>(`/runs/${encodeURIComponent(id)}/papers/${encodeURIComponent(sourceId)}/quick-read`,json({allow_model:true})),
+  updateProject:(id:string,body:{project_name:string;research_goal:string;expected_project_name:string|null;expected_research_goal:string|null})=>request<ResearchRun>(`/runs/${encodeURIComponent(id)}/project`,json(body)),
   researchTaskReport:(id:string,taskId:string,format:'json'|'markdown')=>request<Blob>(`/runs/${encodeURIComponent(id)}/tasks/${encodeURIComponent(taskId)}/report?format=${format}`,undefined,true),
   researchTasks:(id:string)=>request<{items:ResearchTask[]}>(`/runs/${encodeURIComponent(id)}/tasks`),
   createResearchTask:(id:string,body:CreateResearchTask)=>request<ResearchTask>(`/runs/${encodeURIComponent(id)}/tasks`,json(body)),
@@ -78,7 +82,7 @@ export const researchApi = {
   approveManuscript: (id:string,revision_id:string,reviewer:string,note:string,expected_review_count:number) => request<ManuscriptState>(`/runs/${encodeURIComponent(id)}/manuscript/approval`,json({revision_id,reviewer,note,expected_review_count,confirm:true})),
   exportManuscript: (id:string,revision_id:string) => request<ManuscriptExport>(`/runs/${encodeURIComponent(id)}/manuscript/export?revision_id=${encodeURIComponent(revision_id)}`),
   manuscriptDraft: (id:string) => request<ManuscriptDraftData>(`/runs/${encodeURIComponent(id)}/manuscript-draft`),
-  create: (topic:string) => request<ResearchRun>('/runs',json({topic})),
+  create: (topic = '', project_name?:string, research_goal?:string) => request<ResearchRun>('/runs',json({topic,project_name,research_goal})),
   experiments: (id:string) => request<ExperimentReport>(`/runs/${encodeURIComponent(id)}/experiments`),
   experimentStatistics: (id:string) => request<ExperimentStatistics>(`/runs/${encodeURIComponent(id)}/experiment-statistics`),
   importExperiment: (id:string,file:File,format:'json'|'csv',metadata?:CsvMetadata) => {
@@ -98,7 +102,7 @@ export const researchApi = {
   bibtex: (id: string) => request<BibtexExport>(`/runs/${encodeURIComponent(id)}/bibtex`),
   list: (page = 1) => request<ResearchHistory>(`/runs?page=${page}&page_size=10`),
   get: (id: string) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}`),
-  search: (topic: string) => request<ResearchRun>('/search', json({topic,max_results:5})),
+  search: (topic: string, run_id?:string) => request<ResearchRun>('/search', json({topic,max_results:5,run_id})),
   analyze: (id: string, selected: string[]) => request<ResearchRun>(`/runs/${encodeURIComponent(id)}/analyze`,json({selected_ids:selected})),
   upload: (file: File, runId?: string) => { const body=new FormData(); body.append('file',file); if(runId) body.append('run_id',runId); return request<ResearchRun>('/upload',{method:'POST',body},false,720_000); },
 };

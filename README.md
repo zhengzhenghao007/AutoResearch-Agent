@@ -6,6 +6,8 @@
 
 Bring a research question and a small collection of papers. Keep quotations attached to their source pages, compare what the papers report, and develop a draft without losing its evidence. Records and revisions stay on your machine in default local mode.
 
+You can also start without a question: name your project **Research**, collect papers, and add a goal later. Project names, research goals and paper titles stay separate. Optional **Paper quick read** produces a concise outline with clickable source pages using your configured model; it never runs automatically. [Research spaces and quick-read guide](docs/research-spaces.md).
+
 ![Reading a real paper beside its extracted source page](docs/images/workbench-reading.png)
 
 [Explore the complete example](examples/conformal-prediction/README.md) · [中文使用指南](docs/local-quickstart.md) · [Engineering reference](docs/engineering-guide.md)

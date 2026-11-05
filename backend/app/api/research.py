@@ -3,7 +3,7 @@ from typing import Annotated
 import requests
 from fastapi import APIRouter, Depends, File, UploadFile, Form, HTTPException, Query, Request
 from pydantic import Field
-from schemas.research import CandidateDecisionRequest, Contract, ResearchRun, ResearchHistory
+from schemas.research import CandidateDecisionRequest, ProjectUpdateRequest, Contract, ResearchRun, ResearchHistory
 from workflow.evidence_workflow import EvidenceWorkflow
 from schemas.citation_registry import CitationRegistry
 from services.citation_registry import build_citation_registry
@@ -110,6 +110,7 @@ def manuscript_export(run_id: str, revision_id: str,
 
 
 class SearchRequest(Contract):
+    run_id: str | None = Field(default=None, pattern=r'^[a-f0-9]{32}$')
     topic: str = Field(min_length=1, max_length=2000)
     max_results: int = Field(default=5, ge=1, le=20)
 
@@ -119,7 +120,9 @@ class SelectionRequest(Contract):
 
 
 class CreateRequest(Contract):
-    topic: str = Field(min_length=1, max_length=2000)
+    topic: str | None = Field(default=None, max_length=2000)
+    project_name: str | None = Field(default=None, min_length=1, max_length=200)
+    research_goal: str | None = Field(default='', max_length=2000)
 
 
 def invoke(operation):
@@ -150,7 +153,13 @@ def upload_experiment(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get
 
 @router.post('/runs', response_model=ResearchRun)
 def create_run(request: CreateRequest, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
-    return invoke(lambda: flow.create(request.topic))
+    return invoke(lambda: flow.create(**request.model_dump()))
+
+
+@router.post('/runs/{run_id}/project', response_model=ResearchRun)
+def update_project(run_id: str, request: ProjectUpdateRequest,
+                   flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: flow.update_project(run_id, **request.model_dump()))
 
 
 @router.post('/runs/{run_id}/experiments/csv', response_model=ResearchRun)
@@ -178,7 +187,7 @@ def experiments(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workf
 
 @router.post('/search', response_model=ResearchRun)
 def search(request: SearchRequest, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
-    return invoke(lambda: flow.search(request.topic, request.max_results))
+    return invoke(lambda: flow.search(request.topic, request.max_results, request.run_id))
 
 
 @router.get('/runs/{run_id}/manuscript-draft', response_model=ManuscriptDraft)
