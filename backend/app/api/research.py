@@ -219,6 +219,26 @@ def candidate_decision(run_id: str, request: CandidateDecisionRequest,
         run_id, request.candidate_id, request.decision, request.reason))
 
 
+@router.get('/runs/{run_id}/papers/{source_id}/original')
+def original_pdf(run_id: str, source_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    from services.original_pdf import read_original
+    data = invoke(lambda: read_original(flow.store, flow.store.load(run_id), source_id))
+    return Response(data, media_type='application/pdf', headers={'Cache-Control':'private, no-store', 'X-Content-Type-Options':'nosniff'})
+
+
+@router.post('/runs/{run_id}/papers/{source_id}/original')
+def attach_original(run_id: str, source_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)], file: UploadFile = File(...)):
+    from services.original_pdf import MAX_BYTES, save_original
+    try:
+        data = file.file.read(MAX_BYTES + 1)
+        if len(data) > MAX_BYTES:
+            raise HTTPException(413, 'PDF exceeds size limit')
+        invoke(lambda: save_original(flow.store, flow.store.load(run_id), source_id, data))
+        return {'saved': True}
+    finally:
+        file.file.close()
+
+
 @router.post('/upload', response_model=ResearchRun)
 def upload(flow: Annotated[EvidenceWorkflow, Depends(get_workflow)], file: UploadFile = File(...), run_id: str | None = Form(None)):
     try:

@@ -3,6 +3,7 @@ import {useState,useRef} from 'react';
 import PaperQuickRead from './PaperQuickRead';
 import LocalPaperOutline from './LocalPaperOutline';
 import type {PaperEvidence,ResearchRun} from '@/types/research';
+import OriginalPdf from './OriginalPdf';
 import {sourcePdf} from './EvidenceViewer';
 
 export default function ReadingDesk({run,focusEvidence,focusSource='',onFocus,readOnly=false,onDirection}:{run:ResearchRun;focusEvidence:string;focusSource?:string;onFocus:(id:string)=>void;readOnly?:boolean;onDirection?:(text:string)=>void}) {
@@ -32,7 +33,7 @@ function PaperReader({paper,focusEvidence,onFocus,runId,goal,readOnly,onDirectio
  <div ref={contextRef} className="reading-context" aria-live="polite">{quickQuote&&<blockquote className="research-evidence"><h4>Source passage</h4><p>{quickQuote}</p></blockquote>}{selected&&!quickQuote&&<><h4>Selected quotation</h4><blockquote className="research-evidence" id={`research-evidence-${selected.id}`} tabIndex={-1}><p>{selected.quote}</p><footer>{paper.document.source.title} · PDF page {selected.page}</footer></blockquote></>}
  <label htmlFor="source-page">Source page</label><select id="source-page" value={page?.number} onChange={e=>{setQuickQuote('');setBrowsedPage(Number(e.target.value));}}>{paper.document.pages.map(p=><option key={p.number} value={p.number}>Page {p.number}</option>)}</select>
  {selected&&page?.number!==selected.page&&<p className="research-meta">Browsing a different page. <button onClick={()=>{setQuickQuote('');setBrowsedPage(0);}}>Return to quotation page</button></p>}
- <h4>Extracted page {page?.number}</h4>{paper.document.ocr_pages?.includes(page?.number??0)&&<p className="research-notice">This page was recognized with local OCR. Check words, equations and column order against the original PDF before citing.</p>}<p className="research-meta">PDF text extraction can disrupt columns, symbols and tables. Check the original PDF for precise interpretation.</p>{pdf?<a href={pdf} target="_blank" rel="noopener noreferrer">Open source PDF at page {page?.number}</a>:<p className="research-meta">Uploaded source: open your original PDF alongside this text.</p>}
+ <h4>Extracted page {page?.number}</h4>{paper.document.ocr_pages?.includes(page?.number??0)&&<p className="research-notice">This page was recognized with local OCR. Check words, equations and column order against the original PDF before citing.</p>}<p className="research-meta">PDF text extraction can disrupt columns, symbols and tables. Check the original PDF for precise interpretation.</p>{pdf?<a href={pdf} target="_blank" rel="noopener noreferrer">Open source PDF at page {page?.number}</a>:<OriginalPdf runId={runId} source={paper.document.source.id} page={page?.number??1} canAttach={!readOnly}/>}
  <div className="source-page" tabIndex={0} aria-label={`Extracted page ${page?.number}`}><p className="research-prose">{page?.text||'No readable page text.'}</p></div>
  <details><summary>Source details and extraction gaps</summary><p>Source: {paper.document.source.uri}</p><p>Missing fields: {paper.missing_fields.join(', ')||'none reported'}</p><p>SHA256: {paper.document.source.sha256}</p></details></div></div></>;
 }

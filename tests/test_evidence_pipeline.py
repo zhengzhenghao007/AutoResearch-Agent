@@ -33,7 +33,10 @@ def test_search_selection_persistence_and_comparison(tmp_path):
     assert result.artifacts
     assert flow.store.load(run.id) == result
     assert 'whole field' in result.artifacts[-1].content
-    imported = flow.import_pdf(b'pdf', 'Example')
+    from test_evidence_pdf import pdf_bytes
+    from services.paper_processing import PaperProcessor
+    flow.processor = PaperProcessor()
+    imported = flow.import_pdf(pdf_bytes([document().pages[0].text]), 'Example')
     assert [(c.text, c.category) for c in imported.papers[0].claims] == [(c.text, c.category) for c in result.papers[0].claims]
 
 
