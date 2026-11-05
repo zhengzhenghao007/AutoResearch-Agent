@@ -1,6 +1,7 @@
 'use client';
 import {useState,useRef} from 'react';
 import PaperQuickRead from './PaperQuickRead';
+import LocalPaperOutline from './LocalPaperOutline';
 import type {PaperEvidence,ResearchRun} from '@/types/research';
 import {sourcePdf} from './EvidenceViewer';
 
@@ -20,10 +21,15 @@ function PaperReader({paper,focusEvidence,onFocus,runId,goal,readOnly,onDirectio
  const page=paper.document.pages.find(p=>p.number===(browsedPage||selected?.page))??paper.document.pages[0];
  const claims=paper.claims.filter(c=>(category==='all'||c.category===category)&&c.text.toLowerCase().includes(query.toLowerCase()));
  const pdf=sourcePdf(paper.document.source.uri,page?.number);
- return <><PaperQuickRead runId={runId} sourceId={paper.document.source.id} goal={goal} readOnly={readOnly} onDirection={onDirection} onPage={(number,quote)=>{setBrowsedPage(number);setQuickQuote(quote);contextRef.current?.scrollIntoView({behavior:'smooth',block:'start'});}}/><div className="reading-meta"><span>{paper.document.pages.length} of {paper.document.total_pages} pages extracted</span><span>{paper.evidence.length} quotations</span>{paper.document.truncated&&<strong>Truncated document</strong>}</div>
+ function showPassage(number:number,quote:string) {
+  setBrowsedPage(number);
+  setQuickQuote(quote);
+  contextRef.current?.scrollIntoView?.({behavior:'smooth',block:'start'});
+ }
+ return <><PaperQuickRead runId={runId} sourceId={paper.document.source.id} goal={goal} readOnly={readOnly} onDirection={onDirection} onPage={showPassage}/><LocalPaperOutline paper={paper} onPage={showPassage}/><div className="reading-meta"><span>{paper.document.pages.length} of {paper.document.total_pages} pages extracted</span><span>{paper.evidence.length} quotations</span>{paper.document.truncated&&<strong>Truncated document</strong>}</div>
  <div className="reading-desk"><div className="reading-extracts"><label htmlFor="extract-search">Find in extracts</label><input id="extract-search" type="search" value={query} onChange={e=>{setQuery(e.target.value);setLimit(12);}} placeholder="Search a method, dataset or phrase"/><label htmlFor="extract-category">Category</label><select id="extract-category" value={category} onChange={e=>{setCategory(e.target.value);setLimit(12);}}><option value="all">All categories</option>{['problem','method','dataset','experiment','result','limitation','future_work'].map(c=><option key={c} value={c}>{c.replaceAll('_',' ')}</option>)}</select><p className="research-meta">{claims.length} matching extracts · categories are automatic</p>
  {claims.slice(0,limit).map(c=><button className="extract-choice" aria-pressed={c.evidence_ids.includes(selected?.id??'')} key={c.id} onClick={()=>{setQuickQuote('');setBrowsedPage(0);onFocus(c.evidence_ids[0]);}}><span>{c.category.replaceAll('_',' ')} · p. {paper.evidence.find(e=>e.id===c.evidence_ids[0])?.page}</span><p>{c.text}</p></button>)}{claims.length>limit&&<button onClick={()=>setLimit(n=>n+12)}>Show more extracts</button>}{!claims.length&&<p>No extracts match. Browse the source pages, or try another category or search term.</p>}</div>
- <div ref={contextRef} className="reading-context" aria-live="polite">{quickQuote&&<blockquote className="research-evidence"><h4>Quick-read source passage</h4><p>{quickQuote}</p></blockquote>}{selected&&!quickQuote&&<><h4>Selected quotation</h4><blockquote className="research-evidence" id={`research-evidence-${selected.id}`} tabIndex={-1}><p>{selected.quote}</p><footer>{paper.document.source.title} · PDF page {selected.page}</footer></blockquote></>}
+ <div ref={contextRef} className="reading-context" aria-live="polite">{quickQuote&&<blockquote className="research-evidence"><h4>Source passage</h4><p>{quickQuote}</p></blockquote>}{selected&&!quickQuote&&<><h4>Selected quotation</h4><blockquote className="research-evidence" id={`research-evidence-${selected.id}`} tabIndex={-1}><p>{selected.quote}</p><footer>{paper.document.source.title} · PDF page {selected.page}</footer></blockquote></>}
  <label htmlFor="source-page">Source page</label><select id="source-page" value={page?.number} onChange={e=>{setQuickQuote('');setBrowsedPage(Number(e.target.value));}}>{paper.document.pages.map(p=><option key={p.number} value={p.number}>Page {p.number}</option>)}</select>
  {selected&&page?.number!==selected.page&&<p className="research-meta">Browsing a different page. <button onClick={()=>{setQuickQuote('');setBrowsedPage(0);}}>Return to quotation page</button></p>}
  <h4>Extracted page {page?.number}</h4>{paper.document.ocr_pages?.includes(page?.number??0)&&<p className="research-notice">This page was recognized with local OCR. Check words, equations and column order against the original PDF before citing.</p>}<p className="research-meta">PDF text extraction can disrupt columns, symbols and tables. Check the original PDF for precise interpretation.</p>{pdf?<a href={pdf} target="_blank" rel="noopener noreferrer">Open source PDF at page {page?.number}</a>:<p className="research-meta">Uploaded source: open your original PDF alongside this text.</p>}
