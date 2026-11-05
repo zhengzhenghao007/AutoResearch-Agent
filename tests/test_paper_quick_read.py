@@ -210,3 +210,36 @@ def test_rate_limit_is_actionable_and_never_retried(tmp_path):
     assert error.value.status_code == 429
     assert len(client.calls) == 1
     assert service().get_quick_read(store, run.id, source) is None
+
+
+def test_short_pages_release_budget_and_blank_pages_do_not_count(tmp_path):
+    from schemas.research import Page
+    _, run, _ = fixture(tmp_path)
+    document = run.papers[0].document
+    document.pages = [Page(number=1,text='short'),Page(number=2,text='x'*39000),Page(number=3,text='  ')]
+    document.total_pages = 3
+    supplied, coverage = service()._select_context(document)
+    assert len(supplied[2]) == 39000
+    assert coverage.omitted_pages == [3] and coverage.truncated_pages == []
+    assert coverage.parsed_pages == 3
+    old, old_coverage = service()._select_context(document, version=1)
+    assert len(old[2]) == 40000 // 3 and old_coverage.included_pages == [1,2,3]
+
+
+def test_previous_cache_reopens_with_original_context(tmp_path):
+    from schemas.research import Page
+    store, run, source = fixture(tmp_path)
+    document = run.papers[0].document
+    document.pages.append(Page(number=2,text=' '))
+    document.total_pages = 2
+    from workflow.evidence_workflow import EvidenceWorkflow
+    EvidenceWorkflow(store=store)._finish(run)
+    report = service().generate_quick_read(store, run.id, source, True, Client())
+    cached = report.model_dump(mode='json')
+    cached.pop('context_version')
+    _, old_coverage = service()._select_context(document, version=1)
+    cached['coverage'] = old_coverage.model_dump(mode='json')
+    path = next((store.root / 'quick_reads' / run.id).glob('*.json'))
+    path.write_text(json.dumps(cached), encoding='utf-8')
+    reopened = service().get_quick_read(store, run.id, source)
+    assert reopened.context_version == 1 and reopened.coverage.included_pages == [1,2]

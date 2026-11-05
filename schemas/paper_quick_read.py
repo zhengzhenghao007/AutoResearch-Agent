@@ -49,6 +49,7 @@ class QuickReadUsage(Contract):
 
 
 class PaperQuickRead(Contract):
+    context_version: Literal[1, 2] = 1
     run_id: str
     source_id: str
     source_sha256: str
