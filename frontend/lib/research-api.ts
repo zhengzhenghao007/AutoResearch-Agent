@@ -1,3 +1,4 @@
+import type {ProtocolState,ProtocolFields,ReviewProtocol} from '@/types/review-protocol';
 import type {LiteraturePacket} from '@/types/literature-packet';
 import type {SearchBatch,SearchProvider} from '@/types/metadata-search';
 import type {InvestigationReport} from '@/types/research-investigation';
@@ -59,6 +60,8 @@ async function request<T>(path: string, init?: RequestInit, binary = false, time
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+ reviewProtocol:(id:string)=>request<ProtocolState>(`/runs/${encodeURIComponent(id)}/review-protocol`),
+ saveReviewProtocol:(id:string,fields:ProtocolFields,revision:number)=>request<ReviewProtocol>(`/runs/${encodeURIComponent(id)}/review-protocol`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...fields,expected_revision:revision})}),
  literaturePacket:(id:string,sourceIds:string[])=>request<LiteraturePacket>(`/runs/${encodeURIComponent(id)}/literature-packet`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source_ids:sourceIds})}),
  metadataHistory:(id:string)=>request<{items:SearchBatch[]}>(`/runs/${encodeURIComponent(id)}/metadata-search`),
  metadataSearch:(id:string,query:string,sources:SearchProvider[])=>request<SearchBatch>(`/runs/${encodeURIComponent(id)}/metadata-search`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query,sources,limit:5})}),

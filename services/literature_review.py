@@ -10,6 +10,8 @@ from services.manuscript_draft import build_manuscript_draft
 from services.screening_report import build_screening_report
 from services.search_history import search_history
 from services.workspace import _escape
+from services.review_protocol import get_protocol
+from schemas.review_protocol import ReviewProtocol
 
 
 class LiteraturePacket(Contract):
@@ -22,6 +24,7 @@ class LiteraturePacket(Contract):
     sections: list[DraftSection]
     screening: ScreeningReport
     searches: list[SearchBatch]
+    protocol: ReviewProtocol | None
     missing_requirements: list[str]
     scope: str = 'Quoted literature review material for researcher editing. Systematic-review completeness and scientific quality remain unassessed.'
 
@@ -41,9 +44,17 @@ def build_literature_packet(store, run_id, source_ids):
         sections.append(section.model_copy(update={'blocks':blocks}))
     screening = build_screening_report(run)
     searches = search_history(store, run_id)
-    missing = ['A documented review protocol with eligibility criteria and publication-date range is required.',
+    protocols = get_protocol(store, run_id).revisions
+    protocol = protocols[-1] if protocols else None
+    missing = [
                'Screening decisions for multi-source metadata records and uploaded PDFs require reconciliation.',
                'A complete search strategy and reviewer assessment are required before systematic-review claims.']
+    labels = {'question':'research question', 'inclusion_criteria':'inclusion criteria',
+              'exclusion_criteria':'exclusion criteria', 'publication_range':'publication-date range',
+              'search_strategy':'search strategy'}
+    for field, label in labels.items():
+        if protocol is None or not getattr(protocol, field):
+            missing.append(f'Review protocol requires {label}.')
     if not searches:
         missing.append('No saved multi-database search batches are available.')
     if screening.counts.undecided:
@@ -55,18 +66,22 @@ def build_literature_packet(store, run_id, source_ids):
     if not selected:
         missing.append('No parsed paper evidence is available.')
     source_list = [paper.document.source.id for paper in run.papers if paper.document.source.id in selected]
-    material = {'goal':run.research_goal,'sources':source_list,'sections':[section.model_dump(mode='json') for section in sections],
+    material = {'protocol':protocol.model_dump(mode='json') if protocol else None,'goal':run.research_goal,'sources':source_list,'sections':[section.model_dump(mode='json') for section in sections],
                 'screening':screening.model_dump(mode='json'),'searches':[search.model_dump(mode='json') for search in searches]}
     digest = hashlib.sha256(json.dumps(material,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
     return LiteraturePacket(run_id=run.id,project_name=run.project_name or 'Research',goal=run.research_goal or '',
         input_sha256=digest,generated_at=datetime.now(timezone.utc),source_ids=source_list,sections=sections,
-        screening=screening,searches=searches,missing_requirements=missing)
+        screening=screening,searches=searches,protocol=protocol,missing_requirements=missing)
 
 
 def render_literature_packet(packet):
     lines = ['# '+_escape(packet.project_name), '', packet.scope, '', 'Research goal', _escape(packet.goal or 'Unspecified'),
              '', 'Input SHA256', packet.input_sha256, '', '## Requirements to resolve']
     lines.extend('- '+_escape(item) for item in packet.missing_requirements)
+    if packet.protocol:
+        lines.extend(['', '## Review protocol', f'Revision {packet.protocol.revision} / {packet.protocol.saved_at.isoformat()}'])
+        for field in ('question', 'inclusion_criteria', 'exclusion_criteria', 'publication_range', 'search_strategy'):
+            lines.extend(['', field.replace('_', ' ').title(), _escape(getattr(packet.protocol, field) or 'Unspecified')])
     for section in packet.sections:
         lines.extend(['', '## '+_escape(section.title)])
         if not section.blocks:

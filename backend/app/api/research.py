@@ -1,3 +1,4 @@
+from schemas.review_protocol import ReviewProtocolRequest
 from schemas.multi_source_search import SearchRequest as MetadataSearchRequest
 from services.search_history import search_and_save, search_history
 from schemas.research_investigation import InvestigationRequest
@@ -337,3 +338,15 @@ def literature_packet(run_id: str, request: InvestigationRequest,
         report = build_literature_packet(flow.store, run_id, request.source_ids)
         return {'report': report, 'markdown': render_literature_packet(report)}
     return invoke(build)
+
+@router.get('/runs/{run_id}/review-protocol')
+def read_review_protocol(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    from services.review_protocol import get_protocol
+    return invoke(lambda: get_protocol(flow.store, run_id))
+
+
+@router.post('/runs/{run_id}/review-protocol')
+def write_review_protocol(run_id: str, request: ReviewProtocolRequest,
+                          flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    from services.review_protocol import save_protocol
+    return invoke(lambda: save_protocol(flow.store, run_id, request))

@@ -1,16 +1,19 @@
 'use client';
+import ReviewProtocolEditor from './ReviewProtocolEditor';
 import {useEffect,useRef,useState} from 'react';
 import {researchApi} from '@/lib/research-api';
 import type {LiteraturePacket} from '@/types/literature-packet';
-export default function LiteratureReview({runId,sourceIds,onEvidence}:{runId:string;sourceIds:string[];onEvidence:(id:string)=>void}) {
+export default function LiteratureReview({runId,sourceIds,onEvidence,readOnly=false}:{runId:string;sourceIds:string[];readOnly?:boolean;onEvidence:(id:string)=>void}) {
  const [packet,setPacket]=useState<LiteraturePacket|null>(null);
  const [busy,setBusy]=useState(false);
  const [error,setError]=useState('');
  const active=useRef(true);
+ const reportVersion=useRef(0);
  useEffect(()=>{active.current=true;return()=>{active.current=false;};},[]);
  async function build(){
+  const version=reportVersion.current;
   setBusy(true);setError('');
-  try{const result=await researchApi.literaturePacket(runId,sourceIds);if(active.current)setPacket(result);}
+  try{const result=await researchApi.literaturePacket(runId,sourceIds);if(active.current&&version===reportVersion.current)setPacket(result);}
   catch(failure){if(active.current)setError(failure instanceof Error?failure.message:'Could not build review material.');}
   finally{if(active.current)setBusy(false);}
  }
@@ -22,6 +25,7 @@ export default function LiteratureReview({runId,sourceIds,onEvidence}:{runId:str
  }
  return <section aria-label="Literature review material"><h3>Prepare literature review material</h3>
   <p>Organize selected paper quotations with saved searches, screening decisions and missing review requirements.</p>
+  <ReviewProtocolEditor readOnly={readOnly} runId={runId} onChange={()=>{reportVersion.current+=1;setPacket(null);}}/>
   <button disabled={busy||!sourceIds.length} onClick={()=>void build()}>{busy?'Preparing material…':'Build review material'}</button>
   {error&&<p role="alert">{error}</p>}
   {packet&&<><p>{packet.report.scope}</p><p>Generated {new Date(packet.report.generated_at).toLocaleString()} · {packet.report.source_ids.length} papers · {packet.report.searches.length} saved searches</p>
