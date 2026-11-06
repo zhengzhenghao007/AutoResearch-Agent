@@ -1,4 +1,5 @@
 'use client';
+import MetadataSearch from './MetadataSearch';
 import ResearchJobs from './ResearchJobs';
 import ProjectHeader from './ProjectHeader';
 import {projectName} from '@/lib/project-name';
@@ -156,6 +157,7 @@ export default function EvidenceWorkspace({jobsEnabled=false,readOnly=false,onLe
       </fieldset>{pending && <p role="status" className="research-notice">{pending} Keep this page open while the request completes.</p>}{loading && <p role="status">Opening research record…</p>}
       {!run&&!loading&&!error && <p className="research-empty">Your research space is ready. Add papers now; name your project or set a goal whenever you are ready.</p>}
       {run && <>
+        <MetadataSearch key={run.id} runId={run.id} disabled={readOnly||busy}/>
         {run.plan.length>0 && <details className="research-plan"><summary>Research plan</summary><ol>{run.plan.map((step,i)=><li key={i}>{step}</li>)}</ol></details>}
         <section aria-label="Candidate papers" hidden={run.candidates.length===0&&run.papers.length>0}><div className="research-row"><h3>Candidate papers</h3><span className="research-meta">{selection.length} selected</span></div>
           {run.candidates.length===0 ? <p className="research-empty">No candidate papers found. Try another topic or add a PDF.</p> : <ul className="research-candidates">{run.candidates.map(candidate=><li key={candidate.id}><label><input type="checkbox" aria-label={`Select ${candidate.title}`} disabled={busy} checked={selection.includes(candidate.id)} onChange={event=>setSelection(current=>event.target.checked?[...current,candidate.id]:current.filter(id=>id!==candidate.id))}/><strong>{candidate.title}</strong></label><p className="research-meta">{candidate.authors.join(', ')}</p>{candidate.summary && <p>{candidate.summary}</p>}{sourcePdf(candidate.pdf_url) && <a href={sourcePdf(candidate.pdf_url)!} target="_blank" rel="noopener noreferrer">Source PDF</a>}{<details className="candidate-review"><summary>Screening decision</summary><CandidateScreening key={`${run.id}:${candidate.id}`} candidate={candidate} events={(run.candidate_decisions??[]).filter(event=>event.candidate_id===candidate.id)} disabled={busy||readOnly} onRecord={(decision,reason)=>recordAnnotation(id=>researchApi.candidateDecision(id,{candidate_id:candidate.id,decision,reason}))}/></details>}</li>)}</ul>}
