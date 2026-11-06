@@ -106,15 +106,16 @@ function TaskPanel({runId,topic,papers=[],readOnly=false,onEvidence}:Props){
     <button disabled={!question.trim()||subquestions.length>6||!validBudget||items.length>=20} onClick={()=>void action(()=>researchApi.createResearchTask(runId,{question:question.trim(),subquestions,budget}))}>Create research plan</button>
    </fieldset>
   </details>
-  <fieldset className="task-budget" disabled={locked}><legend>Task limits</legend>
+  <details className="task-settings"><summary>Task limits and budget</summary><fieldset className="task-budget" disabled={locked}><legend>Task limits</legend>
    <label>Maximum step attempts<input type="number" min={1} max={200} value={Number.isFinite(budget.max_steps)?budget.max_steps:''} onChange={e=>setBudget(b=>({...b,max_steps:e.target.valueAsNumber}))}/></label>
    <label>Maximum active seconds<input type="number" min={1} max={3600} value={Number.isFinite(budget.max_seconds)?budget.max_seconds:''} onChange={e=>setBudget(b=>({...b,max_seconds:e.target.valueAsNumber}))}/></label>
    <label>Maximum evidence items<input type="number" min={1} max={500} value={Number.isFinite(budget.max_evidence)?budget.max_evidence:''} onChange={e=>setBudget(b=>({...b,max_evidence:e.target.valueAsNumber}))}/></label>
    {task&&<button disabled={!validBudget||budget.max_steps<task.budget.max_steps||budget.max_seconds<task.budget.max_seconds||budget.max_evidence<task.budget.max_evidence} onClick={()=>void action(()=>researchApi.increaseResearchTaskBudget(runId,task.id,budget))}>Increase task limits</button>}
-  </fieldset>
+  </fieldset></details>
   {!items.length&&<p>No research tasks yet.</p>}
   {items.length>0&&<label>Saved research tasks<select disabled={busy} value={task?.id??''} onChange={e=>{const next=items.find(t=>t.id===e.target.value);if(next){void action(()=>researchApi.researchTask(runId,next.id),false);}}}>{items.map(t=><option key={t.id} value={t.id}>{t.question} ({t.status.replaceAll('_',' ')})</option>)}</select></label>}
   {task&&<>
+   <div className="execution-progress"><label>Overall progress <progress max={task.steps.length||1} value={task.steps.filter(step=>step.status==='completed').length}/></label><p>{task.steps.find(step=>step.status==='running')?.title??task.steps.find(step=>step.status==='pending')?.title??'All available steps finished'}</p></div>
    <div className="task-state"><strong>{task.status.replaceAll('_',' ')}</strong><span>{task.steps.filter(s=>s.status==='completed').length} / {task.steps.length} checkpoints</span><span>{task.usage.steps} / {task.budget.max_steps} attempts</span><span>{task.usage.seconds.toFixed(2)} / {task.budget.max_seconds}s</span><span>{task.usage.evidence} / {task.budget.max_evidence} evidence items</span></div>
    {task.stop_reason&&<p className="research-notice">{task.stop_reason}</p>}
    <div className="task-actions" aria-label="Research task reports"><button disabled={busy} onClick={()=>void downloadReport('markdown')}>Download task report (Markdown)</button><button disabled={busy} onClick={()=>void downloadReport('json')}>Download task report (JSON)</button></div>
