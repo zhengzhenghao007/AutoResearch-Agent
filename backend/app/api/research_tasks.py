@@ -19,6 +19,14 @@ def list_tasks(run_id: str, flow: Flow):
 def create_task(run_id: str, request: ResearchTaskCreate, flow: Flow):
     return invoke(lambda: ResearchTaskExecutor(flow.store).create(run_id, request))
 
+@router.get('/skills')
+def available_skills(run_id: str, flow: Flow):
+    from services.skill_registry import RESEARCH_SKILLS
+    def catalog():
+        flow.store.load(run_id)
+        return {'items': RESEARCH_SKILLS.catalog()}
+    return invoke(catalog)
+
 @router.get('/{task_id}', response_model=ResearchTask)
 def get_task(run_id: str, task_id: str, flow: Flow):
     return invoke(lambda: ResearchTaskExecutor(flow.store).get(run_id, task_id))

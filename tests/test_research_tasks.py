@@ -125,6 +125,10 @@ def test_api_uses_existing_workflow_and_run_binding(tmp_path):
     try:
         client = TestClient(app)
         prefix = f'/api/research/runs/{run.id}/tasks'
+        catalog = client.get(prefix + '/skills')
+        assert catalog.status_code == 200
+        assert len(catalog.json()['items']) == 2
+        assert client.get('/api/research/runs/' + '0' * 32 + '/tasks/skills').status_code == 404
         response = client.post(prefix, json={'question':'coverage'})
         assert response.status_code == 200, response.text
         task_id = response.json()['id']
