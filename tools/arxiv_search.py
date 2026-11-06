@@ -1,11 +1,11 @@
 import arxiv
 
 
-def search_arxiv(query: str, max_results: int = 5) -> list[dict]:
+def search_arxiv(query: str, max_results: int = 5, *, num_retries: int = 3) -> list[dict]:
     client = arxiv.Client(
         page_size=max_results,
         delay_seconds=3,
-        num_retries=3,
+        num_retries=num_retries,
     )
 
     search = arxiv.Search(

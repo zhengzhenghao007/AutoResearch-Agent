@@ -1,3 +1,4 @@
+import type {SearchBatch,SearchProvider} from '@/types/metadata-search';
 import type {InvestigationReport} from '@/types/research-investigation';
 import type {ManuscriptState,ManuscriptRevisionRequest,ManuscriptExport} from '@/types/manuscript';
 import type {PaperQuickRead} from '@/types/paper-quick-read';
@@ -57,6 +58,8 @@ async function request<T>(path: string, init?: RequestInit, binary = false, time
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+ metadataHistory:(id:string)=>request<{items:SearchBatch[]}>(`/runs/${encodeURIComponent(id)}/metadata-search`),
+ metadataSearch:(id:string,query:string,sources:SearchProvider[])=>request<SearchBatch>(`/runs/${encodeURIComponent(id)}/metadata-search`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query,sources,limit:5})}),
  investigation: (id:string, sourceIds:string[]) => request<InvestigationReport>(`/runs/${encodeURIComponent(id)}/investigation`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source_ids:sourceIds})}),
   originalPdf:(id:string,source:string)=>request<Blob>(`/runs/${encodeURIComponent(id)}/papers/${encodeURIComponent(source)}/original`,undefined,true),
   attachOriginalPdf:(id:string,source:string,file:File)=>{

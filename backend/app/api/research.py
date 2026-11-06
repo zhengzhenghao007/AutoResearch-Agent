@@ -1,3 +1,5 @@
+from schemas.multi_source_search import SearchRequest as MetadataSearchRequest
+from services.search_history import search_and_save, search_history
 from schemas.research_investigation import InvestigationRequest
 from services.research_investigation import build_investigation
 """Local evidence workspace API. Existing /api/papers contracts stay intact."""
@@ -316,3 +318,13 @@ def semantic_review(run_id: str, request: SemanticReviewRequest,
 def investigate_papers(run_id: str, request: InvestigationRequest,
                        flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: build_investigation(flow.store.load(run_id), request.source_ids))
+
+@router.post('/runs/{run_id}/metadata-search')
+def metadata_search(run_id: str, request: MetadataSearchRequest,
+                    flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: search_and_save(flow.store, run_id, request))
+
+
+@router.get('/runs/{run_id}/metadata-search')
+def metadata_search_history(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: {'items': search_history(flow.store, run_id)})
