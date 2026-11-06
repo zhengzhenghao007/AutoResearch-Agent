@@ -30,7 +30,7 @@ export default function SessionWorkspace({onMode,showWorkspace=true}:{onMode?:(m
   finally{if(current===generation.current)setPending(false);}
  }
  function disconnect(){if(leaveBlocked)return;generation.current++;setResearchToken('');setSession(null);setToken('');setError('');setPending(false);setNeedsAuth(true);onMode?.(null);clearRecord();}
- return <><section className="research-workspace research-session" aria-label="Session">
+ return <><details className={`account-menu ${session?'connected':'disconnected'}`} open={!session}><summary>Account</summary><section className="research-workspace research-session" aria-label="Session">
   {!pending&&(needsAuth||session?.mode==='deployment')&&session?.mode!=='local'&&<form onSubmit={e=>{e.preventDefault();void connect();}}>
    <label htmlFor="session-token">Access token</label>{' '}
    <input id="session-token" type="password" autoComplete="off" value={token} disabled={pending} onChange={e=>setToken(e.target.value)}/>{' '}
@@ -43,5 +43,5 @@ export default function SessionWorkspace({onMode,showWorkspace=true}:{onMode?:(m
   {session&&<p>{session.mode==='local'?'Local workspace · Saved on this computer':`${session.user_id} · ${session.role==='reader'?'Read-only access':'Editing access'}`}</p>}
   {leaveBlocked&&session?.mode==='deployment'&&<p>Save or discard writing changes and wait for active requests before switching sessions.</p>}
   {!pending&&(needsAuth||session?.mode==='deployment')&&session?.mode!=='local'&&<p>Credentials stay in memory for this tab. Reloading requires reconnecting in deployment mode.</p>}
- </section>{session&&showWorkspace&&<EvidenceWorkspace key={epoch} jobsEnabled={session.jobs_enabled} readOnly={session.role==='reader'} onLeaveBlockedChange={setLeaveBlocked}/>}</>;
+ </section></details>{session&&showWorkspace&&<EvidenceWorkspace key={epoch} jobsEnabled={session.jobs_enabled} readOnly={session.role==='reader'} onLeaveBlockedChange={setLeaveBlocked}/>}</>;
 }

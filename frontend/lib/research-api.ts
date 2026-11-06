@@ -60,6 +60,7 @@ async function request<T>(path: string, init?: RequestInit, binary = false, time
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+ researchSkills:(id:string)=>request<{items:{id:string;version:number;description:string;permissions:string[]}[]}>(`/runs/${encodeURIComponent(id)}/tasks/skills`),
  reviewProtocol:(id:string)=>request<ProtocolState>(`/runs/${encodeURIComponent(id)}/review-protocol`),
  saveReviewProtocol:(id:string,fields:ProtocolFields,revision:number)=>request<ReviewProtocol>(`/runs/${encodeURIComponent(id)}/review-protocol`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...fields,expected_revision:revision})}),
  literaturePacket:(id:string,sourceIds:string[])=>request<LiteraturePacket>(`/runs/${encodeURIComponent(id)}/literature-packet`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source_ids:sourceIds})}),
