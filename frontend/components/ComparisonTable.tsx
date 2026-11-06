@@ -1,3 +1,4 @@
+import LiteratureReview from './LiteratureReview';
 import ResearchInvestigation from './ResearchInvestigation';
 import type {Category,ResearchRun} from '@/types/research';
 
@@ -15,6 +16,7 @@ export default function ComparisonTable({run,onEvidence,selectedIds=[],onSelecti
   {papers.length<2&&<p className="research-empty">{run.papers.length >= 2 ? "Select another paper to compare it alongside this one." : "Add at least two PDFs in Library for a side-by-side comparison."}</p>}
   {papers.length>0&&<div className="comparison-scroll" tabIndex={0} role="region" aria-label="Scrollable comparison table"><table className="comparison-table"><caption>Saved paper quotations by category</caption><thead><tr><th scope="col">Category</th>{papers.map(p=><th scope="col" key={p.document.source.id}>{p.document.source.title}<span>{p.document.pages.length}/{p.document.total_pages} pages</span></th>)}</tr></thead><tbody>{rows.map(row=><tr key={row.id}><th scope="row">{row.label}</th>{papers.map(p=>{const claims=p.claims.filter(c=>c.category===row.id&&c.claim_type==='paper_report');return <td key={p.document.source.id}>{claims.length? <><p className="comparison-excerpt">{claims[0].text}</p><button onClick={()=>onEvidence(claims[0].evidence_ids[0])}>Read evidence</button>{claims.length>1&&<details><summary>{claims.length-1} more extracts</summary>{claims.slice(1).map(c=><div key={c.id}><p>{c.text}</p><button onClick={()=>onEvidence(c.evidence_ids[0])}>Read evidence</button></div>)}</details>}</>:<span className="coverage-missing">Not extracted</span>}</td>;})}</tr>)}</tbody></table></div>}
   <p className="research-meta">“Not extracted” describes this record, not the absence of a result in the paper or a gap in the field.</p>
+  <LiteratureReview key={JSON.stringify([run.id,run.research_goal,papers,run.candidate_decisions])} runId={run.id} sourceIds={papers.map(p=>p.document.source.id)} onEvidence={onEvidence}/>
   <ResearchInvestigation key={JSON.stringify([run.id,run.research_goal,papers])} runId={run.id} sourceIds={papers.map(p=>p.document.source.id)} onEvidence={onEvidence}/>
   <details className="research-advanced"><summary>Exploratory suggestions</summary><p>Ideas need evaluation; linked context does not establish novelty or feasibility.</p>{suggestions.length===0&&<p>No suggestions for these papers.</p>}{suggestions.map(c=><article key={c.id}><p>{c.text}</p>{c.evidence_ids[0]&&<button onClick={()=>onEvidence(c.evidence_ids[0])}>Read context</button>}</article>)}</details>
  </section>;

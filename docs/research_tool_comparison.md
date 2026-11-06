@@ -75,3 +75,9 @@ ResearchSupervisor 使用 ResearchTaskExecutor 的任务、租约、来源哈希
 已用公开主题完成 Crossref 和 OpenAlex 真实检索，各返回 2 条。arXiv 与 Semantic Scholar 新适配路径尚待真实网络验收。OA 链接是来源报告的可用链接，全文授权、下载与解析仍沿用现有上传和 arXiv 流程。分页、跨库全文自动获取、单独 DOI 身份核对与格式化引用导出待后续补齐。当前 Crossref DOI 状态表示元数据登记，论文身份仍需核对。
 
 可选环境变量 OPENALEX_API_KEY 和 SEMANTIC_SCHOLAR_API_KEY 从后端读取。错误记录不输出请求 URL 或凭据。
+
+## 增量 C 首个交付
+
+比较页新增 Build review material，按所选论文汇总已核验引文，复用现有 manuscript draft 与 screening report，附上多源检索历史和协议缺项。材料可导出 Markdown 与完整 JSON 溯源。预览每章前 5 条，下载包含全部对应引文。来源选择或目标变化会清除旧页面材料。
+
+此增量提供按章节组织的引文材料；模型主题综合、综述协议编辑、跨源筛选决策整合和期刊排版尚待实现。输出保持科学质量未评测，并明确系统综述缺项。新增服务与 API 检查、现有调查测试共 6 项通过，前端综述与工作区 22 项通过。

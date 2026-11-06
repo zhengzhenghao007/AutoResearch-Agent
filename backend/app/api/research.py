@@ -328,3 +328,12 @@ def metadata_search(run_id: str, request: MetadataSearchRequest,
 @router.get('/runs/{run_id}/metadata-search')
 def metadata_search_history(run_id: str, flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
     return invoke(lambda: {'items': search_history(flow.store, run_id)})
+
+@router.post('/runs/{run_id}/literature-packet')
+def literature_packet(run_id: str, request: InvestigationRequest,
+                      flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    from services.literature_review import build_literature_packet, render_literature_packet
+    def build():
+        report = build_literature_packet(flow.store, run_id, request.source_ids)
+        return {'report': report, 'markdown': render_literature_packet(report)}
+    return invoke(build)
