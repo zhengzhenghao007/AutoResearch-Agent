@@ -1,0 +1,67 @@
+# 科研工具比较与统一实施方案
+
+核查日期 2026-11-06。来源为公开 GitHub 页面及仓库 API；pushed_at 仅说明最近推送，代码质量与可集成性需通过固定版本验证。本轮采用设计思路与官方接口，自行实现适配层。未复制第三方代码。
+
+## 五类能力与来源
+
+| 用户名称 | 找到的具体来源 | 许可证核查 | 采用方式 |
+|---|---|---|---|
+| Nature Academic Search | https://github.com/dragonadam/nature-skills | GitHub 标识 MIT，最近推送 2026-11-06 | 参考多库检索、去重、引用工作流；官方 API 自行适配 |
+| Scientific Brainstorming | https://github.com/K-Dense-AI/scientific-agent-skills/tree/main/skills/scientific-brainstorming | MIT，最近推送 2026-11-02 | 参考假设、独立质疑、证据和决策记录 |
+| Academic Research Suite | https://github.com/Imbad0202/academic-research-skills-codex | NOASSERTION，最近推送 2026-11-06；具体条款待核 | 参考阶段路由；复用本项目任务执行与 Registry |
+| Literature Review | 名称无法唯一定位；评估 https://github.com/Future-House/paper-qa 作为功能替代参考 | Apache-2.0，最近推送 2026-10-26 | 参考科研文献检索和带引用回答；接入前评估模型成本与依赖 |
+| Academic Paper Scraper | https://github.com/labrat-0/academic-paper-scraper | GitHub 未识别许可证，最近推送 2026-10-13 | API/MCP 获取思路可参考，代码复用待许可确认 |
+
+同名替代 Academic Paper Scraper 还包括 GAO-pooh/paper-scraper，依赖机构访问和浏览器会话。当前采用开放元数据与获准全文获取。Academic Research Suite 同名仓库包括 weewrr/Academic-Research-Suite，不能仅凭名称判断用户指向哪一项。
+
+## 额外参考仓库
+
+| 项目 | 架构参考 | GitHub 许可标识 / 推送 / 状态 | 本项目决定 |
+|---|---|---|---|
+| https://github.com/assafelovic/gpt-researcher | 检索、研究和报告流程 | Apache-2.0 / 2026-10-10 / 未归档 | 参考报告与搜索任务交接；整体依赖评估待完成 |
+| https://github.com/stanford-oval/storm | 多视角主题规划和引用长文 | MIT / 2025-09-30 / 未归档 | 参考问题展开及大纲；当前维护频率较低 |
+| https://github.com/Future-House/paper-qa | 论文检索增强问答 | Apache-2.0 / 2026-10-26 / 未归档 | 参考证据检索与答案依据绑定 |
+| https://github.com/SakanaAI/AI-Scientist | 想法、实验、写作循环 | NOASSERTION / 2025-12-19 / 未归档 | 后续实验阶段评估许可证、执行环境和成本 |
+| https://github.com/langchain-ai/open_deep_research | 多阶段研究编排 | MIT / 2026-08-10 / 已归档 | 仅参考编排设计；维护替代方案待评估 |
+
+这些状态由 GitHub API 实际返回。NOASSERTION 表示许可证尚未被识别；集成前需阅读完整条款。逐仓核心代码、完整依赖和固定提交复用审查尚未完成。
+
+## 统一架构与现有模块复用
+
+ResearchSupervisor 使用 ResearchTaskExecutor 的任务、租约、来源哈希、预算与事件；Registry 提供白名单版本化技能。MultiSourceSearch 负责标准元数据与检索批次；PaperAcquisition 复用 PaperProcessor、PDF 限制、OCR 和原件存储；Reader 复用证据提取与可选模型速读；Brainstorming 与 LiteratureReview 使用同一份经过校验的论文证据。Reviewer 保持独立。
+
+已检查 agents/planner.py 的固定步骤计划、agents/researcher.py 的 arXiv 包装、workflow/evidence_workflow.py 的候选处理、pipelines/reader_pipeline.py 的 Reader/Reviewer/Reflection 调用，以及现有证据和语义审核入口。LLM Client 与下载器的多源扩展还需专项检查。
+
+### 增量 A — 证据比较与研究问题
+
+先交付所选论文的证据矩阵、局限调查清单、其他论文中的相关段落及缺失项。相关段落按明确词面规则检索，是否支持或反驳由阅读审核决定。来源页码和引用必须可跳转。记录所选范围和输入哈希；目标或来源变更后重新生成。提供可下载的带依据报告。
+
+模型研究问题生成功能后续显式开启，限定引用集合、输出 schema、调用预算和失败行为。创新性保留待验证状态。候选方向须记录支持证据、反证检查、适用范围与下一次检索建议。
+
+### 增量 B — 多源检索
+
+新增标准元数据和检索批次 schema，来源包括 arXiv、Crossref、OpenAlex、Semantic Scholar。每源独立记录查询、时间、状态和错误。精确 DOI 或来源 ID 去重；标题相似仅作为人工核对线索。相关性排序说明依据。DOI 格式、外部登记和论文身份分别记录。
+
+主工作台的既有候选仅接受规范 arXiv PDF URL，多源候选必须先通过新的标准契约，不能直接注入原列表。元数据缺全文时仍可保存。DOI 与引用导出复用现有 citation registry，跨数据库身份需验证后绑定。
+
+官方参考 https://www.crossref.org/documentation/retrieve-metadata/rest-api/ 和 https://api.semanticscholar.org/api-docs/graph 。OpenAlex 当前密钥、配额和访问规则在实现适配器前再次核实。
+
+### 增量 C — 可追溯综述
+
+复用筛选报告和纳入排除记录；提供研究问题、方法、数据集、实验结果、局限的带引用矩阵。主题综述绑定证据集合。系统综述要求检索策略、日期范围、筛选标准、去重记录和排除原因，缺失时显示具体缺项。保存与导出遵守现有版本、批准和来源失效机制。
+
+### 增量 D — Supervisor 与获取
+
+支持用户修改目标并重建计划，旧计划及决策历史可查看。批量获取使用受限后台任务，逐项缓存、校验原件哈希、记录失败和重试。遵守官方服务速率及来源许可。后续实验分析覆盖异常、缺失、反常趋势与候选解释，并绑定数据和计算方法。
+
+## 验收与交付
+
+每个增量覆盖服务单元测试、API 隔离与网页入口；多源测试包括一源失败、限流、重复 DOI、无 DOI、非 OA、错误元数据和分页。跨论文测试包括错来源、相同局限已有解决、无可用证据、选择变化、过期响应和不支持的模型结论。任务测试覆盖暂停、重启、预算、并发取消与用户目标修改。
+
+每次交付记录文件、功能、测试结果、已知限制和下一步。工程检查与科学质量人工评测分别记录。最小可运行版本按 A → B → C 推进，A 与已开始的跨论文分析共用一个实现。
+
+## 增量 A 当前交付
+
+已实现 API 和比较页的离线调查清单，可在选择至少两篇论文后按需生成，显示经过字面来源核验的局限及其他论文中的相关段落，并跳转原文、下载 JSON。报告包含研究目标、所选论文、输入哈希、覆盖及 OCR 提醒。最多展示 20 项局限，每项最多 3 段相关文字。匹配规则为至少两个英语词项重叠，中文词义匹配和模型推理待开发。
+
+当前报告基于保存的论文即时计算，下载可留存本机；刷新页面后可重新生成。持久候选决策、中文分析、多源检索及系统综述生成尚未实现。服务/API 测试 4 项、前端调查与工作区测试 22 项通过。

@@ -1,3 +1,5 @@
+from schemas.research_investigation import InvestigationRequest
+from services.research_investigation import build_investigation
 """Local evidence workspace API. Existing /api/papers contracts stay intact."""
 from typing import Annotated
 import requests
@@ -309,3 +311,8 @@ def semantic_review(run_id: str, request: SemanticReviewRequest,
         raise HTTPException(400,'Semantic review rejected; check selected claims, input size, configuration or model output.') from exc
     except RuntimeError as exc:
         raise HTTPException(502,'Semantic review provider failed. No record was changed.') from exc
+
+@router.post('/runs/{run_id}/investigation')
+def investigate_papers(run_id: str, request: InvestigationRequest,
+                       flow: Annotated[EvidenceWorkflow, Depends(get_workflow)]):
+    return invoke(lambda: build_investigation(flow.store.load(run_id), request.source_ids))
