@@ -9,6 +9,8 @@ from datetime import datetime, timezone
 from uuid import uuid4
 from schemas.research_tasks import ResearchTask, ResearchTaskCreate, TaskBudget, TaskQuestion, TaskStep, TaskResult, TaskEvent
 
+from services.skill_registry import RESEARCH_SKILLS
+
 TERMINAL = {'completed','incomplete','cancelled','stale','failed','budget_exhausted'}
 STOPWORDS = set('what which how does do is are the a an of for in on and or to with from evidence sources about'.split())
 
@@ -176,24 +178,28 @@ class ResearchTaskExecutor:
             return task
 
     def _compute(self, run, task, step, deadline):
-        if step.tool == 'inspect_sources':
-            prior = next(s for s in task.steps if s.id == step.depends_on[0]).result
-            valid, gaps = [], list(prior.gaps)
-            for eid in prior.evidence_ids:
-                if self.clock() >= deadline: raise TimeoutError()
-                matches = [(p, e) for p in run.papers for e in p.evidence if e.id == eid]
-                if len(matches) != 1:
-                    gaps.append(f'Missing or ambiguous evidence binding: {eid}')
-                    continue
-                paper, evidence = matches[0]
-                pages = [p for p in paper.document.pages if p.number == evidence.page]
-                quote = ' '.join(evidence.quote.split())
-                if (evidence.source_id != paper.document.source.id or len(pages) != 1
-                        or quote not in ' '.join(pages[0].text.split())):
-                    gaps.append(f'Invalid source/page/quote binding: {eid}')
-                else: valid.append(eid)
-            return TaskResult(evidence_ids=valid, gaps=gaps,
-                              summary='Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth.')
+        return RESEARCH_SKILLS.execute(self, run, task, step, deadline)
+
+    def _inspect(self, run, task, step, deadline):
+        prior = next(s for s in task.steps if s.id == step.depends_on[0]).result
+        valid, gaps = [], list(prior.gaps)
+        for eid in prior.evidence_ids:
+            if self.clock() >= deadline: raise TimeoutError()
+            matches = [(p, e) for p in run.papers for e in p.evidence if e.id == eid]
+            if len(matches) != 1:
+                gaps.append(f'Missing or ambiguous evidence binding: {eid}')
+                continue
+            paper, evidence = matches[0]
+            pages = [p for p in paper.document.pages if p.number == evidence.page]
+            quote = ' '.join(evidence.quote.split())
+            if (evidence.source_id != paper.document.source.id or len(pages) != 1
+                    or quote not in ' '.join(pages[0].text.split())):
+                gaps.append(f'Invalid source/page/quote binding: {eid}')
+            else: valid.append(eid)
+        return TaskResult(evidence_ids=valid, gaps=gaps,
+                          summary='Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth.')
+
+    def _retrieve(self, run, task, step, deadline):
         question = next(q.question for q in task.subquestions if q.id == step.question_id)
         terms, ranked = _terms(question), []
         _, preferred = _intent(question)
@@ -236,7 +242,7 @@ class ResearchTaskExecutor:
             completed = {s.id for s in task.steps if s.status == 'completed'}
             step = next(s for s in task.steps if s.status == 'pending' and set(s.depends_on) <= completed)
             if (task.usage.steps >= task.budget.max_steps or task.usage.seconds >= task.budget.max_seconds
-                    or (step.tool == 'lexical_retrieve' and task.usage.evidence >= task.budget.max_evidence)):
+                    or (RESEARCH_SKILLS.resolve(step.tool, step.skill_version).consumes_evidence and task.usage.evidence >= task.budget.max_evidence)):
                 task.status, task.stop_reason = 'budget_exhausted', 'Execution budget exhausted; explicitly increase budget to continue.'
                 self._event(task, 'budget_exhausted', task.stop_reason)
                 self._save(db, task)
@@ -272,7 +278,7 @@ class ResearchTaskExecutor:
                 target.status = 'failed'
             else:
                 target.status, target.result = 'completed', result
-                if target.tool == 'lexical_retrieve': current.usage.evidence += len(result.evidence_ids)
+                if RESEARCH_SKILLS.resolve(target.tool, target.skill_version).consumes_evidence: current.usage.evidence += len(result.evidence_ids)
                 done = all(s.status == 'completed' for s in current.steps)
                 current.status = ('incomplete' if any(s.result.gaps for s in current.steps) else 'completed') if done else 'paused'
                 current.stop_reason = 'Plan finished; human semantic review remains required.' if done else None

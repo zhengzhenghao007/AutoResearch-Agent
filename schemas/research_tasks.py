@@ -37,6 +37,7 @@ class TaskStep(Contract):
     question_id: str
     title: str
     tool: Literal['lexical_retrieve', 'inspect_sources']
+    skill_version: int = Field(default=1, ge=1, strict=True)
     depends_on: list[str]
     status: Literal['pending','running','completed','failed'] = 'pending'
     attempts: int = 0
