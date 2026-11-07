@@ -1,14 +1,26 @@
 'use client';
 import {useRef,useEffect,useState} from 'react';
 import {researchApi} from '@/lib/research-api';
-import type {SearchBatch,SearchProvider} from '@/types/metadata-search';
+import type {SearchBatch,SearchProvider,AcquiredPaper,AcquisitionSelection} from '@/types/metadata-search';
 const providers:SearchProvider[]=['arxiv','crossref','openalex','semantic_scholar'];
-export default function MetadataSearch({runId,disabled}:{runId:string;disabled:boolean}) {
+export default function MetadataSearch({runId,disabled,onImport}:{runId:string;disabled:boolean;onImport?:(id:string)=>void}) {
  const [query,setQuery]=useState('');
  const [sources,setSources]=useState<SearchProvider[]>(['crossref','openalex']);
  const [batches,setBatches]=useState<SearchBatch[]>([]);
  const [busy,setBusy]=useState(false);
  const [error,setError]=useState('');
+ const [picked,setPicked]=useState<AcquisitionSelection[]>([]);
+ const [acquisitions,setAcquisitions]=useState<AcquiredPaper[]>([]);
+ async function fetchPapers(submit:boolean){
+  if(busy||(submit&&(disabled||!picked.length)))return;
+  setBusy(true);setError('');
+  try{
+   if(submit)await researchApi.acquirePapers(runId,picked);
+   const result=await researchApi.acquisitionHistory(runId);
+   if(active.current){setAcquisitions(result);if(submit)setPicked([]);}
+  }catch(failure){if(active.current)setError(failure instanceof Error?failure.message:'Paper acquisition failed.');}
+  finally{if(active.current)setBusy(false);}
+ }
  const active=useRef(true);
  useEffect(()=>{active.current=true;return()=>{active.current=false;};},[]);
  async function load(search:boolean) {
@@ -39,8 +51,13 @@ export default function MetadataSearch({runId,disabled}:{runId:string;disabled:b
    {batch.groups.map(group=><article key={group.key}><h4>{group.records[0].title}</h4>
     {group.records.map((hit,index)=><details key={`${hit.source}:${hit.source_id}:${index}`}><summary>{hit.source} · rank {hit.rank}</summary><p>{hit.title}</p><p>{hit.authors.join(', ')}</p><p>DOI {hit.doi??'unavailable'} · {hit.doi_status.replaceAll('_',' ')}</p>
     {hit.url&&<a href={hit.url} target="_blank" rel="noopener noreferrer">Open source record</a>} {' '}
+    {hit.pdf_url&&/^https?:\/\/arxiv\.org\/(pdf|abs)\//.test(hit.pdf_url)&&<label><input type="checkbox" disabled={disabled||busy} checked={picked.some(x=>x.batch_id===batch.id&&x.source===hit.source&&x.source_id===hit.source_id)} onChange={e=>setPicked(old=>e.target.checked?[...old,{batch_id:batch.id,source:hit.source,source_id:hit.source_id}].slice(0,5):old.filter(x=>!(x.batch_id===batch.id&&x.source===hit.source&&x.source_id===hit.source_id)))}/>Select PDF for acquisition</label>}
     {hit.pdf_url&&<a href={hit.pdf_url} target="_blank" rel="noopener noreferrer">Open available PDF</a>}</details>)}
    </article>)}
   </details>)}
+ <details><summary>Acquire open papers</summary><p>Select up to five arXiv PDFs from saved search results.</p>
+ <button disabled={disabled||busy||!picked.length} onClick={()=>void fetchPapers(true)}>Acquire selected PDFs ({picked.length})</button>
+ <button disabled={busy} onClick={()=>void fetchPapers(false)}>Load download history</button>
+ {acquisitions.map(item=><p key={item.id}>{item.metadata.title} · {item.status} {item.error} {onImport&&['cached','downloaded'].includes(item.status)&&<button disabled={disabled||busy} onClick={()=>onImport(item.id)}>Import into paper library</button>}</p>)}</details>
  </details>;
 }

@@ -48,4 +48,9 @@ RESEARCH_SKILLS = SkillRegistry([
                   'Find saved quotations using query term overlap.', True),
     ResearchSkill('inspect_sources', 1, '_inspect',
                   'Check quotation source, page and literal text bindings.'),
+    ResearchSkill('research_retrieve', 1, '_research', 'Select a bounded, category-balanced evidence set across saved papers.', True),
+    ResearchSkill('evidence_matrix', 1, '_research', 'Organize checked evidence by paper and research category.'),
+    ResearchSkill('brainstorm', 1, '_research', 'Turn author-reported limitations into explicit, unverified investigation proposals.'),
+    ResearchSkill('literature_review', 1, '_research', 'Assemble cross-paper quotation themes with traceable evidence.'),
+    ResearchSkill('supervise', 1, '_research', 'Inspect coverage, evidence gaps and experimental data; propose next actions.'),
 ])

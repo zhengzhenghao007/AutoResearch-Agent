@@ -23,7 +23,7 @@ def test_old_step_defaults_to_existing_handler_version():
 
 def test_catalog_is_read_only_and_declares_permissions():
     entries = RESEARCH_SKILLS.catalog()
-    assert {entry['id'] for entry in entries} == {'lexical_retrieve', 'inspect_sources'}
+    assert {entry['id'] for entry in entries} == {'lexical_retrieve', 'inspect_sources', 'research_retrieve', 'evidence_matrix', 'brainstorm', 'literature_review', 'supervise'}
     assert all(entry['permissions'] == ['saved_sources.read'] for entry in entries)
     entries[0]['permissions'].append('network')
     assert RESEARCH_SKILLS.catalog()[0]['permissions'] == ['saved_sources.read']

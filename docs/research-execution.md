@@ -47,3 +47,13 @@
 ## API
 
 在 `/api/research/runs/{run_id}/tasks` 上 GET 列表、POST 创建；使用 `/{task_id}` GET 任务，POST `/{task_id}/next` 执行一步，POST `/{task_id}/cancel` 取消，POST `/{task_id}/budget` 显式增加预算。请求体、来源绑定与响应由 `schemas/research_tasks.py` 定义。
+
+## 2026-11-07 研究执行入口与实测
+
+在 Research assistant 的 New research plan 中选择 Research，输入问题后创建并执行计划。六个检查点分别负责选取引文、核对来源、整理矩阵、形成候选方向、按主题整理原文和检查覆盖范围。每步保存，可在重新打开项目后继续。项目目标、论文或已导入的实验数据变化会使本轮研究输出过期。Replan with current question 创建关联的新计划。实验检查给出描述统计和带样本 ID 的 1.5 × IQR 异常线索，四个以下观测不做异常筛查。
+
+在 Search across literature databases 展开已保存的检索批次，选择最多 5 个受支持的 arXiv PDF，然后在 Acquire open papers 中获取并查看下载历史。导入时复用现有 PDF 解析和原件存储流程。缓存校验 SHA256，其他站点的全文仍需自行获取并上传。
+
+Optional model research synthesis 需要明确允许发送证据。每个项目最多预留三次调用，默认输出上限 3000 token。每次最多选取 40 条可回查引文，结果保存所选及可用数量。输出区分作者结论、模型综合和待验证假设，要求提供证据 ID 及不确定性。费用在供应商没有提供时显示未知。调用结果未知时不会自动重发；本次使用测试提供方验证协议，未调用真实付费模型。
+
+仓库中三篇 conformal prediction 论文的保存快照含 262 条引文。使用默认 30 条证据预算，六个检查点完成后导出 30 条字面核对的引文、19 个论文/类别矩阵单元、6 个候选方向和 7 个分类综述段落。报告保留 3 项缺口，最终状态为 incomplete。模型上下文选择器纳入 40/262 条。这些数字只衡量工程行为和材料覆盖；语义正确性、创新性和假设质量仍需独立人工评阅。

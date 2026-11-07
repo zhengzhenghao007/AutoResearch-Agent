@@ -20,6 +20,13 @@ def _hash(value):
 def source_hash(run):
     return _hash([p.model_dump(mode='json') for p in run.papers])
 
+
+def task_source_hash(run, mode='evidence'):
+    if mode == 'evidence':
+        return source_hash(run)
+    return _hash({'papers': source_hash(run), 'goal': run.research_goal,
+                  'experiments': [d.model_dump(mode='json') for d in run.experiments]})
+
 def _terms(text):
     return set(re.findall(r'\w+', text.lower())) - STOPWORDS
 
@@ -100,8 +107,12 @@ class ResearchTaskExecutor:
     def create(self, run_id, request: ResearchTaskCreate):
         request = ResearchTaskCreate.model_validate(request)
         run = self.store.load(run_id)
-        questions = _plan(request)
-        binding = source_hash(run)
+        questions = _plan(request) if request.mode == 'evidence' else [request.question]
+        if request.mode == 'research' and not _terms(request.question):
+            raise ValueError('Research question must contain usable terms')
+        if request.parent_task_id:
+            self.snapshot(run_id, request.parent_task_id)
+        binding = task_source_hash(run, request.mode)
         subs, steps = [], []
         for i, question in enumerate(dict.fromkeys(questions)):
             qid = f'q{i+1}'
@@ -110,13 +121,19 @@ class ResearchTaskExecutor:
             if categories: requirements.append('Preferred categories: ' + ', '.join(categories))
             subs.append(TaskQuestion(id=qid, question=question, requirements=requirements))
             previous = []
-            for tool in ('lexical_retrieve', 'inspect_sources'):
+            tools = ('lexical_retrieve', 'inspect_sources') if request.mode == 'evidence' else (
+                'research_retrieve', 'inspect_sources', 'evidence_matrix', 'brainstorm', 'literature_review', 'supervise')
+            if request.mode == 'research':
+                subs[-1].requirements = ['Selected source quotations and category coverage', 'Explicit gaps, unverified hypotheses and supervisor next actions'] + request.subquestions
+            for tool in tools:
                 sid = f'{qid}-{tool}'
-                steps.append(TaskStep(id=sid, question_id=qid, title=f'{tool.replace("_", " ")}: {question}', tool=tool, depends_on=previous, input_sha256=_hash([binding, question, tool])))
+                steps.append(TaskStep(id=sid, question_id=qid, title=f'{tool.replace("_", " ")}: {question}', tool=tool, depends_on=previous, input_sha256=_hash([binding, question, tool, subs[-1].requirements])))
                 previous = [sid]
-        task = ResearchTask(id=uuid4().hex, run_id=run_id, question=request.question, source_sha256=binding,
+        task = ResearchTask(id=uuid4().hex, run_id=run_id, mode=request.mode, parent_task_id=request.parent_task_id, question=request.question, source_sha256=binding,
                             created_at=self._now(), updated_at=self._now(), budget=request.budget, subquestions=subs, steps=steps)
-        self._event(task, 'planned', 'Offline lexical retrieval plan; no semantic verification or model calls.')
+        self._event(task, 'planned', 'Offline research workflow; no model calls. Generated proposals require validation.' if request.mode == 'research' else 'Offline lexical retrieval plan; no semantic verification or model calls.')
+        if request.parent_task_id:
+            self._event(task, 'replanned', f'New plan from {request.parent_task_id}; previous checkpoints retained, usage not reused.')
         with self._db() as db:
             if db.execute('SELECT count(*) FROM tasks WHERE run_id=?', (run_id,)).fetchone()[0] >= 20:
                 raise ValueError('Research task limit reached (20 per run)')
@@ -124,7 +141,7 @@ class ResearchTaskExecutor:
         return task
 
     def _refresh_stale(self, db, task, run):
-        if task.status != 'stale' and source_hash(run) != task.source_sha256:
+        if task.status != 'stale' and task_source_hash(run, task.mode) != task.source_sha256:
             task.status, task.stop_reason = 'stale', 'Saved sources changed; create a new task.'
             self._event(task, 'stale', task.stop_reason)
             self._save(db, task)
@@ -180,6 +197,10 @@ class ResearchTaskExecutor:
     def _compute(self, run, task, step, deadline):
         return RESEARCH_SKILLS.execute(self, run, task, step, deadline)
 
+    def _research(self, run, task, step, deadline):
+        from services.research_capabilities import execute_capability
+        return execute_capability(self, run, task, step, deadline)
+
     def _inspect(self, run, task, step, deadline):
         prior = next(s for s in task.steps if s.id == step.depends_on[0]).result
         valid, gaps = [], list(prior.gaps)
@@ -234,7 +255,7 @@ class ResearchTaskExecutor:
                     if step.status == 'running': step.status = 'pending'
                 self._event(task, 'lease_recovered', 'Interrupted read step reclaimed; reserved time charged.')
                 db.execute('UPDATE tasks SET owner=NULL WHERE id=?', (task.id,))
-            if source_hash(run) != task.source_sha256:
+            if task_source_hash(run, task.mode) != task.source_sha256:
                 task.status, task.stop_reason = 'stale', 'Saved sources changed; create a new task.'
                 self._event(task, 'stale', task.stop_reason)
                 self._save(db, task)
@@ -263,7 +284,7 @@ class ResearchTaskExecutor:
         with self._db() as db:
             current, row = self._read(db, run_id, task_id)
             if row['owner'] != owner or current.status == 'cancelled': return current
-            final_source_hash = source_hash(self.store.load(run_id))
+            final_source_hash = task_source_hash(self.store.load(run_id), current.mode)
             elapsed = max(0, self.clock() - now)
             current.usage.seconds += min(elapsed, reserved)
             target = next(s for s in current.steps if s.id == step.id)
