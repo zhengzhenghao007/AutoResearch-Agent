@@ -1,6 +1,7 @@
 """Bounded extractive research stages. Proposals never become reported findings."""
 import re
 from collections import Counter
+from services.academic_humanizer import humanize
 from schemas.research import CATEGORIES
 from schemas.research_tasks import TaskResult, TaskArtifact
 
@@ -55,9 +56,9 @@ def execute_capability(executor, run, task, step, deadline):
             buckets=next_buckets
         total={e for p in run.papers for c in p.claims if c.claim_type=='paper_report' for e in c.evidence_ids}
         if total-known:
-            gaps.append(f'Evidence budget/context limit selected {len(selected)} of {len(total)} candidate quotations; omitted evidence was not analyzed.')
-        if not selected: gaps.append('No saved evidence. Search for literature or upload readable papers before synthesis.')
-        return TaskResult(evidence_ids=selected,gaps=gaps,summary='Category-balanced paper coverage, ranked by English terms and Chinese character pairs within each category. This selection is not semantic relevance verification.')
+            gaps.append(humanize('Evidence budget/context limit selected {count} of {total} candidate quotations; omitted evidence was not analyzed.').format(count=len(selected), total=len(total)))
+        if not selected: gaps.append(humanize('No saved evidence. Search for literature or upload readable papers before synthesis.'))
+        return TaskResult(evidence_ids=selected,gaps=gaps,summary=humanize('Category-balanced paper coverage, ranked by English terms and Chinese character pairs within each category. This selection is not semantic relevance verification.'))
 
     inspection=next((s.result for s in task.steps if s.tool=='inspect_sources' and s.result),None)
     checked=set(inspection.evidence_ids if inspection else [])
@@ -77,7 +78,7 @@ def execute_capability(executor, run, task, step, deadline):
                 if ids:
                     add('matrix',f'{paper.document.source.title} / {category}', '\n'.join(evidence[eid].quote for eid in ids),ids,[paper.document.source.id],'quoted')
                 else:
-                    gaps.append(f'{paper.document.source.title}: no selected checked evidence for {category}.')
+                    gaps.append(humanize('{title}: no selected checked evidence for {category}.').format(title=paper.document.source.title, category=category))
     elif step.tool == 'brainstorm':
         for paper in run.papers:
             for claim in paper.claims:
@@ -85,37 +86,37 @@ def execute_capability(executor, run, task, step, deadline):
                 ids=[eid for eid in claim.evidence_ids if eid in checked]
                 if claim.category not in ('limitation','future_work') or claim.claim_type!='paper_report' or not ids: continue
                 if len(artifacts)>=12:
-                    gaps.append('Investigation proposals capped at 12; additional limitations omitted.')
+                    gaps.append(humanize('Investigation proposals capped at 12; additional limitations omitted.'))
                     break
                 quote=evidence[ids[0]].quote
                 add('hypothesis',f'Investigate: {paper.document.source.title}',
-                    f'Author-reported basis: {quote}\nResearch question: Under which conditions does this limitation hold, and which intervention changes it?\n'
+                    humanize('Author-reported basis: {quote}\nResearch question: Under which conditions does this limitation hold, and which intervention changes it?\n'
                     'Validation plan: reproduce the reported baseline, vary one stated assumption at a time, define the metric and data split before testing, and include negative results. '
                     'Falsification: reject the candidate explanation if the intervention does not improve the prespecified metric under the same protocol. '
-                    'Novelty and feasibility are unverified; search related work and compare experimental settings before adopting this direction.',ids,[paper.document.source.id],'proposal')
-        if not artifacts: gaps.append('No checked author-reported limitations or future directions; no grounded hypothesis proposed.')
+                    'Novelty and feasibility are unverified; search related work and compare experimental settings before adopting this direction.').format(quote=quote),ids,[paper.document.source.id],'proposal')
+        if not artifacts: gaps.append(humanize('No checked author-reported limitations or future directions; no grounded hypothesis proposed.'))
     elif step.tool == 'literature_review':
         for category in CATEGORIES:
             ids=list(dict.fromkeys(eid for p in run.papers for c in p.claims if c.category==category and c.claim_type=='paper_report' for eid in c.evidence_ids if eid in checked))
             if ids:
                 sources=[evidence[eid].source_id for eid in ids]
                 add('review',category.replace('_',' ').title(), '\n'.join(f'[{evidence[eid].source_id}, p.{evidence[eid].page}] {evidence[eid].quote}' for eid in ids),ids,sources,'quoted')
-        add('quality','Review scope','This is extractive, selected-paper review material. It does not establish consensus, resolve contradictions or certify a systematic review. Use the saved review protocol and screening history; model synthesis is a separate optional operation.')
+        add('quality','Review scope',humanize('This is extractive, selected-paper review material. It does not establish consensus, resolve contradictions or certify a systematic review. Use the saved review protocol and screening history; model synthesis is a separate optional operation.'))
     elif step.tool == 'supervise':
         prior_gaps=list(dict.fromkeys(g for s in task.steps if s.result for g in s.result.gaps))
         gaps.extend(prior_gaps)
         if not checked:
-            gaps.append('No validated quotations available; search additional literature or repair PDF extraction.')
+            gaps.append(humanize('No validated quotations available; search additional literature or repair PDF extraction.'))
         for paper in run.papers:
             check()
             doc=paper.document
-            if doc.truncated: gaps.append(f'Incomplete page extraction: {doc.source.title} ({len(doc.pages)}/{doc.total_pages}).')
-            if doc.ocr_pages: gaps.append(f'Visually verify OCR quotations: {doc.source.title}.')
-        add('quality','Research quality checkpoint', f'{len(checked)} literal quotation bindings checked across {len(run.papers)} saved papers. '
+            if doc.truncated: gaps.append(humanize('Incomplete page extraction: {title} ({pages}/{total}).').format(title=doc.source.title, pages=len(doc.pages), total=doc.total_pages))
+            if doc.ocr_pages: gaps.append(humanize('Visually verify OCR quotations: {title}.').format(title=doc.source.title))
+        add('quality','Research quality checkpoint', humanize('{count} literal quotation bindings checked across {papers} saved papers. '
             'Semantic support, scientific correctness, novelty and experimental reproducibility remain unassessed. '
-            'No hypothesis has been promoted to an experimental finding.',checked,[p.document.source.id for p in run.papers])
+            'No hypothesis has been promoted to an experimental finding.').format(count=len(checked), papers=len(run.papers)),checked,[p.document.source.id for p in run.papers])
         for gap in list(dict.fromkeys(gaps))[:30]:
-            add('quality','Next action',gap+' Review the relevant source, expand the search or revise the research plan.')
+            add('quality','Next action',gap+' '+humanize('Review the relevant source, expand the search or revise the research plan.'))
         if run.experiments:
             from services.experiment_statistics import build_experiment_statistics
             report=build_experiment_statistics(run)
@@ -125,18 +126,19 @@ def execute_capability(executor, run, task, step, deadline):
                     add('experiment',f'{dataset.title} / {col.name}',
                         f'Dataset {dataset.dataset_id}; SHA256 {dataset.sha256}; algorithm {report.algorithm}. '
                         f'n={col.observed_count}; missing={col.missing_count}; mean={col.mean}; min={col.minimum}; max={col.maximum}; sample SD={col.sample_standard_deviation}. '
-                        'Descriptive observations only; no causal or significance claim. '+' '.join(col.warnings),sources=[dataset.dataset_id],status='computed')
+                        + humanize('Descriptive observations only; no causal or significance claim.')+' '+' '.join(col.warnings),sources=[dataset.dataset_id],status='computed')
                     flagged = outlier_samples(col.references)
                     if flagged:
                         examples = ', '.join(f'{row.sample_id}={row.value}' for row in flagged[:10])
                         add('experiment', f'Inspect atypical observations: {col.name}',
                             f'{len(flagged)} of {col.observed_count} observations outside 1.5 × IQR fences '
                             f'(median-of-halves quartiles). Up to 10 sample IDs: {examples}. '
-                            'Check calibration, units and protocol before interpreting or excluding any observation.',
+                            + humanize('Check calibration, units and protocol before interpreting or excluding any observation.'),
                             sources=[dataset.dataset_id], status='needs_review')
         else:
-            add('quality','Experimental validation pending','No user experimental dataset supplied. Upload observations and specify controls, metrics and a protocol to evaluate candidate hypotheses.')
+            add('quality','Experimental validation pending',humanize('No user experimental dataset supplied. Upload observations and specify controls, metrics and a protocol to evaluate candidate hypotheses.'))
     else:
         raise ValueError('Unsupported research capability')
     return TaskResult(evidence_ids=sorted(checked),gaps=list(dict.fromkeys(gaps)),artifacts=artifacts,
-                      summary=f'{step.tool.replace("_"," ")}: {len(artifacts)} traceable research artifacts. Scientific validation remains unassessed.')
+                      summary=humanize('{tool}: {count} traceable research artifacts. Scientific validation remains unassessed.').format(
+                          tool=step.tool.replace('_', ' '), count=len(artifacts)))

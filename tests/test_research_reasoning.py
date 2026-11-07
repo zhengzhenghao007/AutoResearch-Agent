@@ -30,9 +30,11 @@ class Fake:
 def test_consent_cache_and_usage(tmp_path):
     from services.research_reasoning import ResearchReasoner
     store, run=setup(tmp_path); fake=Fake(); ex=ResearchReasoner(store,client_factory=lambda **kw:fake)
+    fake.data['matrix'][0]['results'] = 'It is important to note that the sample includes 27 trials.'
     with pytest.raises(ValueError): ex.generate(run.id,dict(question='Compare',allow_model=False))
     result=ex.generate(run.id,dict(question='Compare',allow_model=True))
     assert result['status']=='completed' and result['usage']['input_tokens']==100
+    assert result['report']['matrix'][0]['results'] == 'The sample includes 27 trials.'
     assert result['report']['hypotheses'][0]['kind']=='hypothesis'
     assert ex.generate(run.id,dict(question='Compare',allow_model=False))['id']==result['id']
     assert fake.calls==1

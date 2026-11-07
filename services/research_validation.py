@@ -49,7 +49,9 @@ def validate_run(run: ResearchRun) -> None:
         bindings[event.source_id] = binding
     if run.review.approved != (bool(run.papers) and not issues) or run.review.issues != expected_issues:
         raise ValueError('Stored review does not match evidence')
-    if run.generated_claims != build_suggestions(run.papers):
+    # Stored records may use the original verbatim narrative templates.
+    if (run.generated_claims != build_suggestions(run.papers, prose=str)
+            and run.generated_claims != build_suggestions(run.papers)):
         raise ValueError('Invalid generated claims or suggestion provenance')
-    if run.artifacts != synthesize(run.papers):
+    if run.artifacts != synthesize(run.papers, prose=str) and run.artifacts != synthesize(run.papers):
         raise ValueError('Stored artifacts do not match validated evidence')

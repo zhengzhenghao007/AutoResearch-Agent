@@ -21,7 +21,9 @@ def valid():return {'claims':[{'claim_id':'c','verdict':'uncertain','evidence_id
 def test_explicit_model_review_is_grounded_bounded_and_readonly(tmp_path):
     _,run=make_run(tmp_path,'We will evaluate this method in future experiments.')
     client=Client(valid());before=run.model_dump_json()
+    client.output['claims'][0]['rationale'] = 'It is important to note that the passage describes future work.'
     result=module().review_semantics(run,['c'],True,client)
+    assert result.output.claims[0].rationale == 'The passage describes future work.'
     assert result.scientific_validation == 'not_assessed'
     assert result.model == 'offline-test' and result.output.claims[0].verdict == 'uncertain'
     assert result.input_claims[0].evidence[0].quote == run.papers[0].evidence[0].quote

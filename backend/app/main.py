@@ -19,6 +19,8 @@ from backend.app.api.paper_quick_read import router as paper_quick_read_router
 from backend.app.api.research_tasks import router as research_tasks_router
 from backend.app.api.research_reasoning import router as reasoning_router
 from backend.app.api.paper_acquisition import router as acquisition_router
+from backend.app.academic_output import AcademicOutputMiddleware
+from backend.app.api.humanizer import router as humanizer_router
 from backend.app.request_limits import RequestBodyLimit
 from backend.app.security import load_config, SecurityMiddleware
 from services.research_jobs import start_managers, stop_managers
@@ -44,6 +46,7 @@ app = FastAPI(
 )
 
 app.state.security_config = load_config()
+app.add_middleware(AcademicOutputMiddleware)
 app.add_middleware(RequestBodyLimit)
 app.add_middleware(SecurityMiddleware, config=app.state.security_config)
 app.add_middleware(
@@ -61,6 +64,7 @@ app.include_router(
 app.include_router(
     analysis_router
 )
+app.include_router(humanizer_router)
 app.include_router(research_router)
 app.include_router(paper_quick_read_router)
 app.include_router(jobs_router)

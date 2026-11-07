@@ -1,12 +1,16 @@
 """Bounded, versioned manuscript sidecar contracts."""
 from datetime import datetime
 from typing import Annotated, Literal
+from schemas.generated_prose import GeneratedProse
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints, field_validator
 from schemas.manuscript_draft import ManuscriptDraft
 
 Identifier = Annotated[str, StringConstraints(pattern=r'^[A-Za-z0-9:_-]{1,160}$')]
 Digest = Annotated[str, StringConstraints(pattern=r'^[a-f0-9]{64}$')]
 Text = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=10000)]
+
+
+ReviewRationale = Annotated[GeneratedProse, StringConstraints(strip_whitespace=True, min_length=1, max_length=10000)]
 
 
 class Contract(BaseModel):
@@ -47,12 +51,12 @@ class Revision(Contract):
 class Finding(Contract):
     sentence_id: Identifier
     status: Literal['supported', 'unsupported', 'uncertain']
-    rationale: Text
+    rationale: ReviewRationale
 
 
 class Contradiction(Contract):
     sentence_ids: tuple[Identifier, Identifier]
-    rationale: Text
+    rationale: ReviewRationale
 
 
 class ReviewOutput(Contract):

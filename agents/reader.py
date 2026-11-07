@@ -2,6 +2,7 @@ import re
 import time
 
 from agents.reader_result import ReaderResult
+from services.academic_humanizer import humanize
 
 
 class ReaderAgent:
@@ -32,7 +33,7 @@ class ReaderAgent:
             fallback=(
                 abstract_sentences[0]
                 if abstract_sentences
-                else "Research problem could not be identified."
+                else humanize("Research problem could not be identified.")
             ),
         )
 
@@ -45,7 +46,7 @@ class ReaderAgent:
                 "our approach",
                 "specifically",
             ),
-            fallback="Methodology could not be identified.",
+            fallback=humanize("Methodology could not be identified."),
         )
 
         dataset_sentences = self._find_matches(
@@ -97,17 +98,17 @@ class ReaderAgent:
             datasets=(
                 " ".join(dataset_sentences)
                 if dataset_sentences
-                else "No dataset or experimental environment was identified."
+                else humanize("No dataset or experimental environment was identified.")
             ),
             main_contributions=(
                 contribution_sentences
                 if contribution_sentences
-                else ["No explicit contribution statement was identified."]
+                else [humanize("No explicit contribution statement was identified.")]
             ),
             limitations=(
                 " ".join(limitation_sentences)
                 if limitation_sentences
-                else (
+                else humanize(
                     "No explicit limitation was found in the extracted pages. "
                     "A complete-paper or LLM-based analysis may be required."
                 )

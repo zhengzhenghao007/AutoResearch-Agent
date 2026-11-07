@@ -61,7 +61,11 @@ async function request<T>(path: string, init?: RequestInit, binary = false, time
   } finally { clearTimeout(timer); }
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+export type EditingProfile = 'minimal'|'standard';
+export type EditingPolicy = {enabled:true;profile:EditingProfile;editable:boolean};
 export const researchApi = {
+  editingPolicy:()=>request<EditingPolicy>('/settings/academic-humanizer'),
+  updateEditingPolicy:(profile:EditingProfile)=>request<EditingPolicy>('/settings/academic-humanizer',{...json({profile}),method:'PUT'}),
  acquisitionHistory:(id:string)=>request<AcquiredPaper[]>(`/runs/${encodeURIComponent(id)}/paper-acquisitions`),
  acquirePapers:(id:string,selections:AcquisitionSelection[])=>request<AcquiredPaper[]>(`/runs/${encodeURIComponent(id)}/paper-acquisitions`,json({selections})),
  importAcquired:(id:string,item:string)=>request<ResearchRun>(`/runs/${encodeURIComponent(id)}/paper-acquisitions/${encodeURIComponent(item)}/import`,json({})),

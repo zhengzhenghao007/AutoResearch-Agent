@@ -5,6 +5,7 @@ import math
 import re
 from threading import RLock
 
+from services.academic_humanizer import humanize
 from schemas.workspace import WorkspaceItem, WorkspaceItemRequest, WorkspacePreview
 
 _LOCK = RLock()
@@ -69,11 +70,11 @@ def preview_workspace(run, request):
     result.markdown += '\n'.join('| ' + ' | '.join('—' if v is None else _escape(v) for v in row) + ' |' for row in result.rows)
     missing = sum(any(row.values[c] is None for c in columns) for row in dataset.data.rows)
     if missing:
-        result.warnings.append(f'{missing} rows contain missing selected values; no imputation. Missing plot values are excluded; lines retain gaps.')
+        result.warnings.append(humanize('{count} rows contain missing selected values; no imputation. Missing plot values are excluded; lines retain gaps.').format(count=missing))
     if request.kind == 'figure':
         if (request.chart_type == 'line' and request.x_column and
                 any(row.values[request.x_column] is None for row in dataset.data.rows)):
-            result.warnings.append('Missing X has no known position: showing points only, without connecting lines.')
+            result.warnings.append(humanize('Missing X has no known position: showing points only, without connecting lines.'))
         result.svg = _figure(dataset, request, units)
     return result
 

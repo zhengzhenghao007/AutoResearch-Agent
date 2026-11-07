@@ -1,4 +1,5 @@
 """Derive screening history without rewriting snapshots or selecting papers."""
+from services.academic_humanizer import humanize
 from schemas.research import ResearchRun
 from schemas.screening_report import ScreeningCounts, ScreeningItem, ScreeningReport
 from services.research_validation import validate_run
@@ -28,4 +29,4 @@ def build_screening_report(run: ResearchRun) -> ScreeningReport:
             notice = 'selected_without_decision'
         items.append(ScreeningItem(candidate=candidate, status=status, selected_for_analysis=chosen,
                                    latest=latest, history=history, selection_notice=notice))
-    return ScreeningReport(run_id=run.id, topic=run.topic, counts=ScreeningCounts(**counts), items=items)
+    return ScreeningReport(scope=humanize(ScreeningReport.model_fields['scope'].default), run_id=run.id, topic=run.topic, counts=ScreeningCounts(**counts), items=items)

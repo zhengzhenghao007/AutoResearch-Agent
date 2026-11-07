@@ -1,5 +1,6 @@
 """Concise advisory synthesis with literal page references."""
 from typing import Literal
+from schemas.generated_prose import GeneratedProse
 from pydantic import Field, StrictBool
 from schemas.research import Contract
 
@@ -14,7 +15,7 @@ class QuickReadReference(Contract):
 
 
 class QuickReadPoint(Contract):
-    text: str = Field(min_length=1, max_length=700)
+    text: GeneratedProse = Field(min_length=1, max_length=700)
     references: list[QuickReadReference] = Field(min_length=1, max_length=5)
     kind: Literal['paper_report', 'author_claim', 'hypothesis', 'goal_analysis'] = 'paper_report'
 
@@ -29,7 +30,7 @@ class QuickReadOutput(Contract):
     limitations: list[QuickReadPoint] = Field(max_length=4)
     goal_relevance: list[QuickReadPoint] = Field(max_length=3)
     suggested_directions: list[QuickReadPoint] = Field(max_length=3)
-    missing_information: list[str] = Field(max_length=12)
+    missing_information: list[GeneratedProse] = Field(max_length=12)
 
 
 class QuickReadCoverage(Contract):

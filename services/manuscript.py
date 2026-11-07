@@ -2,6 +2,7 @@
 
 JSON writes use a process lock; SQLite uses database transactions across processes.
 """
+from services.academic_humanizer import humanize
 import hashlib
 import html
 import json
@@ -277,7 +278,7 @@ def review_manuscript(store, run_id, revision_id, allow_model=False, client=None
         raise RuntimeError('Manuscript review provider failed; no record changed') from exc
     if len(response.content) > 100000:
         raise ValueError('Model output exceeds size limit')
-    output = ReviewOutput.model_validate_json(response.content)
+    output = ReviewOutput.model_validate_json(response.content, context={"generated_prose": True})
     _validate_review(output, revision)
     review = Review(**output.model_dump(), id=uuid4().hex, revision_id=revision.id,
         content_sha256=revision.content_sha256, input_sha256=revision.input_sha256,
@@ -321,7 +322,7 @@ def export_manuscript(store, run_id, revision_id):
         approvals = [a for a in state.approvals if a.revision_id == revision.id and a.review_count == review_count]
         if not approvals:
             raise ValueError('Explicit human approval is required before export')
-        lines = ['# Manuscript', '', 'Scientific validation: not_assessed. Human approval is an attestation, not independent validation.',
+        lines = ['# Manuscript', '', humanize('Scientific validation: not_assessed. Human approval is an attestation, not independent validation.'),
                  '', f'Revision: {revision.id}; content SHA256: {revision.content_sha256}; input SHA256: {revision.input_sha256}', '']
         labels = {'paper_report':'Paper report', 'user_observation':'User observation',
                   'hypothesis':'Hypothesis', 'suggestion':'Suggestion', 'placeholder':'Missing material',

@@ -1,9 +1,10 @@
 """Strict, bounded model research working-note contracts."""
 from typing import Annotated, Literal
+from schemas.generated_prose import GeneratedProse
 from pydantic import Field
 from schemas.research import Contract
 
-Text = Annotated[str, Field(min_length=1, max_length=3000)]
+Text = Annotated[GeneratedProse, Field(min_length=1, max_length=3000)]
 References = Annotated[list[str], Field(min_length=1, max_length=40)]
 
 class ReasoningRequest(Contract):

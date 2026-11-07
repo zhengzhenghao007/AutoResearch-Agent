@@ -1,4 +1,5 @@
 """Build an offline reading checklist with exact, validated evidence links."""
+from services.academic_humanizer import humanize
 import hashlib
 import json
 import re
@@ -18,18 +19,18 @@ def build_investigation(run, source_ids):
         raise ValueError('Select distinct existing papers')
     selected = set(source_ids) if source_ids else known
     papers = [paper for paper in run.papers if paper.document.source.id in selected]
-    limitations = ['Related passages share words with the limitation. Read them to assess whether they address it.',
-                   'External similar-work search has not been performed. Novelty remains unverified.']
+    limitations = [humanize('Related passages share words with the limitation. Read them to assess whether they address it.'),
+                   humanize('External similar-work search has not been performed. Novelty remains unverified.')]
     accepted = []
     for paper in papers:
         if review_paper(paper).approved:
             accepted.append(paper)
         else:
-            limitations.append(f'Excluded invalid evidence from {paper.document.source.title}.')
+            limitations.append(humanize('Excluded invalid evidence from {title}.').format(title=paper.document.source.title))
         if paper.document.truncated:
-            limitations.append(f'Partial text coverage for {paper.document.source.title}.')
+            limitations.append(humanize('Partial text coverage for {title}.').format(title=paper.document.source.title))
         if paper.document.ocr_pages:
-            limitations.append(f'OCR text requires checking against the PDF for {paper.document.source.title}.')
+            limitations.append(humanize('OCR text requires checking against the PDF for {title}.').format(title=paper.document.source.title))
     candidates = []
     total = 0
     for paper in accepted:
@@ -53,10 +54,11 @@ def build_investigation(run, source_ids):
             related.sort(key=lambda pair: (-pair[0], pair[1].id))
             candidates.append(InvestigationCandidate(claim_id=claim.id, source_id=paper.document.source.id,
                 title=paper.document.source.title, quotation=quotation,
+                novelty=humanize(InvestigationCandidate.model_fields['novelty'].default),
                 related_passages=[item for _, item in related[:3]],
-                question='Which conditions cause this reported limitation, and do the other selected papers address them?'))
+                question=humanize('Which conditions cause this reported limitation, and do the other selected papers address them?')))
     if len(papers) < 2:
-        limitations.append('Select at least two papers for cross-paper investigation.')
+        limitations.append(humanize('Select at least two papers for cross-paper investigation.'))
     payload = {'papers': [paper.model_dump(mode='json') for paper in papers], 'goal': run.research_goal}
     digest = hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
     return InvestigationReport(input_sha256=digest, goal=run.research_goal or '',

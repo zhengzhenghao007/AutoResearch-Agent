@@ -1,4 +1,5 @@
 """Offline descriptive-v1: exact rational accumulation and correctly rounded output."""
+from services.academic_humanizer import humanize
 from decimal import Context, Decimal, MAX_EMAX, MIN_EMIN, ROUND_HALF_EVEN, localcontext
 from fractions import Fraction
 from math import isqrt
@@ -79,8 +80,8 @@ def build_experiment_statistics(run) -> ExperimentStatisticsReport:
                 references=[ObservationReference(sample_id=sample_id, column=column.name, value=str(value))
                             for sample_id, value in observations],
                 status='computed' if count > 1 else 'insufficient_samples' if count else 'no_observations',
-                warnings=warnings,
+                warnings=[humanize(warning) for warning in warnings],
             ))
         datasets.append(DatasetStatistics(dataset_id=dataset.id, sha256=dataset.sha256,
                                           title=dataset.data.title, columns=columns))
-    return ExperimentStatisticsReport(run_id=run.id, datasets=datasets)
+    return ExperimentStatisticsReport(scope=humanize(ExperimentStatisticsReport.model_fields['scope'].default), run_id=run.id, datasets=datasets)

@@ -151,7 +151,7 @@ class ResearchReasoner:
             stage = 'validation'
             if len(response.content) > 80000:
                 raise ValueError('Output limit')
-            report = ReasoningReport.model_validate_json(response.content)
+            report = ReasoningReport.model_validate_json(response.content, context={"generated_prose": True})
             bindings = {e['evidence_id']: e['source_id'] for e in evidence}
             for row in [*report.matrix, *report.review, *report.hypotheses]:
                 if any(eid not in bindings for eid in row.evidence_ids):
