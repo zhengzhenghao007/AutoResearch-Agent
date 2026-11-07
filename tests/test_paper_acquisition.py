@@ -130,3 +130,12 @@ def test_real_pdf_acquisition_import_research_and_export(setup):
     assert report['source_status'] == 'current'
     assert report['questions'][0]['evidence']
     assert any(a['kind'] == 'matrix' for a in report['artifacts'])
+
+
+def test_download_slots_are_shared_and_bounded(setup):
+    from services.paper_acquisition import _reserve_download
+    flow, _ = setup
+    assert _reserve_download(flow.store, 100) == 0
+    assert _reserve_download(ResearchStore(flow.store.root), 101) == 2
+    for _ in range(4): _reserve_download(flow.store, 101)
+    with pytest.raises(ValueError, match='queue'): _reserve_download(flow.store, 101)

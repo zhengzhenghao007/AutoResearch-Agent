@@ -75,6 +75,19 @@ def _save(store, data):
     return digest
 
 
+def _reserve_download(store, now):
+    # Shared across concurrent runs in this store, including separate API workers.
+    with database(store) as db:
+        db.execute('BEGIN IMMEDIATE')
+        db.execute('CREATE TABLE IF NOT EXISTS download_clock(id INTEGER PRIMARY KEY, next_at REAL NOT NULL)')
+        row = db.execute('SELECT next_at FROM download_clock WHERE id=1').fetchone()
+        start = max(now, row[0]) if row else now
+        if start - now > 15:
+            raise ValueError('Download queue is full; retry this selection later')
+        db.execute('INSERT OR REPLACE INTO download_clock VALUES(1,?)', (start + 3,))
+        return start - now
+
+
 def download(url, transport=None):
     if not _URL.fullmatch(url):
         raise ValueError('Only canonical HTTPS arXiv PDFs are supported')
@@ -123,6 +136,8 @@ def acquire(store, run_id, request, *, transport=None, processor=None):
                     except (OSError, ValueError):
                         cached = None
                 if not cached:
+                    if transport is None:
+                        time.sleep(_reserve_download(store, time.time()))
                     data = download(item.url, transport)
                     processor.parse_bytes(data, hit.title, item.url)
                     item.sha256, item.status = _save(store, data), 'downloaded'
