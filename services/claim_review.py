@@ -1,5 +1,6 @@
 """Bounded, deterministic review cues without modifying accepted snapshots."""
 import re
+from services.academic_humanizer import humanize
 from schemas.research import ResearchRun
 from schemas.claim_review import ClaimReviewFlag, ClaimReviewReport
 from services.research_validation import validate_run
@@ -27,9 +28,10 @@ def build_claim_review(run: ResearchRun) -> ClaimReviewReport:
             match = PLANNING.search(claim.text)
             if match:
                 flags.append(ClaimReviewFlag(
+                    message=humanize(ClaimReviewFlag.model_fields['message'].default),
                     claim_id=claim.id, source_id=paper.document.source.id,
                     category=claim.category, claim_text=claim.text, matched_text=match.group(),
                     evidence=[evidence[id] for id in claim.evidence_ids],
                 ))
-    return ClaimReviewReport(run_id=run.id, claim_count=total, checked_claim_count=checked,
+    return ClaimReviewReport(scope=humanize(ClaimReviewReport.model_fields['scope'].default), run_id=run.id, claim_count=total, checked_claim_count=checked,
                              flagged_claim_count=len(flags), flags=flags)

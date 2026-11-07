@@ -6,6 +6,7 @@ import time
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
 import requests
+from services.academic_humanizer import humanize
 from schemas.multi_source_search import SearchHit, SearchGroup, SearchBatch, SourceSearch
 
 
@@ -116,5 +117,5 @@ def multi_search(run_id, request, adapter=search_source):
             key = 'doi:'+hit.doi if hit.doi else source+':'+hit.source_id
             groups.setdefault(key, []).append(hit)
     ordered = sorted(groups.items(), key=lambda pair: (min(hit.rank for hit in pair[1]), pair[0]))
-    return SearchBatch(run_id=run_id, request=request, sources=outcomes,
+    return SearchBatch(scope=humanize(SearchBatch.model_fields['scope'].default), run_id=run_id, request=request, sources=outcomes,
                        groups=[SearchGroup(key=key, records=records) for key, records in ordered])

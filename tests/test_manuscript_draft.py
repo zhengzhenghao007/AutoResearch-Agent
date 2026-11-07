@@ -111,3 +111,28 @@ def test_draft_hash_changes_when_category_revision_moves_a_quote(tmp_path):
     assert old.input_sha256!=new.input_sha256
     assert next(s for s in new.sections if s.id=='reported_methods').blocks[0].kind=='placeholder'
     assert next(s for s in new.sections if s.id=='limitations').blocks[0].text==run.papers[0].claims[0].text
+
+def test_draft_edits_only_generated_templates(tmp_path, monkeypatch):
+    from services import manuscript_draft
+    from test_experiments import payload
+
+    literal = 'It is worth noting that the {source} retained 3.14.'
+    flow, run = make_run(tmp_path, literal, category='result')
+    dataset = payload()
+    dataset['title'] = literal
+    run = import_experiment(flow.store, run.id, raw(dataset))
+    before = run.model_dump_json()
+    digest = build(run).input_sha256
+    def mark(template):
+        assert literal not in template
+        return 'Edited ' + template
+    monkeypatch.setattr(manuscript_draft, 'humanize', mark)
+    draft = build(run)
+    assert draft.input_sha256 == digest
+    result = next(s for s in draft.sections if s.id == 'reported_findings').blocks[0]
+    assert result.text == result.paper.evidence[0].quote == literal
+    data = next(s for s in draft.sections if s.id == 'user_results').blocks[0]
+    assert data.text.startswith('Edited ')
+    assert literal in data.text and data.computation.title == literal
+    assert data.computation.column.mean == '11.75'
+    assert run.model_dump_json() == before

@@ -1,8 +1,10 @@
 from abc import ABC
-from typing import Type
+from dataclasses import replace
+from typing import Literal, Type
 
 from pydantic import BaseModel
 
+from services.academic_humanizer import humanize
 from services.llm_client import (
     LLMClient,
     LLMResponse,
@@ -29,13 +31,17 @@ class BaseAgent(ABC):
         self,
         system_prompt: str,
         user_prompt: str,
+        *,
+        audience: Literal['user', 'internal'] = 'user',
     ) -> LLMResponse:
         print(f"[{self.agent_name}] Running...")
 
-        return self.llm.chat(
+        response = self.llm.chat(
             system_prompt=system_prompt,
             user_prompt=user_prompt,
         )
+
+        return replace(response, content=humanize(response.content)) if audience == 'user' else response
 
     def structured_chat(
         self,
@@ -47,8 +53,12 @@ class BaseAgent(ABC):
             f"[{self.agent_name}] Structured output..."
         )
 
-        return self.llm.structured_chat(
+        response = self.llm.structured_chat(
             system_prompt=system_prompt,
             user_prompt=user_prompt,
             output_schema=schema,
         )
+        parsed = schema.model_validate(
+            response.parsed.model_dump(), context={"generated_prose": True}
+        )
+        return replace(response, parsed=parsed)

@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from typing import Literal
+from schemas.generated_prose import GeneratedProse
 from pydantic import Field
 from schemas.research import Contract, Claim, Source, Evidence, Page
 
@@ -20,12 +21,12 @@ class SemanticClaimFinding(Contract):
     claim_id: str
     verdict: Literal['supported','unsupported','uncertain']
     evidence_ids: list[str] = Field(min_length=1,max_length=200)
-    rationale: str = Field(min_length=1,max_length=2000)
+    rationale: GeneratedProse = Field(min_length=1,max_length=2000)
 
 
 class ContradictionFinding(Contract):
     claim_ids: list[str] = Field(min_length=2,max_length=2)
-    rationale: str = Field(min_length=1,max_length=2000)
+    rationale: GeneratedProse = Field(min_length=1,max_length=2000)
 
 
 class SemanticOutput(Contract):

@@ -1,4 +1,5 @@
 """Portable working notes from committed checkpoints, never scientific approval."""
+from services.academic_humanizer import humanize
 import html
 import re
 
@@ -11,9 +12,9 @@ def build_task_report(task: ResearchTask, run: ResearchRun) -> dict:
     if task.run_id != run.id:
         raise ValueError('Task belongs to another research record')
     current = task.status != 'stale' and task.source_sha256 == task_source_hash(run, task.mode)
-    warnings = ['Working notes only. Lexical relevance and literal source checks do not establish scientific validity.']
+    warnings = [humanize('Working notes only. Lexical relevance and literal source checks do not establish scientific validity.')]
     if not current:
-        warnings.append('Saved sources changed. Quotations are withheld; checkpoint IDs remain for audit. Create a new task.')
+        warnings.append(humanize('Saved sources changed. Quotations are withheld; checkpoint IDs remain for audit. Create a new task.'))
     questions = []
     for question in task.subquestions:
         steps = [step for step in task.steps if step.question_id == question.id]
@@ -29,14 +30,14 @@ def build_task_report(task: ResearchTask, run: ResearchRun) -> dict:
             for eid in ids:
                 matches = [(p, e) for p in run.papers for e in p.evidence if e.id == eid]
                 if len(matches) != 1:
-                    gaps.append(f'Missing or ambiguous evidence binding: {eid}')
+                    gaps.append(humanize('Missing or ambiguous evidence binding: {eid}').format(eid=eid))
                     continue
                 paper, item = matches[0]
                 source = paper.document.source
                 pages = [p for p in paper.document.pages if p.number == item.page]
                 quote = ' '.join(item.quote.split())
                 if item.source_id != source.id or len(pages) != 1 or not quote or quote not in ' '.join(pages[0].text.split()):
-                    gaps.append(f'Invalid source/page/quote binding: {eid}')
+                    gaps.append(humanize('Invalid source/page/quote binding: {eid}').format(eid=eid))
                     continue
                 evidence.append(dict(evidence_id=eid, source_id=source.id, title=source.title,
                                      uri=source.uri, source_sha256=source.sha256, page=item.page,
@@ -83,7 +84,7 @@ def render_task_report(report: dict) -> str:
                       'Source inspection: ' + _literal(question['inspection_status']), ''])
         lines.extend('- Requirement: ' + _literal(r) for r in question['requirements'])
         if not question['evidence']:
-            lines.extend(['', 'No exportable quotations at this checkpoint.'])
+            lines.extend(['', humanize('No exportable quotations at this checkpoint.')])
         for item in question['evidence']:
             lines.extend(['', f"### {_literal(item['title'])} — PDF page {item['page']}", '',
                           '> ' + _literal(item['quote']), '',

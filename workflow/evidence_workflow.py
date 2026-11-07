@@ -3,6 +3,7 @@ import hashlib
 from uuid import uuid4
 from schemas.research import Candidate, CandidateDecision, ResearchRun, Review
 from schemas.source_identity import SourceIdentityRequest, SourceIdentityAnnotation, IdentitySourceSnapshot
+from services.academic_humanizer import humanize
 from services.paper_processing import PaperProcessor
 from services.arxiv_identity import canonical_arxiv_pdf_url
 from services.evidence_extraction import EvidenceExtractor
@@ -25,11 +26,11 @@ class EvidenceWorkflow:
 
     def _new(self, topic):
         return ResearchRun(id=uuid4().hex, topic=topic, plan=[
-            f'Define scope and search literature for: {topic}',
-            'Review candidates and explicitly choose relevant papers.',
-            'Extract page-level quotations and mark missing evidence.',
-            'Compare supported reports; label suggestions and coverage gaps.',
-            'Review sources; researcher evaluates relevance and scientific validity.',
+            humanize('Define scope and search literature for: {topic}').format(topic=topic),
+            humanize('Review candidates and explicitly choose relevant papers.'),
+            humanize('Extract page-level quotations and mark missing evidence.'),
+            humanize('Compare supported reports; label suggestions and coverage gaps.'),
+            humanize('Review sources; researcher evaluates relevance and scientific validity.'),
         ])
 
     def _mutation(self):
@@ -104,7 +105,7 @@ class EvidenceWorkflow:
 
     def _finish(self, run):
         issues = [f'{p.document.source.title}: {issue}' for p in run.papers for issue in review_paper(p).issues]
-        run.review = Review(approved=bool(run.papers) and not issues, issues=issues or ([] if run.papers else ['No papers processed']))
+        run.review = Review(scope=humanize(Review.model_fields['scope'].default), approved=bool(run.papers) and not issues, issues=issues or ([] if run.papers else ['No papers processed']))
         run.artifacts = synthesize(run.papers)
         run.generated_claims = build_suggestions(run.papers)
         self.store.save(run)

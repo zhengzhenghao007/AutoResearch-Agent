@@ -1,5 +1,6 @@
 from typing import Literal
 
+from schemas.generated_prose import GeneratedProse
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -24,7 +25,7 @@ class ReflectionResult(BaseModel):
         ),
     )
 
-    critique: list[str] = Field(
+    critique: list[GeneratedProse] = Field(
         default_factory=list,
         max_length=5,
         description=(
@@ -33,7 +34,7 @@ class ReflectionResult(BaseModel):
         ),
     )
 
-    improvement_instructions: list[str] = Field(
+    improvement_instructions: list[GeneratedProse] = Field(
         default_factory=list,
         max_length=5,
         description=(

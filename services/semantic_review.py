@@ -41,7 +41,7 @@ def review_semantics(run, claim_ids, allow_model=False, client=None):
         raise RuntimeError('Semantic review provider failed; no record was changed') from exc
     if len(response.content)>100000:
         raise ValueError('Model output exceeds review size limit')
-    output=SemanticOutput.model_validate_json(response.content)
+    output=SemanticOutput.model_validate_json(response.content, context={"generated_prose": True})
     returned=[f.claim_id for f in output.claims]
     if len(returned)!=len(claim_ids) or set(returned)!=set(claim_ids):
         raise ValueError('Model returned missing, duplicate or unknown claim IDs')

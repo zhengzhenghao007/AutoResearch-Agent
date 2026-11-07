@@ -1,4 +1,5 @@
 """Read-only literature review material assembled from saved provenance."""
+from services.academic_humanizer import humanize
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -69,9 +70,9 @@ def build_literature_packet(store, run_id, source_ids):
     material = {'protocol':protocol.model_dump(mode='json') if protocol else None,'goal':run.research_goal,'sources':source_list,'sections':[section.model_dump(mode='json') for section in sections],
                 'screening':screening.model_dump(mode='json'),'searches':[search.model_dump(mode='json') for search in searches]}
     digest = hashlib.sha256(json.dumps(material,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
-    return LiteraturePacket(run_id=run.id,project_name=run.project_name or 'Research',goal=run.research_goal or '',
+    return LiteraturePacket(scope=humanize(LiteraturePacket.model_fields['scope'].default), run_id=run.id,project_name=run.project_name or 'Research',goal=run.research_goal or '',
         input_sha256=digest,generated_at=datetime.now(timezone.utc),source_ids=source_list,sections=sections,
-        screening=screening,searches=searches,protocol=protocol,missing_requirements=missing)
+        screening=screening,searches=searches,protocol=protocol,missing_requirements=[humanize(item) for item in missing])
 
 
 def render_literature_packet(packet):
@@ -85,7 +86,7 @@ def render_literature_packet(packet):
     for section in packet.sections:
         lines.extend(['', '## '+_escape(section.title)])
         if not section.blocks:
-            lines.append('No extracted quotations for this category in the selected sources.')
+            lines.append(humanize('No extracted quotations for this category in the selected sources.'))
         for block in section.blocks:
             lines.extend(['', _escape(block.text)])
             for evidence in block.paper.evidence:

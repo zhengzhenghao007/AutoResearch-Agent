@@ -41,6 +41,21 @@ def test_grounded_paraphrase_persisted_and_cache_reused(tmp_path):
     assert service().get_quick_read(ResearchStore(store.root), run.id, source) == report
 
 
+def test_fresh_quick_read_edits_narrative_and_keeps_literal_source(tmp_path):
+    sentence = 'It is important to note that the sample includes 27 trials.'
+    _, run = make_run(tmp_path, sentence)
+    store = ResearchStore(tmp_path / 'runs')
+    store.save(run)
+    data = output()
+    data['one_sentence']['text'] = sentence
+    data['one_sentence']['references'][0]['quote'] = sentence
+    source = run.papers[0].document.source.id
+    report = service().generate_quick_read(store, run.id, source, True, Client(data))
+    assert report.output.one_sentence.text == 'The sample includes 27 trials.'
+    assert report.output.one_sentence.references[0].quote == sentence
+    assert service().get_quick_read(store, run.id, source) == report
+
+
 @pytest.mark.parametrize('mutation', ['quote', 'page', 'missing_references', 'novelty'])
 def test_rejects_fabricated_source_support(tmp_path, mutation):
     store, run, source = fixture(tmp_path); data = output()

@@ -1,4 +1,5 @@
 """Durable offline retrieval. Paper text is data; no model or arbitrary tools run."""
+from services.academic_humanizer import humanize
 import hashlib
 import json
 import re
@@ -208,17 +209,17 @@ class ResearchTaskExecutor:
             if self.clock() >= deadline: raise TimeoutError()
             matches = [(p, e) for p in run.papers for e in p.evidence if e.id == eid]
             if len(matches) != 1:
-                gaps.append(f'Missing or ambiguous evidence binding: {eid}')
+                gaps.append(humanize('Missing or ambiguous evidence binding: {eid}').format(eid=eid))
                 continue
             paper, evidence = matches[0]
             pages = [p for p in paper.document.pages if p.number == evidence.page]
             quote = ' '.join(evidence.quote.split())
             if (evidence.source_id != paper.document.source.id or len(pages) != 1
                     or quote not in ' '.join(pages[0].text.split())):
-                gaps.append(f'Invalid source/page/quote binding: {eid}')
+                gaps.append(humanize('Invalid source/page/quote binding: {eid}').format(eid=eid))
             else: valid.append(eid)
         return TaskResult(evidence_ids=valid, gaps=gaps,
-                          summary='Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth.')
+                          summary=humanize('Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth.'))
 
     def _retrieve(self, run, task, step, deadline):
         question = next(q.question for q in task.subquestions if q.id == step.question_id)
@@ -235,10 +236,10 @@ class ResearchTaskExecutor:
         ranked.sort(key=lambda x: (-x[0][0], -x[0][1], x[1]))
         remaining = task.budget.max_evidence - task.usage.evidence
         ids = [eid for _,eid in ranked[:min(3, remaining)]]
-        gaps = [] if ids else ['No lexically matching saved evidence; question remains unanswered.']
+        gaps = [] if ids else [humanize('No lexically matching saved evidence; question remains unanswered.')]
         if len(ids) < min(3, len(ranked)):
-            gaps.append('Evidence budget truncated matching quotations; coverage is partial.')
-        return TaskResult(evidence_ids=ids, gaps=gaps, summary=f'Lexical term-overlap retrieval selected {len(ids)} quotations; not semantic verification.')
+            gaps.append(humanize('Evidence budget truncated matching quotations; coverage is partial.'))
+        return TaskResult(evidence_ids=ids, gaps=gaps, summary=humanize('Lexical term-overlap retrieval selected {count} quotations; not semantic verification.').format(count=len(ids)))
 
     def next(self, run_id, task_id):
         run = self.store.load(run_id)

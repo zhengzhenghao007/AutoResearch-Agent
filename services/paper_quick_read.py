@@ -156,7 +156,7 @@ def generate_quick_read(store, run_id, source_id, allow_model=False, client=None
             raise QuickReadProviderError('Quick-read provider failed; no report was saved. Check model configuration and retry.') from exc
         if len(response.content) > 100000:
             raise ValueError('Quick-read output exceeds size limit')
-        output = QuickReadOutput.model_validate_json(response.content)
+        output = QuickReadOutput.model_validate_json(response.content, context={"generated_prose": True})
         _validate_output(output, supplied, goal)
         # A goal/source edit during generation invalidates this response.
         if _context(store, run_id, source_id)[2] != digest:

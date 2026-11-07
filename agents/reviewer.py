@@ -1,6 +1,8 @@
 import re
 from typing import Any
 
+from services.academic_humanizer import humanize
+
 
 class ReviewerAgent:
     """
@@ -110,17 +112,10 @@ class ReviewerAgent:
         penalties = 0.0
 
         if not isinstance(analysis, dict):
-            return {
-                "approved": False,
-                "score": 0.0,
-                "issues": [
-                    "The paper analysis must be a dictionary."
-                ],
-                "warnings": [],
-                "feedback": (
-                    "1. The paper analysis must be a dictionary."
-                ),
-            }
+            return self._build_result(
+                issues=["The paper analysis must be a dictionary."],
+                warnings=[], penalties=1.0,
+            )
 
         missing_fields = [
             field
@@ -318,11 +313,13 @@ class ReviewerAgent:
         if approved is None:
             approved = len(issues) == 0
 
+        issues = [humanize(issue) for issue in issues]
+        warnings = [humanize(warning) for warning in warnings]
         feedback_lines: list[str] = []
 
         if approved:
             feedback_lines.append(
-                "The paper analysis passed all required checks."
+                humanize("The paper analysis passed all required checks.")
             )
         else:
             feedback_lines.extend(

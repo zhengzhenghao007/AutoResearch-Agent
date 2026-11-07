@@ -5,6 +5,7 @@ import re
 import hashlib
 import json
 
+from services.academic_humanizer import humanize
 from schemas.experiments import (
     MAX_CSV_METADATA_BYTES, MAX_EXPERIMENT_BYTES, MAX_EXPERIMENT_ENVELOPE_BYTES, CsvMetadata, ExperimentInput, ExperimentDataset, ExperimentReport,
     DatasetCompleteness, ColumnCompleteness,
@@ -155,4 +156,4 @@ def build_experiment_report(run) -> ExperimentReport:
                          source_sha256=dataset.source_sha256, input_format=dataset.input_format,
                          title=data.title, protocol=data.protocol, statistical_method=data.statistical_method,
                          sample_count=len(data.rows), columns=columns, missing_metadata=missing))
-    return ExperimentReport(run_id=run.id, datasets=summaries)
+    return ExperimentReport(scope=humanize(ExperimentReport.model_fields['scope'].default), run_id=run.id, datasets=summaries)

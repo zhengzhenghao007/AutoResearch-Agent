@@ -1,3 +1,4 @@
+from schemas.generated_prose import GeneratedProse
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -9,7 +10,7 @@ class PaperAnalysis(BaseModel):
     for the LLM Reader Agent.
     """
 
-    research_problem: str = Field(
+    research_problem: GeneratedProse = Field(
         ...,
         min_length=1,
         description=(
@@ -18,7 +19,7 @@ class PaperAnalysis(BaseModel):
         ),
     )
 
-    methodology: str = Field(
+    methodology: GeneratedProse = Field(
         ...,
         min_length=1,
         description=(
@@ -35,7 +36,7 @@ class PaperAnalysis(BaseModel):
         ),
     )
 
-    main_contributions: list[str] = Field(
+    main_contributions: list[GeneratedProse] = Field(
         default_factory=list,
         description=(
             "The main technical or scientific contributions "
@@ -43,7 +44,7 @@ class PaperAnalysis(BaseModel):
         ),
     )
 
-    limitations: list[str] = Field(
+    limitations: list[GeneratedProse] = Field(
         default_factory=list,
         description=(
             "Explicit limitations, weaknesses, unresolved "

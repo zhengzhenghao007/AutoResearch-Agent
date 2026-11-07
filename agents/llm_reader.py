@@ -3,6 +3,7 @@ import re
 from agents.base_agent import BaseAgent
 from agents.reader_result import ReaderResult
 from schemas.paper_analysis import PaperAnalysis
+from services.academic_humanizer import humanize
 from services.llm_client import LLMClient
 
 
@@ -92,7 +93,7 @@ class LLMReaderAgent(BaseAgent):
             main_contributions=(
                 analysis.main_contributions
                 or [
-                    "No explicit contributions were identified."
+                    humanize("No explicit contributions were identified.")
                 ]
             ),
             limitations=self._format_list(
@@ -315,7 +316,7 @@ Produce a structured academic analysis of this paper.
         ]
 
         if not clean_values:
-            return empty_message
+            return humanize(empty_message)
 
         return "\n".join(
             f"* {value}"
@@ -328,7 +329,7 @@ Produce a structured academic analysis of this paper.
         empty_message: str,
     ) -> str:
         if values is None:
-            return empty_message
+            return humanize(empty_message)
 
         if isinstance(values, str):
             clean_values = [
@@ -349,7 +350,7 @@ Produce a structured academic analysis of this paper.
             )
 
         if not clean_values:
-            return empty_message
+            return humanize(empty_message)
 
         return "\n".join(
             f"* {value}"

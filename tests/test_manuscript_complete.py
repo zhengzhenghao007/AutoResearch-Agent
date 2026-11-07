@@ -80,10 +80,11 @@ def test_model_review_is_explicit_and_validates_exact_coverage(tmp_path):
         def chat(self, **kwargs):
             assert 'The reported outcome improved' in kwargs['user_prompt']
             return SimpleNamespace(model_name='mock', content=json.dumps({'findings':[
-                {'sentence_id':sid,'status':'supported','rationale':'Quotation matches'}], 'contradictions':[]}))
+                {'sentence_id':sid,'status':'supported','rationale':'It is important to note that the quotation matches.'}], 'contradictions':[]}))
     with pytest.raises(ValueError):
         svc.review_manuscript(flow.store, run.id, rev.id, False, Client())
     reviewed = svc.review_manuscript(flow.store, run.id, rev.id, True, Client())
+    assert reviewed.reviews[-1].findings[0].rationale == 'The quotation matches.'
     assert reviewed.reviews[-1].findings[0].sentence_id == sid
     assert reviewed.revisions == state.revisions
 

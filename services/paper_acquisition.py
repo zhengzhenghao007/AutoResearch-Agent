@@ -7,6 +7,7 @@ import tempfile
 import time
 from contextlib import contextmanager
 import requests
+from services.academic_humanizer import humanize
 from schemas.paper_acquisition import AcquisitionOutcome
 from services.search_history import search_history
 from services.arxiv_identity import canonical_arxiv_pdf_url
@@ -121,7 +122,7 @@ def acquire(store, run_id, request, *, transport=None, processor=None):
     result = []
     processor = processor or PaperProcessor(max_pages=50, max_bytes=MAX_BYTES)
     for selection, hit in selected:
-        item = AcquisitionOutcome(run_id=run_id, selection=selection, metadata=hit)
+        item = AcquisitionOutcome(scope=humanize(AcquisitionOutcome.model_fields['scope'].default), run_id=run_id, selection=selection, metadata=hit)
         _record(store, item, new=True)  # An interrupted pending attempt is retained; resubmit to retry.
         item.url = canonical_arxiv_pdf_url(hit.pdf_url)
         if not _URL.fullmatch(item.url):

@@ -1,0 +1,14 @@
+# Academic Humanizer publication policy
+
+The backend applies Academic Humanizer to generated English and Chinese prose before returning or storing it. New reports use the same published wording in the API, CLI and downloads. Local settings are under Settings → Academic Humanizer. The standard profile also simplifies introductory conjunctions. The minimal profile removes supported introductory filler. Both profiles work offline and make zero model calls. Shared deployments expose the policy read-only. The default policy file is `data/academic-humanizer.json`; administrators can set `AUTORESEARCH_HUMANIZER_POLICY_FILE` to a shared configuration path.
+
+The pinned upstream Skill, lexicon, invariant checker, MIT license and local adaptation are in `vendor/academic_humanizer`. The automatic implementation uses a conservative subset of Cleanup. It permits specific bilingual discourse-marker edits and equivalent introductory conjunctions. Every accepted change must match the permitted prefix operation exactly. The checker compares numbers, citations, reference identifiers, math and formal statements. Uncertain passages pass through unchanged. Exceptions return the original text and log the exception class without manuscript content. No automatic editor establishes the scientific validity of a conclusion.
+
+## Adding an output
+
+- `BaseAgent.chat` publishes user prose by default. Use `audience='internal'` for intermediate protocol text or tool arguments. The low-level provider client retains the original response and usage.
+- In structured reports, mark each generated narrative field with `schemas.generated_prose.GeneratedProse`. The shared structured-agent boundary supplies the generation context. For a direct provider call, validate the completed response with `context={'generated_prose': True}`. Literal quotations, paper titles, user drafts, IDs, dataset labels, formulas and tool fields use their original types. Deserializing stored records uses ordinary validation and preserves their recorded wording.
+- For extractive or computed results, call `services.academic_humanizer.humanize` on the generated template before inserting the source quotation, formula or computed value. Exports reuse this result. Keep source text and approved manuscript bodies intact.
+- Plain-text API responses and top-level JSON prose strings pass through `AcademicOutputMiddleware`. UTF-8 streaming text is buffered through a blank-line paragraph boundary and flushed at EOF. For SSE, send generated deltas through `backend.app.academic_output.prose_events` before framing other control events. Tool arguments, attachments and structured JSON remain separate. Oversized streaming paragraphs fall back to verbatim output with a diagnostic.
+
+Regression tests exercise live generation versus cache reads, direct and structured agents, mixed templates, academic invariants, fail-open behavior, split UTF-8, code fences, LaTeX, SSE and local/deployment configuration.
