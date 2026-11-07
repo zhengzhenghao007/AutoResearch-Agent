@@ -112,3 +112,17 @@ test('budget exhausted task continues only after an explicit increase',async()=>
  expect(screen.getByRole('button',{name:'Run next step'})).toBeEnabled();
  expect(screen.getByText('20 / 25 attempts')).toBeVisible();
 });
+
+
+test('shows workflow output with evidence links and withholds stale artifacts',async()=>{
+ const entry={...task,mode:'research' as const,steps:[{...task.steps[0],status:'completed' as const,result:{summary:'Quality checked',gaps:[],evidence_ids:[],artifacts:[{kind:'hypothesis' as const,title:'Measurement drift',text:'Repeat under a held-out setting.',evidence_ids:['ref-1'],source_ids:['paper-1'],status:'proposal' as const}]}}]};
+ vi.mocked(researchApi.researchTasks).mockResolvedValue({items:[entry]});
+ const mounted=render(<ResearchTasks runId={task.run_id} topic={task.question}/>);
+ await screen.findByText('Measurement drift');
+ expect(screen.getByText(/View artifact evidence/)).toBeInTheDocument();
+ mounted.unmount();
+ vi.mocked(researchApi.researchTasks).mockResolvedValue({items:[{...entry,status:'stale'}]});
+ render(<ResearchTasks runId={task.run_id} topic={task.question}/>);
+ await screen.findByText('What fails with missing inputs?');
+ expect(screen.queryByText('Measurement drift')).not.toBeInTheDocument();
+});

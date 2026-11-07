@@ -4,6 +4,7 @@ import {researchApi} from '@/lib/research-api';
 import type {ResearchTask,TaskBudget} from '@/types/research-tasks';
 import type {ResearchRun} from '@/types/research';
 import './research-tasks.css';
+import ResearchReasoning from './ResearchReasoning';
 
 type Props={runId:string;topic:string;papers?:ResearchRun['papers'];readOnly?:boolean;onEvidence?:(id:string)=>void};
 const defaults:TaskBudget={max_steps:20,max_seconds:60,max_evidence:30};
@@ -13,6 +14,7 @@ export default function ResearchTasks(props:Props){return <TaskPanel key={props.
 function TaskPanel({runId,topic,papers=[],readOnly=false,onEvidence}:Props){
  const [items,setItems]=useState<ResearchTask[]>([]),[task,setTask]=useState<ResearchTask|null>(null);
  const [question,setQuestion]=useState(topic),[questions,setQuestions]=useState('');
+ const [mode,setMode]=useState<'evidence'|'research'>('evidence');
  const [budget,setBudget]=useState<TaskBudget>(defaults);
  const [busy,setBusy]=useState(false),[error,setError]=useState(''),[uncertain,setUncertain]=useState(false),[notice,setNotice]=useState('');
  const active=useRef(true),lock=useRef(false),continuing=useRef(false);
@@ -64,7 +66,7 @@ function TaskPanel({runId,topic,papers=[],readOnly=false,onEvidence}:Props){
   await action(async()=>{
    const current=await researchApi.researchTask(runId,task.id);
    if(current.id!==task.id||current.run_id!==runId)throw new Error('Task response does not match this record.');
-   if(active.current&&current.status!=='stale'&&current.steps.some(step=>step.result?.evidence_ids.includes(id)))onEvidence(id);
+   if(active.current&&current.status!=='stale'&&current.steps.some(step=>(step.result?.evidence_ids.includes(id)||step.result?.artifacts?.some(artifact=>artifact.evidence_ids.includes(id)))))onEvidence(id);
    return current;
   },false);
  }
@@ -96,14 +98,15 @@ function TaskPanel({runId,topic,papers=[],readOnly=false,onEvidence}:Props){
   return labels[step.tool]?step.title.replace(/^[^:]+:/,`${labels[step.tool]}:`):step.title;
  }
  return <section className="research-task-panel" aria-label="Research task execution">
-  <header className="task-heading"><div><h3>Plan and follow the evidence</h3><p>Run a bounded research task against this record’s saved papers. Every completed step is saved. This mode uses lexical retrieval, with no model calls or provider charges.</p></div><button disabled={busy} onClick={()=>void refresh()}>Refresh task</button></header>
+  <header className="task-heading"><div><h3>Plan and follow the evidence</h3><p>Run a bounded research task against this record’s saved papers. Every completed step is saved. Choose evidence retrieval or a structured research workflow. Both use saved papers with no model calls or provider charges.</p></div><button disabled={busy} onClick={()=>void refresh()}>Refresh task</button></header>
   {error&&<p role="alert" className="research-error">{error}{uncertain?' Refresh the task before retrying; the last operation may have completed.':''}</p>}
   {notice&&<p role="status">{notice}</p>}
   <details className="task-compose" open={!task}><summary>New research plan</summary>
    <fieldset disabled={locked}><label>Research question<textarea maxLength={2000} value={question} onChange={e=>setQuestion(e.target.value)}/></label>
+    <label>Workflow<select value={mode} onChange={e=>setMode(e.target.value as typeof mode)}><option value="evidence">Evidence retrieval</option><option value="research">Research: matrix, directions, review and quality checks</option></select></label>
     <label>Subquestions (optional, one per line)<textarea maxLength={6000} rows={3} value={questions} onChange={e=>setQuestions(e.target.value)} placeholder="Which assumptions are required?"/></label>
     <p className="research-meta">Up to 6 specific subquestions. Leave empty for an inspectable evidence plan derived from the question. Creating a plan does not execute it.</p>
-    <button disabled={!question.trim()||subquestions.length>6||!validBudget||items.length>=20} onClick={()=>void action(()=>researchApi.createResearchTask(runId,{question:question.trim(),subquestions,budget}))}>Create research plan</button>
+    <button disabled={!question.trim()||subquestions.length>6||!validBudget||items.length>=20} onClick={()=>void action(()=>researchApi.createResearchTask(runId,{question:question.trim(),subquestions,budget,mode}))}>Create research plan</button>
    </fieldset>
   </details>
   <details className="task-settings"><summary>Task limits and budget</summary><fieldset className="task-budget" disabled={locked}><legend>Task limits</legend>
@@ -118,12 +121,14 @@ function TaskPanel({runId,topic,papers=[],readOnly=false,onEvidence}:Props){
    <div className="execution-progress"><label>Overall progress <progress max={task.steps.length||1} value={task.steps.filter(step=>step.status==='completed').length}/></label><p>{task.steps.find(step=>step.status==='running')?.title??task.steps.find(step=>step.status==='pending')?.title??'All available steps finished'}</p></div>
    <div className="task-state"><strong>{task.status.replaceAll('_',' ')}</strong><span>{task.steps.filter(s=>s.status==='completed').length} / {task.steps.length} checkpoints</span><span>{task.usage.steps} / {task.budget.max_steps} attempts</span><span>{task.usage.seconds.toFixed(2)} / {task.budget.max_seconds}s</span><span>{task.usage.evidence} / {task.budget.max_evidence} evidence items</span></div>
    {task.stop_reason&&<p className="research-notice">{task.stop_reason}</p>}
+   <button disabled={locked||!question.trim()||!validBudget||items.length>=20} onClick={()=>void action(()=>researchApi.createResearchTask(runId,{question:question.trim(),subquestions,budget,mode,parent_task_id:task.id}))}>Replan with current question</button>
    <div className="task-actions" aria-label="Research task reports"><button disabled={busy} onClick={()=>void downloadReport('markdown')}>Download task report (Markdown)</button><button disabled={busy} onClick={()=>void downloadReport('json')}>Download task report (JSON)</button></div>
    <p className="research-meta">Export working notes with quotations, source pages, gaps and budget usage. These are not approved manuscripts. Changed sources withhold quotations.</p>
    <div className="task-actions"><button disabled={locked||!resumable(task)} onClick={()=>void execute(false)}>Run next step</button><button disabled={locked||!resumable(task)} onClick={()=>void execute(true)}>Continue task</button>{busy&&<button onClick={()=>{continuing.current=false;setNotice('Will stop requesting steps after the current step is saved.');}}>Pause after this step</button>}<button disabled={locked||['cancelled','completed','incomplete','stale','failed'].includes(task.status)} onClick={()=>void action(()=>researchApi.cancelResearchTask(runId,task.id))}>Cancel task</button></div>
    <div className="task-plan"><section><h4>Evidence questions</h4><ol>{task.subquestions.map(q=><li key={q.id}><strong>{q.question}</strong><ul>{q.requirements.map((r,i)=><li key={i}>{r}</li>)}</ul></li>)}</ol></section>
-    <section><h4>Execution checkpoints</h4>{task.steps.map(step=><details key={step.id} className="task-step"><summary><span>{stepLabel(step)}</span><small>{step.status} · {step.attempts} attempts</small></summary><p className="research-meta">{step.depends_on.length?'Starts after its evidence search checkpoint.':'Runs against the saved source snapshot.'}</p>{step.result?<><p>{step.result.summary}</p>{step.result.gaps.length>0&&<ul className="task-gaps">{step.result.gaps.map((gap,i)=><li key={i}>{gap}</li>)}</ul>}{step.result.evidence_ids.map(id=><button key={id} disabled={busy||!onEvidence||task.status==='stale'} onClick={()=>void inspectEvidence(id)}>Inspect evidence {evidenceLabel(id)}</button>)}</>:<p>No committed result yet.</p>}</details>)}</section></div>
+    <section><h4>Execution checkpoints</h4>{task.steps.map(step=><details key={step.id} className="task-step"><summary><span>{stepLabel(step)}</span><small>{step.status} · {step.attempts} attempts</small></summary><p className="research-meta">{step.depends_on.length?'Starts after its evidence search checkpoint.':'Runs against the saved source snapshot.'}</p>{step.result?<><p>{step.result.summary}</p>{step.result.gaps.length>0&&<ul className="task-gaps">{step.result.gaps.map((gap,i)=><li key={i}>{gap}</li>)}</ul>}{task.status!=='stale'&&step.result.artifacts?.map((artifact,index)=><article key={index}><h5>{artifact.title}</h5><p className="research-meta">{artifact.kind} / {artifact.status.replaceAll('_',' ')}</p><p style={{whiteSpace:'pre-wrap'}}>{artifact.text}</p><p>Sources: {artifact.source_ids.map(id=>papers.find(p=>p.document.source.id===id)?.document.source.title??id).join(', ')||'None linked'}</p>{artifact.evidence_ids.map(id=><button key={id} disabled={busy||!onEvidence} onClick={()=>void inspectEvidence(id)}>View artifact evidence {evidenceLabel(id)}</button>)}</article>)}{step.result.evidence_ids.map(id=><button key={id} disabled={busy||!onEvidence||task.status==='stale'} onClick={()=>void inspectEvidence(id)}>Inspect evidence {evidenceLabel(id)}</button>)}</>:<p>No committed result yet.</p>}</details>)}</section></div>
    <details className="task-events"><summary>Execution history and source binding</summary><p>Source snapshot: <code>{task.source_sha256}</code></p><p>Model input tokens: {task.usage.input_tokens}; output tokens: {task.usage.output_tokens}; provider cost: ${task.usage.cost_usd.toFixed(2)}. Source linkage does not establish scientific validity.</p><ol>{task.events.map((event,i)=><li key={i}><time>{event.at}</time> {event.message}</li>)}</ol></details>
   </>}
+ <ResearchReasoning runId={runId} topic={topic} readOnly={readOnly} onEvidence={onEvidence}/>
  </section>;
 }

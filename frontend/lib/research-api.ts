@@ -1,3 +1,5 @@
+import type {AcquiredPaper,AcquisitionSelection} from '@/types/metadata-search';
+import type {ReasoningRecord} from '@/types/research-reasoning';
 import type {ProtocolState,ProtocolFields,ReviewProtocol} from '@/types/review-protocol';
 import type {LiteraturePacket} from '@/types/literature-packet';
 import type {SearchBatch,SearchProvider} from '@/types/metadata-search';
@@ -60,6 +62,11 @@ async function request<T>(path: string, init?: RequestInit, binary = false, time
 }
 const json = (body: unknown): RequestInit => ({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 export const researchApi = {
+ acquisitionHistory:(id:string)=>request<AcquiredPaper[]>(`/runs/${encodeURIComponent(id)}/paper-acquisitions`),
+ acquirePapers:(id:string,selections:AcquisitionSelection[])=>request<AcquiredPaper[]>(`/runs/${encodeURIComponent(id)}/paper-acquisitions`,json({selections})),
+ importAcquired:(id:string,item:string)=>request<ResearchRun>(`/runs/${encodeURIComponent(id)}/paper-acquisitions/${encodeURIComponent(item)}/import`,json({})),
+ reasoningHistory:(id:string)=>request<{items:ReasoningRecord[]}>(`/runs/${encodeURIComponent(id)}/reasoning`),
+ generateReasoning:(id:string,body:{question:string;allow_model:boolean;max_output_tokens:number})=>request<ReasoningRecord>(`/runs/${encodeURIComponent(id)}/reasoning`,json(body)),
  researchSkills:(id:string)=>request<{items:{id:string;version:number;description:string;permissions:string[]}[]}>(`/runs/${encodeURIComponent(id)}/tasks/skills`),
  reviewProtocol:(id:string)=>request<ProtocolState>(`/runs/${encodeURIComponent(id)}/review-protocol`),
  saveReviewProtocol:(id:string,fields:ProtocolFields,revision:number)=>request<ReviewProtocol>(`/runs/${encodeURIComponent(id)}/review-protocol`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...fields,expected_revision:revision})}),

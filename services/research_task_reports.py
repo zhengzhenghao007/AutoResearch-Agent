@@ -4,20 +4,20 @@ import re
 
 from schemas.research import ResearchRun
 from schemas.research_tasks import ResearchTask
-from services.research_tasks import source_hash
+from services.research_tasks import task_source_hash
 
 
 def build_task_report(task: ResearchTask, run: ResearchRun) -> dict:
     if task.run_id != run.id:
         raise ValueError('Task belongs to another research record')
-    current = task.status != 'stale' and task.source_sha256 == source_hash(run)
+    current = task.status != 'stale' and task.source_sha256 == task_source_hash(run, task.mode)
     warnings = ['Working notes only. Lexical relevance and literal source checks do not establish scientific validity.']
     if not current:
         warnings.append('Saved sources changed. Quotations are withheld; checkpoint IDs remain for audit. Create a new task.')
     questions = []
     for question in task.subquestions:
         steps = [step for step in task.steps if step.question_id == question.id]
-        retrieval = next((s for s in steps if s.tool == 'lexical_retrieve'), None)
+        retrieval = next((s for s in steps if s.tool in ('lexical_retrieve', 'research_retrieve')), None)
         inspection = next((s for s in steps if s.tool == 'inspect_sources'), None)
         checked = inspection is not None and inspection.status == 'completed' and inspection.result is not None
         selected = inspection if checked else retrieval
@@ -44,9 +44,15 @@ def build_task_report(task: ResearchTask, run: ResearchRun) -> dict:
         questions.append(dict(id=question.id, question=question.question, requirements=question.requirements,
                               inspection_status=inspection.status if inspection else 'not_planned',
                               evidence_ids=ids, evidence=evidence, gaps=gaps))
+    snapshot = task.model_dump(mode='json')
+    if not current:
+        for step in snapshot['steps']:
+            if step['result']:
+                step['result']['artifacts'] = []
     return dict(schema_version=1, report_kind='research_task_working_notes', scientific_validation='not_assessed',
                 source_status='current' if current else 'stale', warnings=warnings,
-                task=task.model_dump(mode='json'), questions=questions)
+                task=snapshot, questions=questions,
+                artifacts=[a.model_dump(mode='json') for s in task.steps if s.result for a in s.result.artifacts] if current else [])
 
 
 def _literal(value) -> str:
@@ -88,6 +94,11 @@ def render_task_report(report: dict) -> str:
                           'Source SHA256: ' + _literal(item['source_sha256'])])
         lines.extend(['', 'Checkpoint evidence IDs: ' + (', '.join(_literal(i) for i in question['evidence_ids']) or 'none')])
         lines.extend('- Gap: ' + _literal(gap) for gap in question['gaps'])
+    if report.get('artifacts'):
+        lines.extend(['', '## Research artifacts', ''])
+        for artifact in report['artifacts']:
+            lines.extend(['### '+_literal(artifact['title']), _literal(artifact['status']), _literal(artifact['text']),
+                          'Evidence: '+', '.join(_literal(e) for e in artifact['evidence_ids']), ''])
     lines.extend(['', '## Execution checkpoints', ''])
     for step in task['steps']:
         lines.append(f"- {_literal(step['title'])}: {_literal(step['status'])}; attempts {step['attempts']}")
