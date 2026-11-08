@@ -103,4 +103,3 @@ if __name__ == "__main__":
     result = run_case(args.pdf_dir, args.private_store)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"{result['status']} | {len(result['sources'])} sources | {len(result['steps'])} steps")
-

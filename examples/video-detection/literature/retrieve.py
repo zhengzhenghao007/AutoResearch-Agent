@@ -145,7 +145,3 @@ if __name__ == '__main__':
             except Exception as exc:
                 coverage.append(dict(arxiv_id=i,error=str(exc)))
             write(HERE/'fulltext-coverage.json',coverage)
-
-
-
-

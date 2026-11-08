@@ -15,7 +15,8 @@ def load(name):
 
 def main():
     subprocess.run([sys.executable, str(HERE / "experiment/analyze.py")], check=True)
-    methods = load("experiment/results.json")["methods"]
+    quantitative = load("experiment/results.json")
+    methods = quantitative["methods"]
     papers = load("literature/papers.json")
     sources = {p["id"]: p for p in papers}
     if len(sources) != len(papers) or len(papers) < 20:
@@ -24,7 +25,6 @@ def main():
         if not all(paper.get(k) for k in ("authors", "title", "year", "url")):
             raise ValueError(paper["id"])
     receipt = load("workflow/run.json")
-    quantitative = load("experiment/results.json")
     pdf_hashes = {source["sha256"] for source in receipt["sources"]}
     if quantitative["source_pdf_sha256"] not in pdf_hashes:
         raise ValueError("Table 4 source does not match an ingested PDF")
@@ -42,6 +42,15 @@ def main():
     d = methods["Our D3"]["excluding_pika"]
     winner = max(methods, key=lambda m: methods[m]["excluding_pika"]["worst_ap"])
     floor = methods[winner]["excluding_pika"]["worst_ap"]
+    # This manuscript interprets a specific published table. Refuse stale conclusions
+    # if someone substitutes a different dataset and replays the frozen study.
+    primary_rank = sorted(methods, key=lambda m: methods[m]["excluding_pika"]["macro_ap"], reverse=True)
+    all_six_leader = max(methods, key=lambda m: methods[m]["all_six"]["macro_ap"])
+    weakest = min(methods, key=lambda m: methods[m]["excluding_pika"]["worst_ap"])
+    if (primary_rank[:2] != ["Our D3", "FID"] or all_six_leader != "FID"
+            or weakest != "Our D3" or d["worst_generator"] != "T2VZ"):
+        raise ValueError("Changed observations require review of the manuscript conclusions")
+
     def cite(key):
         p = sources["arxiv-" + key]
         return f"[{p['authors'][0]} et al. ({p['year']})]({p['url']})"
