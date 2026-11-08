@@ -1,0 +1,82 @@
+[
+  {
+    "id": "arxiv-2404.15955",
+    "page": 8,
+    "url": "https://arxiv.org/pdf/2404.15955#page=8",
+    "locator": "Tables 7–8",
+    "note": "In a four-generator leave-one-out experiment, mean MISLnet AUC was 0.990 on seen sources and 0.727 on the held-out source.",
+    "limitation": "These four generators share one experimental pipeline. The figures are not a population estimate."
+  },
+  {
+    "id": "arxiv-2404.15955",
+    "page": 8,
+    "url": "https://arxiv.org/pdf/2404.15955#page=8",
+    "locator": "Tables 7 and 9",
+    "note": "For Sora, MISLnet AUC rose from 0.530 zero-shot to 0.982 after generator-specific fine-tuning on less than a minute of separate footage.",
+    "limitation": "Sora's test subset contained 38 clips. Adaptation assumes labeled access to the new generator."
+  },
+  {
+    "id": "arxiv-2403.16638",
+    "page": 4,
+    "url": "https://arxiv.org/pdf/2403.16638#page=4",
+    "locator": "Table III",
+    "note": "AIGVDet achieved 82.3% accuracy and 0.921 AUC on Sora compared with 95.1% and 1.000 on its training-generator family, Moonvalley.",
+    "limitation": "Reported results concern this dataset and decision threshold. Training and preprocessing differ from MISLnet."
+  },
+  {
+    "id": "arxiv-2403.16638",
+    "page": 4,
+    "url": "https://arxiv.org/pdf/2403.16638#page=4",
+    "locator": "Figure 3 and section III.D",
+    "note": "Both classes underwent H.264 recompression at CRFs 0, 18, 23 and 28. Across six text-to-video generator subsets, the authors report accuracy above 80% and AUC above 0.88.",
+    "limitation": "This stress test omits the Sora subset and other codecs."
+  },
+  {
+    "id": "arxiv-2501.11340",
+    "page": 4,
+    "url": "https://arxiv.org/pdf/2501.11340#page=4",
+    "locator": "Table 3",
+    "note": "VideoSwin-Tiny trained on Pika achieved 96.93% top-1 accuracy on Pika and 54.66% on SVD.",
+    "limitation": "Single-generator training and this specific generator pair define the comparison."
+  },
+  {
+    "id": "arxiv-2501.11340",
+    "page": 4,
+    "url": "https://arxiv.org/pdf/2501.11340#page=4",
+    "locator": "Table 4",
+    "note": "For the two source-pair groups, mean scores fell from 61.81 to 56.71 and from 67.79 to 61.27 when changing generation sources.",
+    "limitation": "Source and generator identities are separate experimental variables."
+  },
+  {
+    "id": "arxiv-2503.06624",
+    "page": 5,
+    "url": "https://arxiv.org/pdf/2503.06624#page=5",
+    "locator": "Table 3",
+    "note": "On Chameleon, the authors report DeMamba accuracy of 0.8069 and AUC of 0.9263. TALL obtained 0.7726 and 0.8507, respectively.",
+    "limitation": "These figures apply to the Chameleon evaluation. No operational false-alarm rate follows from AUC alone."
+  },
+  {
+    "id": "arxiv-2503.06624",
+    "page": 5,
+    "url": "https://arxiv.org/pdf/2503.06624#page=5",
+    "locator": "Section 4.3",
+    "note": "The backtracking experiment asks which authentic source footage corresponds to a synthetic query. Random temporal cropping tests retrieval under partial overlap.",
+    "limitation": "Backtracking measures source retrieval and differs from binary authenticity classification."
+  },
+  {
+    "id": "arxiv-2508.00701",
+    "page": 4,
+    "url": "https://openaccess.thecvf.com/content/ICCV2025/papers/Zheng_D3_Training-Free_AI-Generated_Video_Detection_Using_Second-Order_Features_ICCV_2025_paper.pdf#page=4",
+    "locator": "Section 4.1",
+    "note": "The D3 implementation samples eight frames per second from at most two seconds of video, extracts XCLIP-B/16 features and measures successive feature distances.",
+    "limitation": "Implementations using pixel differences or another encoder test a different detector."
+  },
+  {
+    "id": "arxiv-2508.00701",
+    "page": 5,
+    "url": "https://openaccess.thecvf.com/content/ICCV2025/papers/Zheng_D3_Training-Free_AI-Generated_Video_Detection_Using_Second-Order_Features_ICCV_2025_paper.pdf#page=5",
+    "locator": "Table 1",
+    "note": "Across ten GenVideo generator subsets, D3 achieved 98.46% mean average precision. The largest baseline mean in the table was 88.07% for FID.",
+    "limitation": "AP depends on class prevalence. This aggregate does not establish an operational threshold or a false-positive rate."
+  }
+]
