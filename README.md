@@ -8,11 +8,21 @@
 
 On five video generators, D3 had the highest mean average precision (86.328%), yet reached only 45.11% on Text2Video-Zero. NPR had the strongest worst-generator score (70.79%). This public study traces those findings to a published ICCV table. Its research record includes 23 verified paper identities, five processed full texts, the original measurements and three documented extraction errors. [Read the English paper](examples/video-detection/paper.md) · [Inspect evidence and limitations](examples/video-detection/README.md) · [Watch the results walkthrough](examples/video-detection/case-walkthrough.mp4)
 
-With the project dependencies installed, reproduce the experiment and manuscript offline:
+**Try the study in your browser.** Open a successful run to inspect the replay and download its outputs. Fork the repository to launch the workflow yourself. [Run the example on GitHub](https://github.com/zhengzhenghao007/AutoResearch-Agent/actions/workflows/video-study.yml)
+
+**Reproduce it locally.** From the repository root, Python 3.11 or 3.12 can rebuild the tables and manuscript offline using only the standard library.
 
 ```shell
 python examples/video-detection/reproduce.py
 ```
+
+**Start a fresh search.** With the research environment installed, the following command searches live providers, screens candidate titles, reads accessible PDFs, proposes research questions and writes a report with clickable source pages.
+
+```shell
+python examples/video-detection/live.py --query "AI-generated video detection"
+```
+
+In the recorded live run, arXiv, OpenAlex and Crossref returned 60 records combined. Semantic Scholar returned HTTP 429. The agent imported three papers, built 21 evidence-matrix entries and proposed six hypotheses. All six skills finished, and the report flagged its conclusions for human review. The published English manuscript uses a separately curated and checked corpus. [Inspect the live run](examples/video-detection/live-receipt.json) · [Trace a manuscript claim to its source page](examples/video-detection/literature/evidence.json) · [English tutorial and workflow diagram](examples/video-detection/README.md)
 
 Bring a research question and a small collection of papers. Keep quotations attached to their source pages, compare what the papers report, and develop a draft without losing its evidence. Records and revisions stay on your machine in default local mode.
 

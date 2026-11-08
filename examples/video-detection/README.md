@@ -4,13 +4,25 @@ Read the [English paper](paper.md), inspect its [source observations](experiment
 
 ## Reproduce the result
 
-From the repository root with its Python environment activated:
+For a browser-only replay, open the [GitHub Actions example](https://github.com/zhengzhenghao007/AutoResearch-Agent/actions/workflows/video-study.yml). Open a successful run to see its log. Signed-in users can download the study artifact. To launch your own run, fork the project, enable Actions, and choose **Run workflow** in your fork.
+
+Alternatively, run this from the repository root with Python 3.11 or 3.12:
 
 ```shell
 python examples/video-detection/reproduce.py
 ```
 
-On a fresh checkout, install the project dependencies with `python -m pip install -r requirements.txt` first. Replay reads the frozen observations, checks the conference PDF identity against the native receipt, recalculates every result, validates evidence locators, and writes the English manuscript and research directions after running Academic Humanizer. It runs offline. To ask your own question, start the [workbench](../../docs/local-quickstart.md) and enter your research topic. This replay script reproduces the named study.
+The frozen example uses the Python standard library. Replay reads the frozen observations, checks the conference PDF identity against the native receipt, recalculates every result, validates evidence locators, and writes the English manuscript and research directions after running Academic Humanizer. It runs offline. To ask your own question, start the [workbench](../../docs/local-quickstart.md) and enter your research topic. This replay script reproduces the named study.
+
+## Start a fresh research task
+
+Activate the project environment and install its dependencies. Run the following command to search current literature, rank candidates, acquire PDFs, execute the six research skills and write a source-linked report.
+
+```shell
+python examples/video-detection/live.py --query "AI-generated video detection"
+```
+
+The command prints a unique local output directory. Open `report.md` for the generated hypotheses, evidence matrix, synthesis and unresolved gaps. Inspect `search.json`, `screening.json` and `task.json` for the intermediate decisions. Candidates are ranked by distinct query terms in the title, then provider rank. The runner attempts at most five canonical arXiv downloads and imports up to three readable PDFs. A run with no readable sources exits with an error and retains the search record. Provider availability and rankings can change. [Receipt from a fresh execution](live-receipt.json)
 
 ```mermaid
 flowchart LR

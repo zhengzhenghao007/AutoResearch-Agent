@@ -1,0 +1,32 @@
+name: Reproduce the video detection study
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'examples/video-detection/**'
+      - '.github/workflows/video-study.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'examples/video-detection/**'
+      - '.github/workflows/video-study.yml'
+permissions:
+  contents: read
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Recompute the published study
+        run: python -I -S examples/video-detection/reproduce.py
+      - name: Verify reproducibility
+        run: git diff --exit-code -- examples/video-detection
+      - uses: actions/upload-artifact@v4
+        with:
+          name: video-detection-study
+          path: examples/video-detection/
+          if-no-files-found: error
