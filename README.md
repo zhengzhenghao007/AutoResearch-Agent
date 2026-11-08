@@ -1,124 +1,130 @@
 # AutoResearch-Agent
 
-**A traceable literature research workbench.**
+A local-first research workbench for turning a question and a collection of PDFs into a source-linked literature review. Compare what papers report, inspect the page behind a claim, and write with the evidence beside your draft.
 
-可追溯的文献研究工作台：整理文献、核对原文、比较证据，再形成有出处的草稿。
+[Try the public demo](https://github.com/zhengzhenghao007/AutoResearch-Agent/actions/workflows/video-study.yml) · [Read a generated draft](examples/conformal-prediction/outputs/draft.md) · [Quick start](#quick-start) · [中文使用指南](docs/local-quickstart.md)
 
-## Can AI-generated videos be reliably detected?
+![AutoResearch home showing the research question field, PDF upload and project navigation](docs/images/workbench-home.png)
 
-On five video generators, D3 had the highest mean average precision (86.328%), yet reached only 45.11% on Text2Video-Zero. NPR had the strongest worst-generator score (70.79%). This public study traces those findings to a published ICCV table. Its research record includes 23 verified paper identities, five processed full texts, the original measurements and three documented extraction errors. [Read the English paper](examples/video-detection/paper.md) · [Inspect evidence and limitations](examples/video-detection/README.md) · [Watch the results walkthrough](examples/video-detection/case-walkthrough.mp4)
+## What you can do
 
-**Try the study in your browser.** Open a successful run to inspect the replay and download its outputs. Fork the repository to launch the workflow yourself. [Run the example on GitHub](https://github.com/zhengzhenghao007/AutoResearch-Agent/actions/workflows/video-study.yml)
+| Workspace | Research task |
+|---|---|
+| **Library** | Start with a question, search for papers, or collect PDFs before deciding on a research goal. |
+| **Reading & Evidence** | Inspect extracted quotations beside their source pages. Open the original PDF or request a model-assisted paper outline. |
+| **Compare** | Compare methods, datasets, findings and limitations across papers. Follow an entry back to its evidence or flag a classification for review. |
+| **Data & Figures** | Import CSV or JSON observations, inspect the data, and save tables, figures and experiment notes alongside the literature. |
+| **Writing** | Draft with references open, insert cited material, save revisions and review the manuscript before export. |
 
-**Reproduce it locally.** From the repository root, Python 3.11 or 3.12 can rebuild the tables and manuscript offline using only the standard library.
+## Inside the workbench
+
+**Reading a paper.** Select an extract and inspect its surrounding page before using it in a draft.
+
+![Reading workspace with a selected quotation and its extracted source page](docs/images/workbench-reading.png)
+
+**Comparing papers.** The comparison keeps source references alongside each entry and exposes gaps in the available evidence.
+
+![Comparison of three conformal prediction papers with links to the supporting evidence](docs/images/workbench-comparison.png)
+
+## Research workflow
+
+```mermaid
+flowchart LR
+    Q[Research question] --> L[Search and select papers]
+    P[Import PDFs] --> E[Extract page-linked evidence]
+    L --> E
+    E --> C[Compare findings and gaps]
+    C --> W[Write a cited draft]
+    D[Data and figures] --> W
+    W --> H[Human review]
+    H --> X[Export]
+    H --> E
+```
+
+You can enter any workspace as your project develops. For a bounded agent run, the research assistant can checkpoint a plan, build an evidence matrix, propose hypotheses and record unresolved questions. [Research task guide](docs/research-execution.md)
+
+## Quick start
+
+**Try a result first.** From a checkout, rebuild the video detection paper and its tables with Python 3.11 or 3.12. This example uses only the standard library.
 
 ```shell
 python examples/video-detection/reproduce.py
 ```
 
-**Start a fresh search.** With the research environment installed, the following command searches live providers, screens candidate titles, reads accessible PDFs, proposes research questions and writes a report with clickable source pages.
+**Run the workbench locally.** Install Python 3.11 or 3.12 and Node.js 20.9 or later. The default workflow runs without a model key.
+
+```shell
+git clone https://github.com/zhengzhenghao007/AutoResearch-Agent.git
+cd AutoResearch-Agent
+python -m venv .venv
+```
+
+Activate the environment with `source .venv/bin/activate` on macOS/Linux or `.\.venv\Scripts\Activate.ps1` in PowerShell. In that terminal, install the dependencies and start the API:
+
+```shell
+python -m pip install -r requirements.txt
+npm --prefix frontend ci
+python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --no-proxy-headers
+```
+
+In a second terminal at the repository root, start the frontend:
+
+```shell
+npm --prefix frontend run dev -- --hostname 127.0.0.1 --port 3000
+```
+
+Open [the local workbench](http://127.0.0.1:3000), enter a question or add a PDF. To try a populated workspace, run `python examples/conformal-prediction/reproduce.py --install` in the activated environment and refresh project history. [Local setup guide](docs/local-quickstart.md) · [Authenticated deployment](docs/p5-deployment.md)
+
+## Research in practice
+
+### Can AI-generated videos be reliably detected?
+
+In a reanalysis of published detector scores across five generators, D3 had the highest mean average precision (**86.328%**) but fell to **45.11%** on Text2Video-Zero. NPR achieved the highest minimum (**70.79%**). The study includes 23 verified paper records, five processed full texts, and code to recompute the measurements from the published table. [English paper](examples/video-detection/paper.md) · [Source table](examples/video-detection/experiment/published_table4.csv) · [Page-level evidence](examples/video-detection/literature/evidence.json) · [16-second walkthrough](examples/video-detection/case-walkthrough.mp4)
+
+To run a fresh search in the installed research environment:
 
 ```shell
 python examples/video-detection/live.py --query "AI-generated video detection"
 ```
 
-In the recorded live run, arXiv, OpenAlex and Crossref returned 60 records combined. Semantic Scholar returned HTTP 429. The agent imported three papers, built 21 evidence-matrix entries and proposed six hypotheses. All six skills finished, and the report flagged its conclusions for human review. The published English manuscript uses a separately curated and checked corpus. [Inspect the live run](examples/video-detection/live-receipt.json) · [Trace a manuscript claim to its source page](examples/video-detection/literature/evidence.json) · [English tutorial and workflow diagram](examples/video-detection/README.md)
+A recorded run retrieved 60 metadata records, imported three papers and proposed six hypotheses. Its final report requests human review. The published manuscript draws on a separately curated corpus. [Live execution receipt](examples/video-detection/live-receipt.json) · [English tutorial](examples/video-detection/README.md)
 
-Bring a research question and a small collection of papers. Keep quotations attached to their source pages, compare what the papers report, and develop a draft without losing its evidence. Records and revisions stay on your machine in default local mode.
+### How does conformal prediction handle imperfect inputs?
 
-You can also start without a question: name your project **Research**, collect papers, and add a goal later. Project names, research goals and paper titles stay separate. Optional **Paper quick read** produces a concise outline with clickable source pages using your configured model; it never runs automatically. [Research spaces and quick-read guide](docs/research-spaces.md).
+The offline pipeline processed **three CC BY 4.0 papers**, covering **65 pages** and **262 source-linked quotations**, then generated a comparison and saved a draft. The accompanying audit identifies bibliography entries and misclassified passages that required editorial review. [Automatic draft](examples/conformal-prediction/outputs/draft.md) · [Citation registry](examples/conformal-prediction/outputs/citations.json) · [Error analysis](examples/conformal-prediction/audit.md)
 
-![Reading a real paper beside its extracted source page](docs/images/workbench-reading.png)
+## System architecture
 
-[Explore the complete example](examples/conformal-prediction/README.md) · [中文使用指南](docs/local-quickstart.md) · [Engineering reference](docs/engineering-guide.md)
-
-## One record, five places to work
-
-| Workspace | What you do |
+| Layer | Role |
 |---|---|
-| **Library** | Search arXiv, choose candidates or import PDFs. Reopen saved research from history. |
-| **Reading & evidence** | Select a paper, search its extracts, and inspect a quotation beside its extracted page. |
-| **Compare** | Compare categories across papers. Follow extracts back to evidence; missing material stays visible. |
-| **Data & figures** | Import CSV/JSON observations, inspect rows, preview and save tables or figures, and keep experiment notes. |
-| **Writing** | Keep searchable sources beside the document, insert referenced material into a chapter, save revisions, then explicitly review and approve an export. |
+| [Frontend](frontend/) | Next.js and React workspaces for projects, reading, comparison, figures and writing. |
+| [Backend API](backend/app/) | FastAPI endpoints for project records, uploads, research tasks and exports. |
+| [Agents](agents/) and [pipelines](pipelines/) | Planner, reader and reviewer roles with a model-backed reading and review path. |
+| [Workflows](workflow/) and [services](services/) | Coordinate ingestion, extraction, source checks, skill execution, task budgets and checkpoints. |
+| [Schemas](schemas/) and [evaluation](evaluation/) | Define shared record contracts and exercise evidence checks against fixtures. |
 
-Advanced source checks, screening records and category corrections are available when needed. Local mode opens without a token prompt. The older interface lives separately at `/legacy`.
+[Architecture and data contracts](docs/architecture.md) · [Engineering guide](docs/engineering-guide.md) · [Audit of a real execution](docs/video-detection-architecture-audit.md)
 
-The Library overview highlights truncated papers, missing extraction categories and sources without quotations, with links to inspect each one. Workflow links retain your current stage on reload. Unsaved manuscript and material drafts warn before leaving; save before closing, or explicitly discard edits. Browser crash recovery is not provided.
+## Known limits
 
-The [research studio guide](docs/research-studio.md) walks through data import, saved materials, writing beside sources, and approved ZIP export. Try the [synthetic CSV format example](examples/research-studio/README.md) to exercise the workflow without claiming experimental results.
+- A quotation can match its page and still be misinterpreted. PDF column order, bibliography entries and OCR errors can affect extraction. Researchers review scientific claims and approve exports.
+- The importer accepts PDFs up to 20 MiB and processes up to 50 pages by default. New imports retain the original PDF. Scanned pages use bounded local OCR. [PDF support](docs/scanned-pdf.md)
+- Live searches depend on provider availability. Model-assisted reading requires configuration and can incur provider charges. Experimental findings in the video case come from published observations.
 
-In Writing, expand **Writing coach** for live reference checks, unfinished-draft prompts and research-approach-specific questions. Jump to the affected paragraph or download guidance notes for a supervisor discussion. These offline checks do not assess scientific validity or rewrite your paper. [Guide and public design references](docs/writing-coach.md).
+## Roadmap
 
-See the [public-product comparison and quality review](docs/superpowers/plans/2026-10-27-workbench-quality.md) for the design references, verified improvements and remaining limits.
+Current priorities include improving evidence classification, evaluating semantic support and contradictions, and measuring review quality against human judgments. The roadmap records delivered work and open tasks. [Development roadmap](docs/roadmap.md)
 
-The current product is a research workbench with bounded automation, not a fully autonomous scientist. In Library, expand **Research tasks** to create a structured saved-paper plan, run checkpointed steps and explicitly increase exhausted budgets. [Execution guide](docs/research-execution.md) · [Real-paper evaluation and observed failures](examples/research-execution/README.md) · [Agent capability audit](docs/agent-readiness-review.md).
+## Contributing
 
-## A real example, including what went wrong
+Pick a reproducible problem or an open roadmap item. For a citation issue, include the paper identifier, page and affected claim. For a code change, describe the user-visible behavior and include the relevant test or reproduction command in your pull request.
 
-**How do conformal prediction methods address missing inputs, perturbations and sparse training regions?**
+With the virtual environment active and frontend dependencies installed:
 
-The [worked case](examples/conformal-prediction/README.md) processes three CC BY 4.0 papers through the actual offline pipeline: **65 PDF pages, 262 source-linked quotations, a comparison and a saved manuscript revision**. The corpus is deliberately selected; it is not a systematic review.
-
-![Comparing three papers with links back to evidence](docs/images/workbench-comparison.png)
-
-- [Read the short editorial comparison](examples/conformal-prediction/review-notes.md), separated from automatic output.
-- Inspect the [actual automatic draft](examples/conformal-prediction/outputs/draft.md) and [citation registry](examples/conformal-prediction/outputs/citations.json).
-- Check the [omissions and errors](examples/conformal-prediction/audit.md): misclassified sentences, bibliography noise, missed abstract statements and an oversized PDF rejection.
-- Reproduce using [pinned publisher PDFs and licenses](examples/conformal-prediction/sources.json), or install the checked-in record without downloads.
-
-Every saved quote matches its extracted page. **That is traceability, not proof of correct interpretation.** The example has no fabricated experiments, model calls or human approval. Its final writing artifact is a review draft.
-
-## Quick start
-
-Requires **Python 3.11+ and Node.js 20.9+**. Run from the repository root. No model key is needed for the default workflow.
-
-```powershell
-git clone https://github.com/zhengzhenghao007/AutoResearch-Agent.git
-cd AutoResearch-Agent
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-npm --prefix frontend ci
-
-# Optional: install the real example as a new local research record.
-.\.venv\Scripts\python.exe examples/conformal-prediction/reproduce.py --install
-
-# Terminal 1: local API, no credentials or paid model calls.
-$env:PYTHON_DOTENV_DISABLED='1'
-$env:AUTORESEARCH_DEPLOYMENT='0'
-$env:AUTORESEARCH_STORAGE='json'
-.\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --no-proxy-headers
-```
-
-In a second terminal, from the same repository root:
-
-```powershell
-npm --prefix frontend run dev -- --hostname 127.0.0.1 --port 3000
-```
-
-Open **http://127.0.0.1:3000**. Choose the example in **Your research**, or add your own text-based PDF in **Library**. Start with **Reading & evidence**, then **Compare** and **Writing**. Search requires internet; imported PDFs and the installed example work offline.
-
-For macOS/Linux, use `.venv/bin/python` and `export NAME=value` instead of PowerShell environment syntax. See the [detailed startup guide](docs/local-quickstart.md) for configuration and operation. Keep default local mode on loopback; shared hosting uses the separate [authenticated deployment setup](docs/p5-deployment.md).
-
-## Current boundaries
-
-Rule extraction is reproducible and requires no model, but can miss statements, mix PDF columns and misclassify quotations. The importer accepts PDFs up to 20 MiB and parses at most 50 pages by default. Image-only pages use bounded local OCR (up to 20 pages per upload); recognition may take several minutes and needs manual verification. See [scanned PDF support](docs/scanned-pdf.md). Comparisons do not rank incompatible experiments. The tool does not autonomously run experiments or establish novelty, causality or scientific validity. Human scientific evaluation remains incomplete; the example is not a replacement for it.
-
-Uploaded PDF binaries are not retained: reading shows extracted page text. Observation import supports CSV/JSON, not XLSX. Material search stays within the current research record. Optional model-based review is explicit and may incur provider costs. See [data and deployment boundaries](docs/p5-deployment.md) before sharing an instance.
-
-## For contributors
-
-- [Architecture and data contracts](docs/architecture.md)
-- [API, CLI, testing and capability reference](docs/engineering-guide.md)
-- [Roadmap](docs/roadmap.md)
-- [Case reproduction and licensing](examples/conformal-prediction/README.md)
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements-ci.txt
-.\.venv\Scripts\python.exe -m pytest tests -q --allow-hosts=127.0.0.1,::1
+```shell
+python -m pip install -r requirements-ci.txt
+python -m pytest tests -q
 npm --prefix frontend test
-npm --prefix frontend run lint
-npm --prefix frontend run build
 ```
 
-Engineering checks test behavior and provenance contracts. They do not measure the scientific quality of a literature review.
+[Open an issue](https://github.com/zhengzhenghao007/AutoResearch-Agent/issues) · [Test and development reference](docs/engineering-guide.md)
