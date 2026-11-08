@@ -4,6 +4,16 @@
 
 可追溯的文献研究工作台：整理文献、核对原文、比较证据，再形成有出处的草稿。
 
+## Can AI-generated videos be reliably detected?
+
+On five video generators, D3 had the highest mean average precision (86.328%), yet reached only 45.11% on Text2Video-Zero. NPR had the strongest worst-generator score (70.79%). This public study traces those findings to a published ICCV table. Its research record includes 23 verified paper identities, five processed full texts, the original measurements and three documented extraction errors. [Read the English paper](examples/video-detection/paper.md) · [Inspect evidence and limitations](examples/video-detection/README.md) · [Watch the results walkthrough](examples/video-detection/case-walkthrough.mp4)
+
+With the project dependencies installed, reproduce the experiment and manuscript offline:
+
+```shell
+python examples/video-detection/reproduce.py
+```
+
 Bring a research question and a small collection of papers. Keep quotations attached to their source pages, compare what the papers report, and develop a draft without losing its evidence. Records and revisions stay on your machine in default local mode.
 
 You can also start without a question: name your project **Research**, collect papers, and add a goal later. Project names, research goals and paper titles stay separate. Optional **Paper quick read** produces a concise outline with clickable source pages using your configured model; it never runs automatically. [Research spaces and quick-read guide](docs/research-spaces.md).

@@ -1,0 +1,482 @@
+[
+  {
+    "provider": "arxiv",
+    "rank": 1,
+    "title": "HEDGE: Heterogeneous Ensemble for Detection of AI-GEnerated Images in the Wild",
+    "source_id": "http://arxiv.org/abs/2604.03555v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 2,
+    "title": "NTIRE 2026 Challenge on Robust AI-Generated Image Detection in the Wild",
+    "source_id": "http://arxiv.org/abs/2604.11487v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 3,
+    "title": "Sarang at DEFACTIFY 4.0: Detecting AI-Generated Text Using Noised Data and an Ensemble of DeBERTa Models",
+    "source_id": "http://arxiv.org/abs/2502.16857v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 4,
+    "title": "FeatDistill: A Feature Distillation Enhanced Multi-Expert Ensemble Framework for Robust AI-generated Image Detection",
+    "source_id": "http://arxiv.org/abs/2603.21939v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 5,
+    "title": "Assessing Visual Quality of Omnidirectional Videos",
+    "source_id": "http://arxiv.org/abs/1709.06342v4",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 6,
+    "title": "Human vs. AI: A Novel Benchmark and a Comparative Study on the Detection of Generated Images and the Impact of Prompts",
+    "source_id": "http://arxiv.org/abs/2412.09715v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 7,
+    "title": "Making AI-Enhanced Videos: Analyzing Generative AI Use Cases in YouTube Content Creation",
+    "source_id": "http://arxiv.org/abs/2503.03134v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 8,
+    "title": "VideoASMR-Bench: Can AI-Generated ASMR Videos Fool VLMs and Humans?",
+    "source_id": "http://arxiv.org/abs/2512.13281v4",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 9,
+    "title": "Unlocking Vision-Language Models for Video Anomaly Detection via Fine-Grained Prompting",
+    "source_id": "http://arxiv.org/abs/2510.02155v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 10,
+    "title": "Genflow Ad Studio: A Compound AI Architecture for Brand-Aligned, Self-Correcting Video Generation",
+    "source_id": "http://arxiv.org/abs/2605.16748v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 11,
+    "title": "Image and Video Compression with Neural Networks: A Review",
+    "source_id": "http://arxiv.org/abs/1904.03567v2",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 12,
+    "title": "mdok of KInIT: Robustly Fine-tuned LLM for Binary and Multiclass AI-Generated Text Detection",
+    "source_id": "http://arxiv.org/abs/2506.01702v2",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 13,
+    "title": "HumanCentric-Scenes-AI: A Human-Curated Multimodal Dataset of AI-Generated Human-Centric Scenes Across Surveillance, Occupational Portraits, AI-Edited Images, and Short-Form Video",
+    "source_id": "http://arxiv.org/abs/2610.29045v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 14,
+    "title": "Prompting Video-Language Foundation Models with Domain-specific Fine-grained Heuristics for Video Question Answering",
+    "source_id": "http://arxiv.org/abs/2410.09380v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 15,
+    "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+    "source_id": "http://arxiv.org/abs/2501.11340v3",
+    "matched_id": "arxiv-2501.11340",
+    "reason": "Matches an included primary record by normalized title"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 16,
+    "title": "Group Event Detection with a Varying Number of Group Members for Video Surveillance",
+    "source_id": "http://arxiv.org/abs/1503.00082v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 17,
+    "title": "AIS 2024 Challenge on Video Quality Assessment of User-Generated Content: Methods and Results",
+    "source_id": "http://arxiv.org/abs/2404.16205v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 18,
+    "title": "SilverSpeak: Evading AI-Generated Text Detectors using Homoglyphs",
+    "source_id": "http://arxiv.org/abs/2406.11239v3",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 19,
+    "title": "Adaptive Video Encoding For Different Video Codecs",
+    "source_id": "http://arxiv.org/abs/2105.08191v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "arxiv",
+    "rank": 20,
+    "title": "Less is More: Modality-Decoupling for General AIGC Audio-Video Detection",
+    "source_id": "http://arxiv.org/abs/2607.25543v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 1,
+    "title": "DeMamba: AI-generated video detection on million-scale GenVideo benchmark",
+    "source_id": "https://openalex.org/W4399252117",
+    "matched_id": "arxiv-2405.19707",
+    "reason": "Matches an included primary record by normalized title"
+  },
+  {
+    "provider": "openalex",
+    "rank": 2,
+    "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W4406735094",
+    "matched_id": "arxiv-2501.11340",
+    "reason": "Additional record for an included title"
+  },
+  {
+    "provider": "openalex",
+    "rank": 3,
+    "title": "AI-Generated Video Detection via Perceptual Straightening",
+    "source_id": "https://openalex.org/W7196937366",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 4,
+    "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W7137962300",
+    "matched_id": "arxiv-2501.11340",
+    "reason": "Additional record for an included title"
+  },
+  {
+    "provider": "openalex",
+    "rank": 5,
+    "title": "AI-Generated Video Detection via Spatial-Temporal Anomaly Learning",
+    "source_id": "https://openalex.org/W4404195418",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 6,
+    "title": "Skyra: AI-Generated Video Detection via Grounded Artifact Reasoning",
+    "source_id": "https://openalex.org/W7116073493",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 7,
+    "title": "Your One-Stop Solution for AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W7124689123",
+    "matched_id": "arxiv-2601.11035",
+    "reason": "Matches an included primary record by normalized title"
+  },
+  {
+    "provider": "openalex",
+    "rank": 8,
+    "title": "A Cross-Dataset Framework for AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W7161571769",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 9,
+    "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W7128674523",
+    "matched_id": "arxiv-2501.11340",
+    "reason": "Additional record for an included title"
+  },
+  {
+    "provider": "openalex",
+    "rank": 10,
+    "title": "AI-Generated Video Detection via Spatio-Temporal Anomaly Learning",
+    "source_id": "https://openalex.org/W4393213475",
+    "matched_id": "arxiv-2403.16638",
+    "reason": "Matches an included primary record by normalized title"
+  },
+  {
+    "provider": "openalex",
+    "rank": 11,
+    "title": "GenVideoLens: Where LVLMs Fall Short in AI-Generated Video Detection?",
+    "source_id": "https://openalex.org/W7139946370",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 12,
+    "title": "Preserving Forgery Artifacts: AI-Generated Video Detection at Native Scale",
+    "source_id": "https://openalex.org/W7151347064",
+    "matched_id": "arxiv-2604.04634",
+    "reason": "Matches an included primary record by normalized title"
+  },
+  {
+    "provider": "openalex",
+    "rank": 13,
+    "title": "ReConFuse: Reconstruction-Error Guided Semantic Fusion for AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W7163536839",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 14,
+    "title": "Rethinking the Readout: Unlocking Video Backbones for AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W7169782166",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 15,
+    "title": "Compressed-Domain Spatio-Temporal Forensics for AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W7201839694",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 16,
+    "title": "TRACE: Trajectory Representation and Consistency Estimation for AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W7214097983",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 17,
+    "title": "Leveraging Pre-Trained Visual Models for AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W4415310480",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "openalex",
+    "rank": 18,
+    "title": "Dataset Biases and Shortcut Learning in Motion-Based AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W7167069432",
+    "matched_id": "arxiv-2607.00948",
+    "reason": "Matches an included primary record by normalized title"
+  },
+  {
+    "provider": "openalex",
+    "rank": 19,
+    "title": "RobustSora: De-Watermarked Benchmark for Robust AI-Generated Video Detection",
+    "source_id": "https://openalex.org/W4417295121",
+    "matched_id": "arxiv-2512.10248",
+    "reason": "Matches an included primary record by normalized title"
+  },
+  {
+    "provider": "openalex",
+    "rank": 20,
+    "title": "D3: Training-Free AI-Generated Video Detection Using Second-Order Features",
+    "source_id": "https://openalex.org/W7160077529",
+    "matched_id": "arxiv-2508.00701",
+    "reason": "Matches an included primary record by normalized title"
+  },
+  {
+    "provider": "crossref",
+    "rank": 1,
+    "title": "Benchmarking and Improving Perceptual Straightening for Robust AI-Generated Video Detection",
+    "source_id": "10.3390/electronics15153245",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 2,
+    "title": "SiVT: Sentence-Inspired Video Tokenization with MLLM for AI-Generated Video Detection",
+    "source_id": "10.1109/ijcnn69854.2026.11729937",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 3,
+    "title": "AI-Generated Video Detection via Perceptual Straightening",
+    "source_id": "10.52202/085713-0697",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 4,
+    "title": "Table 1: Comparison of AI-generated image detection methods.",
+    "source_id": "10.7717/peerj-cs.3655/table-1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 5,
+    "title": "<scp>AI</scp>\n                    ‐Generated Image and Video Synthesis",
+    "source_id": "10.1002/9781394403158.fmatter",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 6,
+    "title": "Towards Adversarially Robust AI-Generated Image Detection",
+    "source_id": "10.5220/0012816300003885",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 7,
+    "title": "An Empirical Study of AI-Generated Text Detection Tools",
+    "source_id": "10.33140/amlai.04.02.03",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 8,
+    "title": "A Multi-Strategy Approach for AI-Generated Text Detection",
+    "source_id": "10.26615/978-954-452-108-0-003",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 9,
+    "title": "TRI-FusionNet: AI-Generated Video Detection Based on Temporal Alignment",
+    "source_id": "10.1109/dlcv69906.2026.11635413",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 10,
+    "title": "Introduction to\n                    <scp>AI</scp>\n                    ‐generated Image and Video Synthesis",
+    "source_id": "10.1002/9781394403158.ch01",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 11,
+    "title": "AI Generated Text Detection &amp; Source Identification",
+    "source_id": "10.31979/etd.dvr7-kbxs",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 12,
+    "title": "Mind the Rift: Cross-Scale Coupling Mismatch for AI-Generated Video Detection",
+    "source_id": "10.1145/3767308.3835693",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 13,
+    "title": "AI-Generated Video Forgery Detection and Authentication",
+    "source_id": "10.1109/i2ct61223.2024.10543910",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 14,
+    "title": "Video for Using Cloudmesh GAS for Speedy Generation of Hybrid Multi-Cloud Auto Generated AI Services",
+    "source_id": "10.1109/compsac51774.2021.00032/video",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 15,
+    "title": "Towards Multi-Modal Forgery Representation Learning for AI-Generated Video Detection and Localization",
+    "source_id": "10.1109/icip61757.2026.11630089",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 16,
+    "title": "AIGVE-Tool: AI-Generated Video Evaluation Toolkit with Multifaceted Benchmark",
+    "source_id": "10.5220/0014252500004084",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 17,
+    "title": "Inside the Box: A Streamlined Model for AI-Generated News Article Detection",
+    "source_id": "10.26615/978-954-452-108-0-005",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 18,
+    "title": "FROM VIDEO-BASED LEARNING TO CRITICAL ENGAGEMENT WITH AI-GENERATED VIDEO: WHY SYNTHETIC MEDIA REQUIRES A NEW FORM OF EDUCATIONAL LITERACY",
+    "source_id": "10.18173/2354-1075.2026-0092",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 19,
+    "title": "Advanced Detection of AI-Generated Images Through Vision Transformers",
+    "source_id": "10.36227/techrxiv.172556912.28757771/v1",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  },
+  {
+    "provider": "crossref",
+    "rank": 20,
+    "title": "Figure 6: Density plots of AI-generated probability scores for AI-assisted abstracts from each AI text detection tool by LLM.",
+    "source_id": "10.7717/peerj-cs.2953/fig-6",
+    "matched_id": null,
+    "reason": "Outside the curated primary-record set; no full-text eligibility decision"
+  }
+]

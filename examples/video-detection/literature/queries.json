@@ -1,0 +1,2600 @@
+{
+  "id": "98bd5eb86d31437fa8154e5c4606af9f",
+  "run_id": "video-detection-literature",
+  "created_at": "2026-11-08T03:09:05.137969Z",
+  "request": {
+    "query": "AI-generated video detection",
+    "sources": [
+      "arxiv",
+      "openalex",
+      "semantic_scholar",
+      "crossref"
+    ],
+    "limit": 20
+  },
+  "sources": [
+    {
+      "source": "arxiv",
+      "status": "success",
+      "started_at": "2026-11-08T03:08:56.831338Z",
+      "finished_at": "2026-11-08T03:08:57.805993Z",
+      "error": null,
+      "retry_after_seconds": null,
+      "hits": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2604.03555v1",
+          "title": "HEDGE: Heterogeneous Ensemble for Detection of AI-GEnerated Images in the Wild",
+          "authors": [
+            "Fei Wu",
+            "Dagong Lu",
+            "Mufeng Yao",
+            "Xinlei Xu",
+            "Fengjun Guo"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2604.03555v1",
+          "pdf_url": "https://arxiv.org/pdf/2604.03555v1",
+          "year": null,
+          "rank": 1
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2604.11487v1",
+          "title": "NTIRE 2026 Challenge on Robust AI-Generated Image Detection in the Wild",
+          "authors": [
+            "Aleksandr Gushchin",
+            "Khaled Abud",
+            "Ekaterina Shumitskaya",
+            "Artem Filippov",
+            "Georgii Bychkov",
+            "Sergey Lavrushkin",
+            "Mikhail Erofeev",
+            "Anastasia Antsiferova",
+            "Changsheng Chen",
+            "Shunquan Tan",
+            "Radu Timofte",
+            "Dmitry Vatolin",
+            "Chuanbiao Song",
+            "Zijian Yu",
+            "Hao Tan",
+            "Jun Lan",
+            "Zhiqiang Yang",
+            "Yongwei Tang",
+            "Zhiqiang Wu",
+            "Jia Wen Seow",
+            "Hong Vin Koay",
+            "Haodong Ren",
+            "Feng Xu",
+            "Shuai Chen",
+            "Ruiyang Xia",
+            "Qi Zhang",
+            "Yaowen Xu",
+            "Zhaofan Zou",
+            "Hao Sun",
+            "Dagong Lu",
+            "Mufeng Yao",
+            "Xinlei Xu",
+            "Fei Wu",
+            "Fengjun Guo",
+            "Cong Luo",
+            "Hardik Sharma",
+            "Aashish Negi",
+            "Prateek Shaily",
+            "Jayant Kumar",
+            "Sachin Chaudhary",
+            "Akshay Dudhane",
+            "Praful Hambarde",
+            "Amit Shukla",
+            "Zhilin Tu",
+            "Fengpeng Li",
+            "Jiamin Zhang",
+            "Jianwei Fei",
+            "Kemou Li",
+            "Haiwei Wu",
+            "Bilel Benjdira",
+            "Anas M. Ali",
+            "Wadii Boulila",
+            "Chenfan Qu",
+            "Junchi Li"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2604.11487v1",
+          "pdf_url": "https://arxiv.org/pdf/2604.11487v1",
+          "year": null,
+          "rank": 2
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2502.16857v1",
+          "title": "Sarang at DEFACTIFY 4.0: Detecting AI-Generated Text Using Noised Data and an Ensemble of DeBERTa Models",
+          "authors": [
+            "Avinash Trivedi",
+            "Sangeetha Sivanesan"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2502.16857v1",
+          "pdf_url": "https://arxiv.org/pdf/2502.16857v1",
+          "year": null,
+          "rank": 3
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2603.21939v1",
+          "title": "FeatDistill: A Feature Distillation Enhanced Multi-Expert Ensemble Framework for Robust AI-generated Image Detection",
+          "authors": [
+            "Zhilin Tu",
+            "Kemou Li",
+            "Fengpeng Li",
+            "Jianwei Fei",
+            "Jiamin Zhang",
+            "Haiwei Wu"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2603.21939v1",
+          "pdf_url": "https://arxiv.org/pdf/2603.21939v1",
+          "year": null,
+          "rank": 4
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/1709.06342v4",
+          "title": "Assessing Visual Quality of Omnidirectional Videos",
+          "authors": [
+            "Mai Xu",
+            "Chen Li",
+            "Zulin Wang",
+            "Zhenzhong Chen",
+            "Zhenyu Guan"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/1709.06342v4",
+          "pdf_url": "https://arxiv.org/pdf/1709.06342v4",
+          "year": null,
+          "rank": 5
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2412.09715v1",
+          "title": "Human vs. AI: A Novel Benchmark and a Comparative Study on the Detection of Generated Images and the Impact of Prompts",
+          "authors": [
+            "Philipp Moeßner",
+            "Heike Adel"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2412.09715v1",
+          "pdf_url": "https://arxiv.org/pdf/2412.09715v1",
+          "year": null,
+          "rank": 6
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2503.03134v1",
+          "title": "Making AI-Enhanced Videos: Analyzing Generative AI Use Cases in YouTube Content Creation",
+          "authors": [
+            "Torin Anderson",
+            "Shuo Niu"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2503.03134v1",
+          "pdf_url": "https://arxiv.org/pdf/2503.03134v1",
+          "year": null,
+          "rank": 7
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2512.13281v4",
+          "title": "VideoASMR-Bench: Can AI-Generated ASMR Videos Fool VLMs and Humans?",
+          "authors": [
+            "Jiaqi Wang",
+            "Weijia Wu",
+            "Yi Zhan",
+            "Rui Zhao",
+            "Ming Hu",
+            "James Cheng",
+            "Wei Liu",
+            "Philip Torr",
+            "Kevin Qinghong Lin"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2512.13281v4",
+          "pdf_url": "https://arxiv.org/pdf/2512.13281v4",
+          "year": null,
+          "rank": 8
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2510.02155v1",
+          "title": "Unlocking Vision-Language Models for Video Anomaly Detection via Fine-Grained Prompting",
+          "authors": [
+            "Shu Zou",
+            "Xinyu Tian",
+            "Lukas Wesemann",
+            "Fabian Waschkowski",
+            "Zhaoyuan Yang",
+            "Jing Zhang"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2510.02155v1",
+          "pdf_url": "https://arxiv.org/pdf/2510.02155v1",
+          "year": null,
+          "rank": 9
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2605.16748v1",
+          "title": "Genflow Ad Studio: A Compound AI Architecture for Brand-Aligned, Self-Correcting Video Generation",
+          "authors": [
+            "Debanshu Das",
+            "Lavi Nigam",
+            "Sunil Kumar Jang Bahadur",
+            "Gopala Dhar"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2605.16748v1",
+          "pdf_url": "https://arxiv.org/pdf/2605.16748v1",
+          "year": null,
+          "rank": 10
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/1904.03567v2",
+          "title": "Image and Video Compression with Neural Networks: A Review",
+          "authors": [
+            "Siwei Ma",
+            "Xinfeng Zhang",
+            "Chuanmin Jia",
+            "Zhenghui Zhao",
+            "Shiqi Wang",
+            "Shanshe Wang"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/1904.03567v2",
+          "pdf_url": "https://arxiv.org/pdf/1904.03567v2",
+          "year": null,
+          "rank": 11
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2506.01702v2",
+          "title": "mdok of KInIT: Robustly Fine-tuned LLM for Binary and Multiclass AI-Generated Text Detection",
+          "authors": [
+            "Dominik Macko"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2506.01702v2",
+          "pdf_url": "https://arxiv.org/pdf/2506.01702v2",
+          "year": null,
+          "rank": 12
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2610.29045v1",
+          "title": "HumanCentric-Scenes-AI: A Human-Curated Multimodal Dataset of AI-Generated Human-Centric Scenes Across Surveillance, Occupational Portraits, AI-Edited Images, and Short-Form Video",
+          "authors": [
+            "Nima Kamali",
+            "Sana Nasiri",
+            "Negar Kamali"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2610.29045v1",
+          "pdf_url": "https://arxiv.org/pdf/2610.29045v1",
+          "year": null,
+          "rank": 13
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2410.09380v1",
+          "title": "Prompting Video-Language Foundation Models with Domain-specific Fine-grained Heuristics for Video Question Answering",
+          "authors": [
+            "Ting Yu",
+            "Kunhao Fu",
+            "Shuhui Wang",
+            "Qingming Huang",
+            "Jun Yu"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2410.09380v1",
+          "pdf_url": "https://arxiv.org/pdf/2410.09380v1",
+          "year": null,
+          "rank": 14
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2501.11340v3",
+          "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+          "authors": [
+            "Zhenliang Ni",
+            "Qiangyu Yan",
+            "Mouxiao Huang",
+            "Tianning Yuan",
+            "Yehui Tang",
+            "Hailin Hu",
+            "Xinghao Chen",
+            "Yunhe Wang"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2501.11340v3",
+          "pdf_url": "https://arxiv.org/pdf/2501.11340v3",
+          "year": null,
+          "rank": 15
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/1503.00082v1",
+          "title": "Group Event Detection with a Varying Number of Group Members for Video Surveillance",
+          "authors": [
+            "Weiyao Lin",
+            "Ming-Ting Sun",
+            "Radha Poovendran",
+            "Zhengyou Zhang"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/1503.00082v1",
+          "pdf_url": "https://arxiv.org/pdf/1503.00082v1",
+          "year": null,
+          "rank": 16
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2404.16205v1",
+          "title": "AIS 2024 Challenge on Video Quality Assessment of User-Generated Content: Methods and Results",
+          "authors": [
+            "Marcos V. Conde",
+            "Saman Zadtootaghaj",
+            "Nabajeet Barman",
+            "Radu Timofte",
+            "Chenlong He",
+            "Qi Zheng",
+            "Ruoxi Zhu",
+            "Zhengzhong Tu",
+            "Haiqiang Wang",
+            "Xiangguang Chen",
+            "Wenhui Meng",
+            "Xiang Pan",
+            "Huiying Shi",
+            "Han Zhu",
+            "Xiaozhong Xu",
+            "Lei Sun",
+            "Zhenzhong Chen",
+            "Shan Liu",
+            "Zicheng Zhang",
+            "Haoning Wu",
+            "Yingjie Zhou",
+            "Chunyi Li",
+            "Xiaohong Liu",
+            "Weisi Lin",
+            "Guangtao Zhai",
+            "Wei Sun",
+            "Yuqin Cao",
+            "Yanwei Jiang",
+            "Jun Jia",
+            "Zhichao Zhang",
+            "Zijian Chen",
+            "Weixia Zhang",
+            "Xiongkuo Min",
+            "Steve Göring",
+            "Zihao Qi",
+            "Chen Feng"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2404.16205v1",
+          "pdf_url": "https://arxiv.org/pdf/2404.16205v1",
+          "year": null,
+          "rank": 17
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2406.11239v3",
+          "title": "SilverSpeak: Evading AI-Generated Text Detectors using Homoglyphs",
+          "authors": [
+            "Aldan Creo",
+            "Shushanta Pudasaini"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2406.11239v3",
+          "pdf_url": "https://arxiv.org/pdf/2406.11239v3",
+          "year": null,
+          "rank": 18
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2105.08191v1",
+          "title": "Adaptive Video Encoding For Different Video Codecs",
+          "authors": [
+            "Gangadharan Esakki",
+            "Andreas Panayides",
+            "Venkatesh Jatla",
+            "Marios Pattichis"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2105.08191v1",
+          "pdf_url": "https://arxiv.org/pdf/2105.08191v1",
+          "year": null,
+          "rank": 19
+        },
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2607.25543v1",
+          "title": "Less is More: Modality-Decoupling for General AIGC Audio-Video Detection",
+          "authors": [
+            "Jielun Peng",
+            "Yabin Wang",
+            "Yaqi Li",
+            "Jincheng Liu",
+            "Xiaopeng Hong",
+            "Athanasios V. Vasilakos"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2607.25543v1",
+          "pdf_url": "https://arxiv.org/pdf/2607.25543v1",
+          "year": null,
+          "rank": 20
+        }
+      ]
+    },
+    {
+      "source": "openalex",
+      "status": "success",
+      "started_at": "2026-11-08T03:08:57.805993Z",
+      "finished_at": "2026-11-08T03:09:00.970729Z",
+      "error": null,
+      "retry_after_seconds": null,
+      "hits": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4399252117",
+          "title": "DeMamba: AI-generated video detection on million-scale GenVideo benchmark",
+          "authors": [
+            "Haoxing Chen",
+            "Hong Yan",
+            "Zizheng Huang",
+            "Zhuoer Xu",
+            "Zhangxuan Gu",
+            "Yaohui Li",
+            "Jun Lan",
+            "Huijia Zhu",
+            "Jianfu Zhang",
+            "Weiqiang Wang",
+            "Huaxiong Li"
+          ],
+          "doi": "10.1007/s11432-024-4894-0",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4399252117",
+          "pdf_url": "https://arxiv.org/pdf/2405.19707",
+          "year": 2026,
+          "rank": 1
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4406735094",
+          "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+          "authors": [
+            "Zhen-Liang Ni",
+            "Qiangyu Yan",
+            "Mouxiao Huang",
+            "Tianning Yuan",
+            "Yehui Tang",
+            "Hu, Hailin",
+            "Xinghao Chen",
+            "Yunhe Wang"
+          ],
+          "doi": "10.48550/arxiv.2501.11340",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4406735094",
+          "pdf_url": "https://arxiv.org/pdf/2501.11340",
+          "year": 2025,
+          "rank": 2
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7196937366",
+          "title": "AI-Generated Video Detection via Perceptual Straightening",
+          "authors": [
+            "Christian Internò",
+            "Robert Geirhos",
+            "Markus Olhofer",
+            "Sunny Liu",
+            "Barbara Hammer",
+            "David Alexander Klindt"
+          ],
+          "doi": "10.52202/085713-0697",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7196937366",
+          "pdf_url": "https://arxiv.org/pdf/2507.00583",
+          "year": 2025,
+          "rank": 3
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7137962300",
+          "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+          "authors": [
+            "Zhenliang Ni",
+            "Qiangyu Yan",
+            "Mouxiao Huang",
+            "Tianning Yuan",
+            "Yehui Tang",
+            "Hailin Hu",
+            "Xinghao Chen",
+            "Yunhe Wang"
+          ],
+          "doi": "10.1609/aaai.v40i18.38587",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7137962300",
+          "pdf_url": "https://ojs.aaai.org/index.php/AAAI/article/download/38587/42549",
+          "year": 2026,
+          "rank": 4
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4404195418",
+          "title": "AI-Generated Video Detection via Spatial-Temporal Anomaly Learning",
+          "authors": [
+            "Jianfa Bai",
+            "Man Lin",
+            "Gang Cao",
+            "Zijie Lou"
+          ],
+          "doi": "10.1007/978-981-97-8792-0_32",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4404195418",
+          "pdf_url": "",
+          "year": 2024,
+          "rank": 5
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7116073493",
+          "title": "Skyra: AI-Generated Video Detection via Grounded Artifact Reasoning",
+          "authors": [
+            "Li, Yifei",
+            "Zheng, Wenzhao",
+            "Zhang, Yanran",
+            "Sun, Runze",
+            "Zheng, Yu",
+            "Chen, Lei",
+            "Zhou, Jie",
+            "Lu, Jiwen"
+          ],
+          "doi": "10.48550/arxiv.2512.15693",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7116073493",
+          "pdf_url": "https://arxiv.org/pdf/2512.15693",
+          "year": 2025,
+          "rank": 6
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7124689123",
+          "title": "Your One-Stop Solution for AI-Generated Video Detection",
+          "authors": [
+            "Long Ma",
+            "Zihao Xue",
+            "Yan Wang",
+            "Zhiyuan Yan",
+            "Jin Xu",
+            "Xiaorui Jiang",
+            "Haiyang Yu",
+            "Yong Liao",
+            "Zhen Bi"
+          ],
+          "doi": "10.48550/arxiv.2601.11035",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7124689123",
+          "pdf_url": "https://arxiv.org/pdf/2601.11035",
+          "year": 2026,
+          "rank": 7
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7161571769",
+          "title": "A Cross-Dataset Framework for AI-Generated Video Detection",
+          "authors": [
+            "Jaivanth Melanaturu"
+          ],
+          "doi": "10.7302/dspace/29187",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7161571769",
+          "pdf_url": "",
+          "year": 2026,
+          "rank": 8
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7128674523",
+          "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+          "authors": [
+            "Association for Artificial Intelligence 2026",
+            "Xinghao Chen",
+            "Hailin Hu",
+            "Mouxiao Huang",
+            "Zhenliang Ni",
+            "Yehui Tang",
+            "Yunhe Wang",
+            "Qiangyu YAN",
+            "Tianning Yuan"
+          ],
+          "doi": "10.48448/y3xb-xj80",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7128674523",
+          "pdf_url": "",
+          "year": 2026,
+          "rank": 9
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4393213475",
+          "title": "AI-Generated Video Detection via Spatio-Temporal Anomaly Learning",
+          "authors": [
+            "Jianfa Bai",
+            "Man Lin",
+            "Gang Cao"
+          ],
+          "doi": "10.48550/arxiv.2403.16638",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4393213475",
+          "pdf_url": "https://arxiv.org/pdf/2403.16638",
+          "year": 2024,
+          "rank": 10
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7139946370",
+          "title": "GenVideoLens: Where LVLMs Fall Short in AI-Generated Video Detection?",
+          "authors": [
+            "Yueying Zou",
+            "Pei Pei Li",
+            "Zekun Li",
+            "Xinyu Guo",
+            "Xing Cui",
+            "Huaibo Huang",
+            "Ran He"
+          ],
+          "doi": "10.48550/arxiv.2603.18625",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7139946370",
+          "pdf_url": "https://arxiv.org/pdf/2603.18625",
+          "year": 2026,
+          "rank": 11
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7151347064",
+          "title": "Preserving Forgery Artifacts: AI-Generated Video Detection at Native Scale",
+          "authors": [
+            "Zhengcen Li",
+            "Chenyang Jiang",
+            "Hang Zhao",
+            "Shiyang Zhou",
+            "Yunyang Mo",
+            "Feng Gao",
+            "Fan Yang",
+            "Qiben Shan",
+            "Shaocong Wu",
+            "Jingyong Su"
+          ],
+          "doi": "10.48550/arxiv.2604.04634",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7151347064",
+          "pdf_url": "https://arxiv.org/pdf/2604.04634",
+          "year": 2026,
+          "rank": 12
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7163536839",
+          "title": "ReConFuse: Reconstruction-Error Guided Semantic Fusion for AI-Generated Video Detection",
+          "authors": [
+            "Xiaojing Chen",
+            "Xinyu Lu",
+            "Changtao Miao",
+            "Yunfeng Diao"
+          ],
+          "doi": "10.48550/arxiv.2606.04706",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7163536839",
+          "pdf_url": "https://arxiv.org/pdf/2606.04706",
+          "year": 2026,
+          "rank": 13
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7169782166",
+          "title": "Rethinking the Readout: Unlocking Video Backbones for AI-Generated Video Detection",
+          "authors": [
+            "Manni Cui",
+            "Ziheng Qin",
+            "Zian Wang",
+            "Ruiqi Liu",
+            "Dianyuan Zou",
+            "Jianglan Wei",
+            "Han Zhou",
+            "Yu Liu",
+            "J Q Xu",
+            "Wenhao Wang",
+            "Zhenyu Zhang"
+          ],
+          "doi": "10.48550/arxiv.2607.15321",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7169782166",
+          "pdf_url": "https://arxiv.org/pdf/2607.15321",
+          "year": 2026,
+          "rank": 14
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7201839694",
+          "title": "Compressed-Domain Spatio-Temporal Forensics for AI-Generated Video Detection",
+          "authors": [
+            "Wenpeng Mu",
+            "Xiao Han",
+            "Haoran Cui",
+            "Qiang Xu",
+            "Zhongjie Ba",
+            "Tanfeng Sun"
+          ],
+          "doi": "10.1109/dlcv69906.2026.11635513",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7201839694",
+          "pdf_url": "",
+          "year": 2026,
+          "rank": 15
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7214097983",
+          "title": "TRACE: Trajectory Representation and Consistency Estimation for AI-Generated Video Detection",
+          "authors": [
+            "Huangsen Cao",
+            "Hongkang Chu",
+            "Siyao Yu",
+            "Xin Ding",
+            "Jianfeng Dong",
+            "Yongwei Wang"
+          ],
+          "doi": "10.48550/arxiv.2609.25775",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7214097983",
+          "pdf_url": "https://arxiv.org/pdf/2609.25775",
+          "year": 2026,
+          "rank": 16
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4415310480",
+          "title": "Leveraging Pre-Trained Visual Models for AI-Generated Video Detection",
+          "authors": [
+            "Veeramachaneni, Keerthi",
+            "Praveen Tirupattur",
+            "Amrit Singh Bedi",
+            "Mubarak Shah"
+          ],
+          "doi": "10.48550/arxiv.2507.13224",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4415310480",
+          "pdf_url": "https://arxiv.org/pdf/2507.13224",
+          "year": 2025,
+          "rank": 17
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7167069432",
+          "title": "Dataset Biases and Shortcut Learning in Motion-Based AI-Generated Video Detection",
+          "authors": [
+            "Joren Michels",
+            "Lode Jorissen",
+            "Nick Michiels"
+          ],
+          "doi": "10.48550/arxiv.2607.00948",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7167069432",
+          "pdf_url": "https://arxiv.org/pdf/2607.00948",
+          "year": 2026,
+          "rank": 18
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4417295121",
+          "title": "RobustSora: De-Watermarked Benchmark for Robust AI-Generated Video Detection",
+          "authors": [
+            "Zhuo Wang",
+            "Xiliang Liu",
+            "Ligang Sun"
+          ],
+          "doi": "10.48550/arxiv.2512.10248",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4417295121",
+          "pdf_url": "https://arxiv.org/pdf/2512.10248",
+          "year": 2025,
+          "rank": 19
+        },
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7160077529",
+          "title": "D3: Training-Free AI-Generated Video Detection Using Second-Order Features",
+          "authors": [
+            "Chende Zheng",
+            "Ruiqi Suo",
+            "Chenhao Lin",
+            "Zhengyu Zhao",
+            "Le Yang",
+            "S Liu",
+            "Minghui Yang",
+            "Cong Wang",
+            "Chao Shen"
+          ],
+          "doi": "10.1109/iccv51701.2025.01194",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7160077529",
+          "pdf_url": "https://arxiv.org/pdf/2508.00701",
+          "year": 2025,
+          "rank": 20
+        }
+      ]
+    },
+    {
+      "source": "semantic_scholar",
+      "status": "failed",
+      "started_at": "2026-11-08T03:09:00.970729Z",
+      "finished_at": "2026-11-08T03:09:01.370042Z",
+      "error": "Provider returned HTTP 429; retry later.",
+      "retry_after_seconds": 30,
+      "hits": []
+    },
+    {
+      "source": "crossref",
+      "status": "success",
+      "started_at": "2026-11-08T03:09:01.370042Z",
+      "finished_at": "2026-11-08T03:09:05.137969Z",
+      "error": null,
+      "retry_after_seconds": null,
+      "hits": [
+        {
+          "source": "crossref",
+          "source_id": "10.3390/electronics15153245",
+          "title": "Benchmarking and Improving Perceptual Straightening for Robust AI-Generated Video Detection",
+          "authors": [
+            "Xenofon Papougiannakis",
+            "Ruben Tous"
+          ],
+          "doi": "10.3390/electronics15153245",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.3390/electronics15153245",
+          "pdf_url": "",
+          "year": null,
+          "rank": 1
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.1109/ijcnn69854.2026.11729937",
+          "title": "SiVT: Sentence-Inspired Video Tokenization with MLLM for AI-Generated Video Detection",
+          "authors": [
+            "Junjie She",
+            "Peisong He",
+            "Haonan Qiu",
+            "Leyao Zhu",
+            "Weina Niu"
+          ],
+          "doi": "10.1109/ijcnn69854.2026.11729937",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1109/ijcnn69854.2026.11729937",
+          "pdf_url": "",
+          "year": null,
+          "rank": 2
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.52202/085713-0697",
+          "title": "AI-Generated Video Detection via Perceptual Straightening",
+          "authors": [
+            "Christian Internò",
+            "Robert Geirhos",
+            "Markus Olhofer",
+            "Sunny Liu",
+            "Barbara Hammer",
+            "David Klindt"
+          ],
+          "doi": "10.52202/085713-0697",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.52202/085713-0697",
+          "pdf_url": "",
+          "year": null,
+          "rank": 3
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.7717/peerj-cs.3655/table-1",
+          "title": "Table 1: Comparison of AI-generated image detection methods.",
+          "authors": [],
+          "doi": "10.7717/peerj-cs.3655/table-1",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.7717/peerj-cs.3655/table-1",
+          "pdf_url": "",
+          "year": null,
+          "rank": 4
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.1002/9781394403158.fmatter",
+          "title": "<scp>AI</scp>\n                    ‐Generated Image and Video Synthesis",
+          "authors": [],
+          "doi": "10.1002/9781394403158.fmatter",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1002/9781394403158.fmatter",
+          "pdf_url": "",
+          "year": null,
+          "rank": 5
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.5220/0012816300003885",
+          "title": "Towards Adversarially Robust AI-Generated Image Detection",
+          "authors": [
+            "Annan Zou"
+          ],
+          "doi": "10.5220/0012816300003885",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.5220/0012816300003885",
+          "pdf_url": "",
+          "year": null,
+          "rank": 6
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.33140/amlai.04.02.03",
+          "title": "An Empirical Study of AI-Generated Text Detection Tools",
+          "authors": [],
+          "doi": "10.33140/amlai.04.02.03",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.33140/amlai.04.02.03",
+          "pdf_url": "",
+          "year": null,
+          "rank": 7
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.26615/978-954-452-108-0-003",
+          "title": "A Multi-Strategy Approach for AI-Generated Text Detection",
+          "authors": [
+            "Ali Zain",
+            "Sareem Farooqui",
+            "Muhammad Rafi"
+          ],
+          "doi": "10.26615/978-954-452-108-0-003",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.26615/978-954-452-108-0-003",
+          "pdf_url": "",
+          "year": null,
+          "rank": 8
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.1109/dlcv69906.2026.11635413",
+          "title": "TRI-FusionNet: AI-Generated Video Detection Based on Temporal Alignment",
+          "authors": [
+            "Haoran Cui",
+            "Junshan Jin",
+            "Zhenyu Shao"
+          ],
+          "doi": "10.1109/dlcv69906.2026.11635413",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1109/dlcv69906.2026.11635413",
+          "pdf_url": "",
+          "year": null,
+          "rank": 9
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.1002/9781394403158.ch01",
+          "title": "Introduction to\n                    <scp>AI</scp>\n                    ‐generated Image and Video Synthesis",
+          "authors": [
+            "Arvind Mewada",
+            "Mohd. Aquib Ansari",
+            "Shahnawaz Ahmad",
+            "Nagendra Singh"
+          ],
+          "doi": "10.1002/9781394403158.ch01",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1002/9781394403158.ch01",
+          "pdf_url": "",
+          "year": null,
+          "rank": 10
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.31979/etd.dvr7-kbxs",
+          "title": "AI Generated Text Detection &amp; Source Identification",
+          "authors": [
+            "Anjana Priyatham Tatavarthi"
+          ],
+          "doi": "10.31979/etd.dvr7-kbxs",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.31979/etd.dvr7-kbxs",
+          "pdf_url": "",
+          "year": null,
+          "rank": 11
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.1145/3767308.3835693",
+          "title": "Mind the Rift: Cross-Scale Coupling Mismatch for AI-Generated Video Detection",
+          "authors": [
+            "Siyu Li",
+            "Jin Yang",
+            "Weiheng Liang"
+          ],
+          "doi": "10.1145/3767308.3835693",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1145/3767308.3835693",
+          "pdf_url": "",
+          "year": null,
+          "rank": 12
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.1109/i2ct61223.2024.10543910",
+          "title": "AI-Generated Video Forgery Detection and Authentication",
+          "authors": [
+            "Ayush Kumar Tiwari",
+            "Aman Sharma",
+            "Poonam Rayakar",
+            "Manish Kumar Bhavriya",
+            "Nisha"
+          ],
+          "doi": "10.1109/i2ct61223.2024.10543910",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1109/i2ct61223.2024.10543910",
+          "pdf_url": "",
+          "year": null,
+          "rank": 13
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.1109/compsac51774.2021.00032/video",
+          "title": "Video for Using Cloudmesh GAS for Speedy Generation of Hybrid Multi-Cloud Auto Generated AI Services",
+          "authors": [],
+          "doi": "10.1109/compsac51774.2021.00032/video",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1109/compsac51774.2021.00032/video",
+          "pdf_url": "",
+          "year": null,
+          "rank": 14
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.1109/icip61757.2026.11630089",
+          "title": "Towards Multi-Modal Forgery Representation Learning for AI-Generated Video Detection and Localization",
+          "authors": [
+            "Dat Le",
+            "Khoa Nguyen",
+            "Xin Wang",
+            "Shu Hu"
+          ],
+          "doi": "10.1109/icip61757.2026.11630089",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1109/icip61757.2026.11630089",
+          "pdf_url": "",
+          "year": null,
+          "rank": 15
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.5220/0014252500004084",
+          "title": "AIGVE-Tool: AI-Generated Video Evaluation Toolkit with Multifaceted Benchmark",
+          "authors": [
+            "Xinhao Xiang",
+            "Xiao Liu",
+            "Zizhong Li",
+            "Zhuosheng Liu",
+            "Jiawei Zhang"
+          ],
+          "doi": "10.5220/0014252500004084",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.5220/0014252500004084",
+          "pdf_url": "",
+          "year": null,
+          "rank": 16
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.26615/978-954-452-108-0-005",
+          "title": "Inside the Box: A Streamlined Model for AI-Generated News Article Detection",
+          "authors": [
+            "Nsrin Ashraf",
+            "Mariam Labib",
+            "Hamada Nayel"
+          ],
+          "doi": "10.26615/978-954-452-108-0-005",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.26615/978-954-452-108-0-005",
+          "pdf_url": "",
+          "year": null,
+          "rank": 17
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.18173/2354-1075.2026-0092",
+          "title": "FROM VIDEO-BASED LEARNING TO CRITICAL ENGAGEMENT WITH AI-GENERATED VIDEO: WHY SYNTHETIC MEDIA REQUIRES A NEW FORM OF EDUCATIONAL LITERACY",
+          "authors": [
+            "Hanh Van Nguyen",
+            "Quang Xuan Le"
+          ],
+          "doi": "10.18173/2354-1075.2026-0092",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.18173/2354-1075.2026-0092",
+          "pdf_url": "",
+          "year": null,
+          "rank": 18
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.36227/techrxiv.172556912.28757771/v1",
+          "title": "Advanced Detection of AI-Generated Images Through Vision Transformers",
+          "authors": [
+            "Darshan Lamichhane"
+          ],
+          "doi": "10.36227/techrxiv.172556912.28757771/v1",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.36227/techrxiv.172556912.28757771/v1",
+          "pdf_url": "",
+          "year": null,
+          "rank": 19
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.7717/peerj-cs.2953/fig-6",
+          "title": "Figure 6: Density plots of AI-generated probability scores for AI-assisted abstracts from each AI text detection tool by LLM.",
+          "authors": [],
+          "doi": "10.7717/peerj-cs.2953/fig-6",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.7717/peerj-cs.2953/fig-6",
+          "pdf_url": "",
+          "year": null,
+          "rank": 20
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "key": "arxiv:http://arxiv.org/abs/2604.03555v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2604.03555v1",
+          "title": "HEDGE: Heterogeneous Ensemble for Detection of AI-GEnerated Images in the Wild",
+          "authors": [
+            "Fei Wu",
+            "Dagong Lu",
+            "Mufeng Yao",
+            "Xinlei Xu",
+            "Fengjun Guo"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2604.03555v1",
+          "pdf_url": "https://arxiv.org/pdf/2604.03555v1",
+          "year": null,
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1007/s11432-024-4894-0",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4399252117",
+          "title": "DeMamba: AI-generated video detection on million-scale GenVideo benchmark",
+          "authors": [
+            "Haoxing Chen",
+            "Hong Yan",
+            "Zizheng Huang",
+            "Zhuoer Xu",
+            "Zhangxuan Gu",
+            "Yaohui Li",
+            "Jun Lan",
+            "Huijia Zhu",
+            "Jianfu Zhang",
+            "Weiqiang Wang",
+            "Huaxiong Li"
+          ],
+          "doi": "10.1007/s11432-024-4894-0",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4399252117",
+          "pdf_url": "https://arxiv.org/pdf/2405.19707",
+          "year": 2026,
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "key": "doi:10.3390/electronics15153245",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.3390/electronics15153245",
+          "title": "Benchmarking and Improving Perceptual Straightening for Robust AI-Generated Video Detection",
+          "authors": [
+            "Xenofon Papougiannakis",
+            "Ruben Tous"
+          ],
+          "doi": "10.3390/electronics15153245",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.3390/electronics15153245",
+          "pdf_url": "",
+          "year": null,
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2604.11487v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2604.11487v1",
+          "title": "NTIRE 2026 Challenge on Robust AI-Generated Image Detection in the Wild",
+          "authors": [
+            "Aleksandr Gushchin",
+            "Khaled Abud",
+            "Ekaterina Shumitskaya",
+            "Artem Filippov",
+            "Georgii Bychkov",
+            "Sergey Lavrushkin",
+            "Mikhail Erofeev",
+            "Anastasia Antsiferova",
+            "Changsheng Chen",
+            "Shunquan Tan",
+            "Radu Timofte",
+            "Dmitry Vatolin",
+            "Chuanbiao Song",
+            "Zijian Yu",
+            "Hao Tan",
+            "Jun Lan",
+            "Zhiqiang Yang",
+            "Yongwei Tang",
+            "Zhiqiang Wu",
+            "Jia Wen Seow",
+            "Hong Vin Koay",
+            "Haodong Ren",
+            "Feng Xu",
+            "Shuai Chen",
+            "Ruiyang Xia",
+            "Qi Zhang",
+            "Yaowen Xu",
+            "Zhaofan Zou",
+            "Hao Sun",
+            "Dagong Lu",
+            "Mufeng Yao",
+            "Xinlei Xu",
+            "Fei Wu",
+            "Fengjun Guo",
+            "Cong Luo",
+            "Hardik Sharma",
+            "Aashish Negi",
+            "Prateek Shaily",
+            "Jayant Kumar",
+            "Sachin Chaudhary",
+            "Akshay Dudhane",
+            "Praful Hambarde",
+            "Amit Shukla",
+            "Zhilin Tu",
+            "Fengpeng Li",
+            "Jiamin Zhang",
+            "Jianwei Fei",
+            "Kemou Li",
+            "Haiwei Wu",
+            "Bilel Benjdira",
+            "Anas M. Ali",
+            "Wadii Boulila",
+            "Chenfan Qu",
+            "Junchi Li"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2604.11487v1",
+          "pdf_url": "https://arxiv.org/pdf/2604.11487v1",
+          "year": null,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1109/ijcnn69854.2026.11729937",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.1109/ijcnn69854.2026.11729937",
+          "title": "SiVT: Sentence-Inspired Video Tokenization with MLLM for AI-Generated Video Detection",
+          "authors": [
+            "Junjie She",
+            "Peisong He",
+            "Haonan Qiu",
+            "Leyao Zhu",
+            "Weina Niu"
+          ],
+          "doi": "10.1109/ijcnn69854.2026.11729937",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1109/ijcnn69854.2026.11729937",
+          "pdf_url": "",
+          "year": null,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2501.11340",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4406735094",
+          "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+          "authors": [
+            "Zhen-Liang Ni",
+            "Qiangyu Yan",
+            "Mouxiao Huang",
+            "Tianning Yuan",
+            "Yehui Tang",
+            "Hu, Hailin",
+            "Xinghao Chen",
+            "Yunhe Wang"
+          ],
+          "doi": "10.48550/arxiv.2501.11340",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4406735094",
+          "pdf_url": "https://arxiv.org/pdf/2501.11340",
+          "year": 2025,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2502.16857v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2502.16857v1",
+          "title": "Sarang at DEFACTIFY 4.0: Detecting AI-Generated Text Using Noised Data and an Ensemble of DeBERTa Models",
+          "authors": [
+            "Avinash Trivedi",
+            "Sangeetha Sivanesan"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2502.16857v1",
+          "pdf_url": "https://arxiv.org/pdf/2502.16857v1",
+          "year": null,
+          "rank": 3
+        }
+      ]
+    },
+    {
+      "key": "doi:10.52202/085713-0697",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7196937366",
+          "title": "AI-Generated Video Detection via Perceptual Straightening",
+          "authors": [
+            "Christian Internò",
+            "Robert Geirhos",
+            "Markus Olhofer",
+            "Sunny Liu",
+            "Barbara Hammer",
+            "David Alexander Klindt"
+          ],
+          "doi": "10.52202/085713-0697",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7196937366",
+          "pdf_url": "https://arxiv.org/pdf/2507.00583",
+          "year": 2025,
+          "rank": 3
+        },
+        {
+          "source": "crossref",
+          "source_id": "10.52202/085713-0697",
+          "title": "AI-Generated Video Detection via Perceptual Straightening",
+          "authors": [
+            "Christian Internò",
+            "Robert Geirhos",
+            "Markus Olhofer",
+            "Sunny Liu",
+            "Barbara Hammer",
+            "David Klindt"
+          ],
+          "doi": "10.52202/085713-0697",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.52202/085713-0697",
+          "pdf_url": "",
+          "year": null,
+          "rank": 3
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2603.21939v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2603.21939v1",
+          "title": "FeatDistill: A Feature Distillation Enhanced Multi-Expert Ensemble Framework for Robust AI-generated Image Detection",
+          "authors": [
+            "Zhilin Tu",
+            "Kemou Li",
+            "Fengpeng Li",
+            "Jianwei Fei",
+            "Jiamin Zhang",
+            "Haiwei Wu"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2603.21939v1",
+          "pdf_url": "https://arxiv.org/pdf/2603.21939v1",
+          "year": null,
+          "rank": 4
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1609/aaai.v40i18.38587",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7137962300",
+          "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+          "authors": [
+            "Zhenliang Ni",
+            "Qiangyu Yan",
+            "Mouxiao Huang",
+            "Tianning Yuan",
+            "Yehui Tang",
+            "Hailin Hu",
+            "Xinghao Chen",
+            "Yunhe Wang"
+          ],
+          "doi": "10.1609/aaai.v40i18.38587",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7137962300",
+          "pdf_url": "https://ojs.aaai.org/index.php/AAAI/article/download/38587/42549",
+          "year": 2026,
+          "rank": 4
+        }
+      ]
+    },
+    {
+      "key": "doi:10.7717/peerj-cs.3655/table-1",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.7717/peerj-cs.3655/table-1",
+          "title": "Table 1: Comparison of AI-generated image detection methods.",
+          "authors": [],
+          "doi": "10.7717/peerj-cs.3655/table-1",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.7717/peerj-cs.3655/table-1",
+          "pdf_url": "",
+          "year": null,
+          "rank": 4
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/1709.06342v4",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/1709.06342v4",
+          "title": "Assessing Visual Quality of Omnidirectional Videos",
+          "authors": [
+            "Mai Xu",
+            "Chen Li",
+            "Zulin Wang",
+            "Zhenzhong Chen",
+            "Zhenyu Guan"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/1709.06342v4",
+          "pdf_url": "https://arxiv.org/pdf/1709.06342v4",
+          "year": null,
+          "rank": 5
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1002/9781394403158.fmatter",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.1002/9781394403158.fmatter",
+          "title": "<scp>AI</scp>\n                    ‐Generated Image and Video Synthesis",
+          "authors": [],
+          "doi": "10.1002/9781394403158.fmatter",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1002/9781394403158.fmatter",
+          "pdf_url": "",
+          "year": null,
+          "rank": 5
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1007/978-981-97-8792-0_32",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4404195418",
+          "title": "AI-Generated Video Detection via Spatial-Temporal Anomaly Learning",
+          "authors": [
+            "Jianfa Bai",
+            "Man Lin",
+            "Gang Cao",
+            "Zijie Lou"
+          ],
+          "doi": "10.1007/978-981-97-8792-0_32",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4404195418",
+          "pdf_url": "",
+          "year": 2024,
+          "rank": 5
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2412.09715v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2412.09715v1",
+          "title": "Human vs. AI: A Novel Benchmark and a Comparative Study on the Detection of Generated Images and the Impact of Prompts",
+          "authors": [
+            "Philipp Moeßner",
+            "Heike Adel"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2412.09715v1",
+          "pdf_url": "https://arxiv.org/pdf/2412.09715v1",
+          "year": null,
+          "rank": 6
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2512.15693",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7116073493",
+          "title": "Skyra: AI-Generated Video Detection via Grounded Artifact Reasoning",
+          "authors": [
+            "Li, Yifei",
+            "Zheng, Wenzhao",
+            "Zhang, Yanran",
+            "Sun, Runze",
+            "Zheng, Yu",
+            "Chen, Lei",
+            "Zhou, Jie",
+            "Lu, Jiwen"
+          ],
+          "doi": "10.48550/arxiv.2512.15693",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7116073493",
+          "pdf_url": "https://arxiv.org/pdf/2512.15693",
+          "year": 2025,
+          "rank": 6
+        }
+      ]
+    },
+    {
+      "key": "doi:10.5220/0012816300003885",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.5220/0012816300003885",
+          "title": "Towards Adversarially Robust AI-Generated Image Detection",
+          "authors": [
+            "Annan Zou"
+          ],
+          "doi": "10.5220/0012816300003885",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.5220/0012816300003885",
+          "pdf_url": "",
+          "year": null,
+          "rank": 6
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2503.03134v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2503.03134v1",
+          "title": "Making AI-Enhanced Videos: Analyzing Generative AI Use Cases in YouTube Content Creation",
+          "authors": [
+            "Torin Anderson",
+            "Shuo Niu"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2503.03134v1",
+          "pdf_url": "https://arxiv.org/pdf/2503.03134v1",
+          "year": null,
+          "rank": 7
+        }
+      ]
+    },
+    {
+      "key": "doi:10.33140/amlai.04.02.03",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.33140/amlai.04.02.03",
+          "title": "An Empirical Study of AI-Generated Text Detection Tools",
+          "authors": [],
+          "doi": "10.33140/amlai.04.02.03",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.33140/amlai.04.02.03",
+          "pdf_url": "",
+          "year": null,
+          "rank": 7
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2601.11035",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7124689123",
+          "title": "Your One-Stop Solution for AI-Generated Video Detection",
+          "authors": [
+            "Long Ma",
+            "Zihao Xue",
+            "Yan Wang",
+            "Zhiyuan Yan",
+            "Jin Xu",
+            "Xiaorui Jiang",
+            "Haiyang Yu",
+            "Yong Liao",
+            "Zhen Bi"
+          ],
+          "doi": "10.48550/arxiv.2601.11035",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7124689123",
+          "pdf_url": "https://arxiv.org/pdf/2601.11035",
+          "year": 2026,
+          "rank": 7
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2512.13281v4",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2512.13281v4",
+          "title": "VideoASMR-Bench: Can AI-Generated ASMR Videos Fool VLMs and Humans?",
+          "authors": [
+            "Jiaqi Wang",
+            "Weijia Wu",
+            "Yi Zhan",
+            "Rui Zhao",
+            "Ming Hu",
+            "James Cheng",
+            "Wei Liu",
+            "Philip Torr",
+            "Kevin Qinghong Lin"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2512.13281v4",
+          "pdf_url": "https://arxiv.org/pdf/2512.13281v4",
+          "year": null,
+          "rank": 8
+        }
+      ]
+    },
+    {
+      "key": "doi:10.26615/978-954-452-108-0-003",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.26615/978-954-452-108-0-003",
+          "title": "A Multi-Strategy Approach for AI-Generated Text Detection",
+          "authors": [
+            "Ali Zain",
+            "Sareem Farooqui",
+            "Muhammad Rafi"
+          ],
+          "doi": "10.26615/978-954-452-108-0-003",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.26615/978-954-452-108-0-003",
+          "pdf_url": "",
+          "year": null,
+          "rank": 8
+        }
+      ]
+    },
+    {
+      "key": "doi:10.7302/dspace/29187",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7161571769",
+          "title": "A Cross-Dataset Framework for AI-Generated Video Detection",
+          "authors": [
+            "Jaivanth Melanaturu"
+          ],
+          "doi": "10.7302/dspace/29187",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7161571769",
+          "pdf_url": "",
+          "year": 2026,
+          "rank": 8
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2510.02155v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2510.02155v1",
+          "title": "Unlocking Vision-Language Models for Video Anomaly Detection via Fine-Grained Prompting",
+          "authors": [
+            "Shu Zou",
+            "Xinyu Tian",
+            "Lukas Wesemann",
+            "Fabian Waschkowski",
+            "Zhaoyuan Yang",
+            "Jing Zhang"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2510.02155v1",
+          "pdf_url": "https://arxiv.org/pdf/2510.02155v1",
+          "year": null,
+          "rank": 9
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1109/dlcv69906.2026.11635413",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.1109/dlcv69906.2026.11635413",
+          "title": "TRI-FusionNet: AI-Generated Video Detection Based on Temporal Alignment",
+          "authors": [
+            "Haoran Cui",
+            "Junshan Jin",
+            "Zhenyu Shao"
+          ],
+          "doi": "10.1109/dlcv69906.2026.11635413",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1109/dlcv69906.2026.11635413",
+          "pdf_url": "",
+          "year": null,
+          "rank": 9
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48448/y3xb-xj80",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7128674523",
+          "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+          "authors": [
+            "Association for Artificial Intelligence 2026",
+            "Xinghao Chen",
+            "Hailin Hu",
+            "Mouxiao Huang",
+            "Zhenliang Ni",
+            "Yehui Tang",
+            "Yunhe Wang",
+            "Qiangyu YAN",
+            "Tianning Yuan"
+          ],
+          "doi": "10.48448/y3xb-xj80",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7128674523",
+          "pdf_url": "",
+          "year": 2026,
+          "rank": 9
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2605.16748v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2605.16748v1",
+          "title": "Genflow Ad Studio: A Compound AI Architecture for Brand-Aligned, Self-Correcting Video Generation",
+          "authors": [
+            "Debanshu Das",
+            "Lavi Nigam",
+            "Sunil Kumar Jang Bahadur",
+            "Gopala Dhar"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2605.16748v1",
+          "pdf_url": "https://arxiv.org/pdf/2605.16748v1",
+          "year": null,
+          "rank": 10
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1002/9781394403158.ch01",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.1002/9781394403158.ch01",
+          "title": "Introduction to\n                    <scp>AI</scp>\n                    ‐generated Image and Video Synthesis",
+          "authors": [
+            "Arvind Mewada",
+            "Mohd. Aquib Ansari",
+            "Shahnawaz Ahmad",
+            "Nagendra Singh"
+          ],
+          "doi": "10.1002/9781394403158.ch01",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1002/9781394403158.ch01",
+          "pdf_url": "",
+          "year": null,
+          "rank": 10
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2403.16638",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4393213475",
+          "title": "AI-Generated Video Detection via Spatio-Temporal Anomaly Learning",
+          "authors": [
+            "Jianfa Bai",
+            "Man Lin",
+            "Gang Cao"
+          ],
+          "doi": "10.48550/arxiv.2403.16638",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4393213475",
+          "pdf_url": "https://arxiv.org/pdf/2403.16638",
+          "year": 2024,
+          "rank": 10
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/1904.03567v2",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/1904.03567v2",
+          "title": "Image and Video Compression with Neural Networks: A Review",
+          "authors": [
+            "Siwei Ma",
+            "Xinfeng Zhang",
+            "Chuanmin Jia",
+            "Zhenghui Zhao",
+            "Shiqi Wang",
+            "Shanshe Wang"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/1904.03567v2",
+          "pdf_url": "https://arxiv.org/pdf/1904.03567v2",
+          "year": null,
+          "rank": 11
+        }
+      ]
+    },
+    {
+      "key": "doi:10.31979/etd.dvr7-kbxs",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.31979/etd.dvr7-kbxs",
+          "title": "AI Generated Text Detection &amp; Source Identification",
+          "authors": [
+            "Anjana Priyatham Tatavarthi"
+          ],
+          "doi": "10.31979/etd.dvr7-kbxs",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.31979/etd.dvr7-kbxs",
+          "pdf_url": "",
+          "year": null,
+          "rank": 11
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2603.18625",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7139946370",
+          "title": "GenVideoLens: Where LVLMs Fall Short in AI-Generated Video Detection?",
+          "authors": [
+            "Yueying Zou",
+            "Pei Pei Li",
+            "Zekun Li",
+            "Xinyu Guo",
+            "Xing Cui",
+            "Huaibo Huang",
+            "Ran He"
+          ],
+          "doi": "10.48550/arxiv.2603.18625",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7139946370",
+          "pdf_url": "https://arxiv.org/pdf/2603.18625",
+          "year": 2026,
+          "rank": 11
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2506.01702v2",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2506.01702v2",
+          "title": "mdok of KInIT: Robustly Fine-tuned LLM for Binary and Multiclass AI-Generated Text Detection",
+          "authors": [
+            "Dominik Macko"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2506.01702v2",
+          "pdf_url": "https://arxiv.org/pdf/2506.01702v2",
+          "year": null,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1145/3767308.3835693",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.1145/3767308.3835693",
+          "title": "Mind the Rift: Cross-Scale Coupling Mismatch for AI-Generated Video Detection",
+          "authors": [
+            "Siyu Li",
+            "Jin Yang",
+            "Weiheng Liang"
+          ],
+          "doi": "10.1145/3767308.3835693",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1145/3767308.3835693",
+          "pdf_url": "",
+          "year": null,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2604.04634",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7151347064",
+          "title": "Preserving Forgery Artifacts: AI-Generated Video Detection at Native Scale",
+          "authors": [
+            "Zhengcen Li",
+            "Chenyang Jiang",
+            "Hang Zhao",
+            "Shiyang Zhou",
+            "Yunyang Mo",
+            "Feng Gao",
+            "Fan Yang",
+            "Qiben Shan",
+            "Shaocong Wu",
+            "Jingyong Su"
+          ],
+          "doi": "10.48550/arxiv.2604.04634",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7151347064",
+          "pdf_url": "https://arxiv.org/pdf/2604.04634",
+          "year": 2026,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2610.29045v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2610.29045v1",
+          "title": "HumanCentric-Scenes-AI: A Human-Curated Multimodal Dataset of AI-Generated Human-Centric Scenes Across Surveillance, Occupational Portraits, AI-Edited Images, and Short-Form Video",
+          "authors": [
+            "Nima Kamali",
+            "Sana Nasiri",
+            "Negar Kamali"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2610.29045v1",
+          "pdf_url": "https://arxiv.org/pdf/2610.29045v1",
+          "year": null,
+          "rank": 13
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1109/i2ct61223.2024.10543910",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.1109/i2ct61223.2024.10543910",
+          "title": "AI-Generated Video Forgery Detection and Authentication",
+          "authors": [
+            "Ayush Kumar Tiwari",
+            "Aman Sharma",
+            "Poonam Rayakar",
+            "Manish Kumar Bhavriya",
+            "Nisha"
+          ],
+          "doi": "10.1109/i2ct61223.2024.10543910",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1109/i2ct61223.2024.10543910",
+          "pdf_url": "",
+          "year": null,
+          "rank": 13
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2606.04706",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7163536839",
+          "title": "ReConFuse: Reconstruction-Error Guided Semantic Fusion for AI-Generated Video Detection",
+          "authors": [
+            "Xiaojing Chen",
+            "Xinyu Lu",
+            "Changtao Miao",
+            "Yunfeng Diao"
+          ],
+          "doi": "10.48550/arxiv.2606.04706",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7163536839",
+          "pdf_url": "https://arxiv.org/pdf/2606.04706",
+          "year": 2026,
+          "rank": 13
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2410.09380v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2410.09380v1",
+          "title": "Prompting Video-Language Foundation Models with Domain-specific Fine-grained Heuristics for Video Question Answering",
+          "authors": [
+            "Ting Yu",
+            "Kunhao Fu",
+            "Shuhui Wang",
+            "Qingming Huang",
+            "Jun Yu"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2410.09380v1",
+          "pdf_url": "https://arxiv.org/pdf/2410.09380v1",
+          "year": null,
+          "rank": 14
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1109/compsac51774.2021.00032/video",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.1109/compsac51774.2021.00032/video",
+          "title": "Video for Using Cloudmesh GAS for Speedy Generation of Hybrid Multi-Cloud Auto Generated AI Services",
+          "authors": [],
+          "doi": "10.1109/compsac51774.2021.00032/video",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1109/compsac51774.2021.00032/video",
+          "pdf_url": "",
+          "year": null,
+          "rank": 14
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2607.15321",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7169782166",
+          "title": "Rethinking the Readout: Unlocking Video Backbones for AI-Generated Video Detection",
+          "authors": [
+            "Manni Cui",
+            "Ziheng Qin",
+            "Zian Wang",
+            "Ruiqi Liu",
+            "Dianyuan Zou",
+            "Jianglan Wei",
+            "Han Zhou",
+            "Yu Liu",
+            "J Q Xu",
+            "Wenhao Wang",
+            "Zhenyu Zhang"
+          ],
+          "doi": "10.48550/arxiv.2607.15321",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7169782166",
+          "pdf_url": "https://arxiv.org/pdf/2607.15321",
+          "year": 2026,
+          "rank": 14
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2501.11340v3",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2501.11340v3",
+          "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+          "authors": [
+            "Zhenliang Ni",
+            "Qiangyu Yan",
+            "Mouxiao Huang",
+            "Tianning Yuan",
+            "Yehui Tang",
+            "Hailin Hu",
+            "Xinghao Chen",
+            "Yunhe Wang"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2501.11340v3",
+          "pdf_url": "https://arxiv.org/pdf/2501.11340v3",
+          "year": null,
+          "rank": 15
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1109/dlcv69906.2026.11635513",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7201839694",
+          "title": "Compressed-Domain Spatio-Temporal Forensics for AI-Generated Video Detection",
+          "authors": [
+            "Wenpeng Mu",
+            "Xiao Han",
+            "Haoran Cui",
+            "Qiang Xu",
+            "Zhongjie Ba",
+            "Tanfeng Sun"
+          ],
+          "doi": "10.1109/dlcv69906.2026.11635513",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7201839694",
+          "pdf_url": "",
+          "year": 2026,
+          "rank": 15
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1109/icip61757.2026.11630089",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.1109/icip61757.2026.11630089",
+          "title": "Towards Multi-Modal Forgery Representation Learning for AI-Generated Video Detection and Localization",
+          "authors": [
+            "Dat Le",
+            "Khoa Nguyen",
+            "Xin Wang",
+            "Shu Hu"
+          ],
+          "doi": "10.1109/icip61757.2026.11630089",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.1109/icip61757.2026.11630089",
+          "pdf_url": "",
+          "year": null,
+          "rank": 15
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/1503.00082v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/1503.00082v1",
+          "title": "Group Event Detection with a Varying Number of Group Members for Video Surveillance",
+          "authors": [
+            "Weiyao Lin",
+            "Ming-Ting Sun",
+            "Radha Poovendran",
+            "Zhengyou Zhang"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/1503.00082v1",
+          "pdf_url": "https://arxiv.org/pdf/1503.00082v1",
+          "year": null,
+          "rank": 16
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2609.25775",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7214097983",
+          "title": "TRACE: Trajectory Representation and Consistency Estimation for AI-Generated Video Detection",
+          "authors": [
+            "Huangsen Cao",
+            "Hongkang Chu",
+            "Siyao Yu",
+            "Xin Ding",
+            "Jianfeng Dong",
+            "Yongwei Wang"
+          ],
+          "doi": "10.48550/arxiv.2609.25775",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7214097983",
+          "pdf_url": "https://arxiv.org/pdf/2609.25775",
+          "year": 2026,
+          "rank": 16
+        }
+      ]
+    },
+    {
+      "key": "doi:10.5220/0014252500004084",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.5220/0014252500004084",
+          "title": "AIGVE-Tool: AI-Generated Video Evaluation Toolkit with Multifaceted Benchmark",
+          "authors": [
+            "Xinhao Xiang",
+            "Xiao Liu",
+            "Zizhong Li",
+            "Zhuosheng Liu",
+            "Jiawei Zhang"
+          ],
+          "doi": "10.5220/0014252500004084",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.5220/0014252500004084",
+          "pdf_url": "",
+          "year": null,
+          "rank": 16
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2404.16205v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2404.16205v1",
+          "title": "AIS 2024 Challenge on Video Quality Assessment of User-Generated Content: Methods and Results",
+          "authors": [
+            "Marcos V. Conde",
+            "Saman Zadtootaghaj",
+            "Nabajeet Barman",
+            "Radu Timofte",
+            "Chenlong He",
+            "Qi Zheng",
+            "Ruoxi Zhu",
+            "Zhengzhong Tu",
+            "Haiqiang Wang",
+            "Xiangguang Chen",
+            "Wenhui Meng",
+            "Xiang Pan",
+            "Huiying Shi",
+            "Han Zhu",
+            "Xiaozhong Xu",
+            "Lei Sun",
+            "Zhenzhong Chen",
+            "Shan Liu",
+            "Zicheng Zhang",
+            "Haoning Wu",
+            "Yingjie Zhou",
+            "Chunyi Li",
+            "Xiaohong Liu",
+            "Weisi Lin",
+            "Guangtao Zhai",
+            "Wei Sun",
+            "Yuqin Cao",
+            "Yanwei Jiang",
+            "Jun Jia",
+            "Zhichao Zhang",
+            "Zijian Chen",
+            "Weixia Zhang",
+            "Xiongkuo Min",
+            "Steve Göring",
+            "Zihao Qi",
+            "Chen Feng"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2404.16205v1",
+          "pdf_url": "https://arxiv.org/pdf/2404.16205v1",
+          "year": null,
+          "rank": 17
+        }
+      ]
+    },
+    {
+      "key": "doi:10.26615/978-954-452-108-0-005",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.26615/978-954-452-108-0-005",
+          "title": "Inside the Box: A Streamlined Model for AI-Generated News Article Detection",
+          "authors": [
+            "Nsrin Ashraf",
+            "Mariam Labib",
+            "Hamada Nayel"
+          ],
+          "doi": "10.26615/978-954-452-108-0-005",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.26615/978-954-452-108-0-005",
+          "pdf_url": "",
+          "year": null,
+          "rank": 17
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2507.13224",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4415310480",
+          "title": "Leveraging Pre-Trained Visual Models for AI-Generated Video Detection",
+          "authors": [
+            "Veeramachaneni, Keerthi",
+            "Praveen Tirupattur",
+            "Amrit Singh Bedi",
+            "Mubarak Shah"
+          ],
+          "doi": "10.48550/arxiv.2507.13224",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4415310480",
+          "pdf_url": "https://arxiv.org/pdf/2507.13224",
+          "year": 2025,
+          "rank": 17
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2406.11239v3",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2406.11239v3",
+          "title": "SilverSpeak: Evading AI-Generated Text Detectors using Homoglyphs",
+          "authors": [
+            "Aldan Creo",
+            "Shushanta Pudasaini"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2406.11239v3",
+          "pdf_url": "https://arxiv.org/pdf/2406.11239v3",
+          "year": null,
+          "rank": 18
+        }
+      ]
+    },
+    {
+      "key": "doi:10.18173/2354-1075.2026-0092",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.18173/2354-1075.2026-0092",
+          "title": "FROM VIDEO-BASED LEARNING TO CRITICAL ENGAGEMENT WITH AI-GENERATED VIDEO: WHY SYNTHETIC MEDIA REQUIRES A NEW FORM OF EDUCATIONAL LITERACY",
+          "authors": [
+            "Hanh Van Nguyen",
+            "Quang Xuan Le"
+          ],
+          "doi": "10.18173/2354-1075.2026-0092",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.18173/2354-1075.2026-0092",
+          "pdf_url": "",
+          "year": null,
+          "rank": 18
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2607.00948",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7167069432",
+          "title": "Dataset Biases and Shortcut Learning in Motion-Based AI-Generated Video Detection",
+          "authors": [
+            "Joren Michels",
+            "Lode Jorissen",
+            "Nick Michiels"
+          ],
+          "doi": "10.48550/arxiv.2607.00948",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7167069432",
+          "pdf_url": "https://arxiv.org/pdf/2607.00948",
+          "year": 2026,
+          "rank": 18
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2105.08191v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2105.08191v1",
+          "title": "Adaptive Video Encoding For Different Video Codecs",
+          "authors": [
+            "Gangadharan Esakki",
+            "Andreas Panayides",
+            "Venkatesh Jatla",
+            "Marios Pattichis"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2105.08191v1",
+          "pdf_url": "https://arxiv.org/pdf/2105.08191v1",
+          "year": null,
+          "rank": 19
+        }
+      ]
+    },
+    {
+      "key": "doi:10.36227/techrxiv.172556912.28757771/v1",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.36227/techrxiv.172556912.28757771/v1",
+          "title": "Advanced Detection of AI-Generated Images Through Vision Transformers",
+          "authors": [
+            "Darshan Lamichhane"
+          ],
+          "doi": "10.36227/techrxiv.172556912.28757771/v1",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.36227/techrxiv.172556912.28757771/v1",
+          "pdf_url": "",
+          "year": null,
+          "rank": 19
+        }
+      ]
+    },
+    {
+      "key": "doi:10.48550/arxiv.2512.10248",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W4417295121",
+          "title": "RobustSora: De-Watermarked Benchmark for Robust AI-Generated Video Detection",
+          "authors": [
+            "Zhuo Wang",
+            "Xiliang Liu",
+            "Ligang Sun"
+          ],
+          "doi": "10.48550/arxiv.2512.10248",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W4417295121",
+          "pdf_url": "https://arxiv.org/pdf/2512.10248",
+          "year": 2025,
+          "rank": 19
+        }
+      ]
+    },
+    {
+      "key": "arxiv:http://arxiv.org/abs/2607.25543v1",
+      "records": [
+        {
+          "source": "arxiv",
+          "source_id": "http://arxiv.org/abs/2607.25543v1",
+          "title": "Less is More: Modality-Decoupling for General AIGC Audio-Video Detection",
+          "authors": [
+            "Jielun Peng",
+            "Yabin Wang",
+            "Yaqi Li",
+            "Jincheng Liu",
+            "Xiaopeng Hong",
+            "Athanasios V. Vasilakos"
+          ],
+          "doi": null,
+          "doi_status": "missing",
+          "url": "https://arxiv.org/abs/2607.25543v1",
+          "pdf_url": "https://arxiv.org/pdf/2607.25543v1",
+          "year": null,
+          "rank": 20
+        }
+      ]
+    },
+    {
+      "key": "doi:10.1109/iccv51701.2025.01194",
+      "records": [
+        {
+          "source": "openalex",
+          "source_id": "https://openalex.org/W7160077529",
+          "title": "D3: Training-Free AI-Generated Video Detection Using Second-Order Features",
+          "authors": [
+            "Chende Zheng",
+            "Ruiqi Suo",
+            "Chenhao Lin",
+            "Zhengyu Zhao",
+            "Le Yang",
+            "S Liu",
+            "Minghui Yang",
+            "Cong Wang",
+            "Chao Shen"
+          ],
+          "doi": "10.1109/iccv51701.2025.01194",
+          "doi_status": "source_reported",
+          "url": "https://openalex.org/W7160077529",
+          "pdf_url": "https://arxiv.org/pdf/2508.00701",
+          "year": 2025,
+          "rank": 20
+        }
+      ]
+    },
+    {
+      "key": "doi:10.7717/peerj-cs.2953/fig-6",
+      "records": [
+        {
+          "source": "crossref",
+          "source_id": "10.7717/peerj-cs.2953/fig-6",
+          "title": "Figure 6: Density plots of AI-generated probability scores for AI-assisted abstracts from each AI text detection tool by LLM.",
+          "authors": [],
+          "doi": "10.7717/peerj-cs.2953/fig-6",
+          "doi_status": "crossref_registered",
+          "url": "https://doi.org/10.7717/peerj-cs.2953/fig-6",
+          "pdf_url": "",
+          "year": null,
+          "rank": 20
+        }
+      ]
+    }
+  ],
+  "scope": "First page per source; provider relevance order. Exact DOI groups retain all source records. Metadata identity and full-text permission require review."
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "arxiv_id": "2404.15955",
+    "url": "https://arxiv.org/pdf/2404.15955",
+    "sha256": "e9c2445e60c0793c5b8ef34ba01ec308e01c69ae5d09aad9977a7a395fde8750",
+    "total_pages": 12,
+    "extracted_pages": 12
+  },
+  {
+    "arxiv_id": "2405.19707",
+    "error": "PDF exceeds parser limit"
+  },
+  {
+    "arxiv_id": "2403.16638",
+    "url": "https://arxiv.org/pdf/2403.16638",
+    "sha256": "73e05dfdca97255d6607ef5f6190858cb9a33eacfd592829c12311ead36dc6b4",
+    "total_pages": 5,
+    "extracted_pages": 5
+  },
+  {
+    "arxiv_id": "2501.11340",
+    "url": "https://arxiv.org/pdf/2501.11340",
+    "sha256": "717f380e90a5f3e77eaf7138b5bd7028d6c030e69e123dbb7eea7819d5051743",
+    "total_pages": 9,
+    "extracted_pages": 9
+  },
+  {
+    "arxiv_id": "2503.06624",
+    "url": "https://arxiv.org/pdf/2503.06624",
+    "sha256": "da358ef33a9a744744684790f70ef756eeb49ec002e342cfc15600f3aabce876",
+    "total_pages": 10,
+    "extracted_pages": 10
+  },
+  {
+    "arxiv_id": "2406.19568",
+    "error": "PDF exceeds parser limit"
+  },
+  {
+    "arxiv_id": "2607.00948",
+    "error": "PDF exceeds parser limit"
+  }
+]

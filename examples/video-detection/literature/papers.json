@@ -1,0 +1,409 @@
+[
+  {
+    "id": "arxiv-2404.15955",
+    "arxiv_id": "2404.15955",
+    "url": "https://arxiv.org/abs/2404.15955",
+    "title": "Beyond Deepfake Images: Detecting AI-Generated Videos",
+    "authors": [
+      "Danial Samadi Vahdati",
+      "Tai D. Nguyen",
+      "Aref Azizpour",
+      "Matthew C. Stamm"
+    ],
+    "year": 2024,
+    "date": "2024/04/24",
+    "relevance": "Image-to-video transfer, recompression and few-shot adaptation."
+  },
+  {
+    "id": "arxiv-2405.19707",
+    "arxiv_id": "2405.19707",
+    "url": "https://arxiv.org/abs/2405.19707",
+    "title": "DeMamba: AI-Generated Video Detection on Million-Scale GenVideo Benchmark",
+    "authors": [
+      "Haoxing Chen",
+      "Yan Hong",
+      "Zizheng Huang",
+      "Zhuoer Xu",
+      "Zhangxuan Gu",
+      "Yaohui Li",
+      "Jun Lan",
+      "Huijia Zhu",
+      "Jianfu Zhang",
+      "Weiqiang Wang",
+      "Huaxiong Li"
+    ],
+    "year": 2024,
+    "date": "2024/05/30",
+    "relevance": "GenVideo cross-generator and degraded-video evaluations."
+  },
+  {
+    "id": "arxiv-2403.16638",
+    "arxiv_id": "2403.16638",
+    "url": "https://arxiv.org/abs/2403.16638",
+    "title": "AI-Generated Video Detection via Spatio-Temporal Anomaly Learning",
+    "authors": [
+      "Jianfa Bai",
+      "Man Lin",
+      "Gang Cao"
+    ],
+    "year": 2024,
+    "date": "2024/03/25",
+    "relevance": "Joint appearance and optical-flow evidence on GVD."
+  },
+  {
+    "id": "arxiv-2501.11340",
+    "arxiv_id": "2501.11340",
+    "url": "https://arxiv.org/abs/2501.11340",
+    "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+    "authors": [
+      "Zhenliang Ni",
+      "Qiangyu Yan",
+      "Mouxiao Huang",
+      "Tianning Yuan",
+      "Yehui Tang",
+      "Hailin Hu",
+      "Xinghao Chen",
+      "Yunhe Wang"
+    ],
+    "year": 2025,
+    "date": "2025/01/20",
+    "relevance": "Caption-paired benchmark for evaluating cross-generator transfer."
+  },
+  {
+    "id": "arxiv-2503.06624",
+    "arxiv_id": "2503.06624",
+    "url": "https://arxiv.org/abs/2503.06624",
+    "title": "Chameleon: Benchmarking Detection and Backtracking on Commercial-Grade AI-Generated Videos",
+    "authors": [
+      "Xingming Liao",
+      "Meiyu Zeng",
+      "Canyu Chen",
+      "Nankai Lin",
+      "Zhuowei Wang",
+      "Aimin Yang"
+    ],
+    "year": 2025,
+    "date": "2025/03/09",
+    "relevance": "Scene diversity and domain variation as sources of evaluation shift."
+  },
+  {
+    "id": "arxiv-2607.00948",
+    "arxiv_id": "2607.00948",
+    "url": "https://arxiv.org/abs/2607.00948",
+    "title": "Dataset Biases and Shortcut Learning in Motion-Based AI-Generated Video Detection",
+    "authors": [
+      "Joren Michels",
+      "Lode Jorissen",
+      "Nick Michiels"
+    ],
+    "year": 2026,
+    "date": "2026/07/01",
+    "relevance": "Benchmark confounds and shortcut learning in motion-based detectors."
+  },
+  {
+    "id": "arxiv-2508.00701",
+    "arxiv_id": "2508.00701",
+    "url": "https://arxiv.org/abs/2508.00701",
+    "title": "D3: Training-Free AI-Generated Video Detection Using Second-Order Features",
+    "authors": [
+      "Chende Zheng",
+      "Ruiqi suo",
+      "Chenhao Lin",
+      "Zhengyu Zhao",
+      "Le Yang",
+      "Shuai Liu",
+      "Minghui Yang",
+      "Cong Wang",
+      "Chao Shen"
+    ],
+    "year": 2025,
+    "date": "2025/08/01",
+    "relevance": "Training-free second-order temporal-difference baseline, D3."
+  },
+  {
+    "id": "arxiv-2512.10248",
+    "arxiv_id": "2512.10248",
+    "url": "https://arxiv.org/abs/2512.10248",
+    "title": "RobustSora: De-Watermarked Benchmark for Robust AI-Generated Video Detection",
+    "authors": [
+      "Zhuo Wang",
+      "Xiliang Liu",
+      "Ligang Sun"
+    ],
+    "year": 2025,
+    "date": "2025/12/11",
+    "relevance": "Evaluation after removing visible watermark cues."
+  },
+  {
+    "id": "arxiv-2604.04634",
+    "arxiv_id": "2604.04634",
+    "url": "https://arxiv.org/abs/2604.04634",
+    "title": "Preserving Forgery Artifacts: AI-Generated Video Detection at Native Scale",
+    "authors": [
+      "Zhengcen Li",
+      "Chenyang Jiang",
+      "Hang Zhao",
+      "Shiyang Zhou",
+      "Yunyang Mo",
+      "Feng Gao",
+      "Fan Yang",
+      "Qiben Shan",
+      "Shaocong Wu",
+      "Jingyong Su"
+    ],
+    "year": 2026,
+    "date": "2026/04/06",
+    "relevance": "Impact of input resolution and native-scale evidence."
+  },
+  {
+    "id": "arxiv-2405.15343",
+    "arxiv_id": "2405.15343",
+    "url": "https://arxiv.org/abs/2405.15343",
+    "title": "Distinguish Any Fake Videos: Unleashing the Power of Large-scale Data and Motion Features",
+    "authors": [
+      "Lichuan Ji",
+      "Yingqi Lin",
+      "Zhenhua Huang",
+      "Yan Han",
+      "Xiaogang Xu",
+      "Jiafei Wu",
+      "Chong Wang",
+      "Zhe Liu"
+    ],
+    "year": 2024,
+    "date": "2024/05/24",
+    "relevance": "Large-scale motion-feature learning for fake video detection."
+  },
+  {
+    "id": "arxiv-2506.16802",
+    "arxiv_id": "2506.16802",
+    "url": "https://arxiv.org/abs/2506.16802",
+    "title": "Seeing What Matters: Generalizable AI-generated Video Detection with Forensic-Oriented Augmentation",
+    "authors": [
+      "Riccardo Corvi",
+      "Davide Cozzolino",
+      "Ekta Prashnani",
+      "Shalini De Mello",
+      "Koki Nagano",
+      "Luisa Verdoliva"
+    ],
+    "year": 2025,
+    "date": "2025/06/20",
+    "relevance": "Augmentation choices for generalization across generators."
+  },
+  {
+    "id": "arxiv-2601.11035",
+    "arxiv_id": "2601.11035",
+    "url": "https://arxiv.org/abs/2601.11035",
+    "title": "Your One-Stop Solution for AI-Generated Video Detection",
+    "authors": [
+      "Long Ma",
+      "Zihao Xue",
+      "Yan Wang",
+      "Zhiyuan Yan",
+      "Jin Xu",
+      "Xiaorui Jiang",
+      "Haiyang Yu",
+      "Yong Liao",
+      "Zhen Bi"
+    ],
+    "year": 2026,
+    "date": "2026/01/16",
+    "relevance": "Multi-detector benchmark and harmonized evaluation."
+  },
+  {
+    "id": "arxiv-2405.04133",
+    "arxiv_id": "2405.04133",
+    "url": "https://arxiv.org/abs/2405.04133",
+    "title": "Exposing AI-generated Videos: A Benchmark Dataset and a Local-and-Global Temporal Defect Based Detection Method",
+    "authors": [
+      "Peisong He",
+      "Leyao Zhu",
+      "Jiaxing Li",
+      "Shiqi Wang",
+      "Haoliang Li"
+    ],
+    "year": 2024,
+    "date": "2024/05/07",
+    "relevance": "Local and global temporal inconsistencies as forensic features."
+  },
+  {
+    "id": "arxiv-2505.12620",
+    "arxiv_id": "2505.12620",
+    "url": "https://arxiv.org/abs/2505.12620",
+    "title": "BusterX: MLLM-Powered AI-Generated Video Forgery Detection and Explanation",
+    "authors": [
+      "Haiquan Wen",
+      "Yiwei He",
+      "Zhenglin Huang",
+      "Tianxiao Li",
+      "Zihan Yu",
+      "Xingru Huang",
+      "Lu Qi",
+      "Baoyuan Wu",
+      "Xiangtai Li",
+      "Guangliang Cheng"
+    ],
+    "year": 2025,
+    "date": "2025/05/19",
+    "relevance": "Multimodal detector with explanations."
+  },
+  {
+    "id": "arxiv-2605.05895",
+    "arxiv_id": "2605.05895",
+    "url": "https://arxiv.org/abs/2605.05895",
+    "title": "Detecting AI-Generated Videos with Spiking Neural Networks",
+    "authors": [
+      "Minsuk Jang",
+      "Yujin Yang",
+      "Hee-Seon Kim",
+      "Minseok Son",
+      "Younghun Kim",
+      "Changick Kim"
+    ],
+    "year": 2026,
+    "date": "2026/05/07",
+    "relevance": "Temporal residuals and semantic trajectories across generators."
+  },
+  {
+    "id": "arxiv-2506.14827",
+    "arxiv_id": "2506.14827",
+    "url": "https://arxiv.org/abs/2506.14827",
+    "title": "DAVID-XR1: Detecting AI-Generated Videos with Explainable Reasoning",
+    "authors": [
+      "Yifeng Gao",
+      "Yifan Ding",
+      "Hongyu Su",
+      "Juncheng Li",
+      "Yunhan Zhao",
+      "Lin Luo",
+      "Zixing Chen",
+      "Li Wang",
+      "Xin Wang",
+      "Yixu Wang",
+      "Xingjun Ma",
+      "Yu-Gang Jiang"
+    ],
+    "year": 2025,
+    "date": "2025/06/13",
+    "relevance": "Explainable reasoning for generated video detection."
+  },
+  {
+    "id": "arxiv-2607.04607",
+    "arxiv_id": "2607.04607",
+    "url": "https://arxiv.org/abs/2607.04607",
+    "title": "G2VD: Generalizable AI-Generated Video Detection via Counterfactual Intervention and Causal Disentanglement",
+    "authors": [
+      "Meng Du",
+      "Hongchang Chen",
+      "Ran Li",
+      "Junjie Zhang",
+      "Qi Ouyang",
+      "Shibo Zhang",
+      "Shuxin Liu"
+    ],
+    "year": 2026,
+    "date": "2026/07/06",
+    "relevance": "Causal approach to suppressing nuisance factors."
+  },
+  {
+    "id": "arxiv-2610.35148",
+    "arxiv_id": "2610.35148",
+    "url": "https://arxiv.org/abs/2610.35148",
+    "title": "Temporal Slice Learning for AI-Generated Video Detection with 400$\\times$ Fewer FLOPs",
+    "authors": [
+      "Wei Shang",
+      "Zhiyuan Li",
+      "Shengfeng He"
+    ],
+    "year": 2026,
+    "date": "2026/10/26",
+    "relevance": "Efficiency of temporally sliced detection."
+  },
+  {
+    "id": "arxiv-2607.10787",
+    "arxiv_id": "2607.10787",
+    "url": "https://arxiv.org/abs/2607.10787",
+    "title": "Detecting AI-Generated Video: A Vision-Language Dual-View Survey",
+    "authors": [
+      "Dylan Xinming Hou",
+      "Juntian Zhang",
+      "Xu Gu",
+      "Yichen Wu",
+      "Nils Lukas",
+      "Gus Xia",
+      "Xiuying Chen",
+      "Yuhan Liu"
+    ],
+    "year": 2026,
+    "date": "2026/07/12",
+    "relevance": "Survey of visual and language-based approaches."
+  },
+  {
+    "id": "arxiv-2508.21052",
+    "arxiv_id": "2508.21052",
+    "url": "https://arxiv.org/abs/2508.21052",
+    "title": "FakeParts: a New Family of AI-Generated DeepFakes",
+    "authors": [
+      "Ziyi Liu",
+      "Firas Gabetni",
+      "Awais Hussain Sani",
+      "Xi Wang",
+      "Soobash Daiboo",
+      "Gaetan Brison",
+      "Gianni Franchi",
+      "Vicky Kalogeiton"
+    ],
+    "year": 2025,
+    "date": "2025/08/28",
+    "relevance": "Partially generated video manipulations and localization."
+  },
+  {
+    "id": "arxiv-2307.07494",
+    "arxiv_id": "2307.07494",
+    "url": "https://arxiv.org/abs/2307.07494",
+    "title": "TALL: Thumbnail Layout for Deepfake Video Detection",
+    "authors": [
+      "Yuting Xu",
+      "Jian Liang",
+      "Gengyun Jia",
+      "Ziming Yang",
+      "Yanhao Zhang",
+      "Ran He"
+    ],
+    "year": 2023,
+    "date": "2023/07/14",
+    "relevance": "Adjacent face-manipulation study of cross-dataset transfer."
+  },
+  {
+    "id": "arxiv-2002.12749",
+    "arxiv_id": "2002.12749",
+    "url": "https://arxiv.org/abs/2002.12749",
+    "title": "Adversarial Deepfakes: Evaluating Vulnerability of Deepfake Detectors to Adversarial Examples",
+    "authors": [
+      "Shehzeen Hussain",
+      "Paarth Neekhara",
+      "Malhar Jere",
+      "Farinaz Koushanfar",
+      "Julian McAuley"
+    ],
+    "year": 2020,
+    "date": "2020/02/09",
+    "relevance": "Adjacent face-deepfake study of adversarial detector vulnerabilities."
+  },
+  {
+    "id": "arxiv-2004.14491",
+    "arxiv_id": "2004.14491",
+    "url": "https://arxiv.org/abs/2004.14491",
+    "title": "Detecting Deep-Fake Videos from Appearance and Behavior",
+    "authors": [
+      "Shruti Agarwal",
+      "Tarek El-Gaaly",
+      "Hany Farid",
+      "Ser-Nam Lim"
+    ],
+    "year": 2020,
+    "date": "2020/04/29",
+    "relevance": "Adjacent face-deepfake study of behavioral and appearance cues."
+  }
+]

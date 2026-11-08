@@ -1,0 +1,210 @@
+{
+  "source": "https://openaccess.thecvf.com/content/ICCV2025/papers/Zheng_D3_Training-Free_AI-Generated_Video_Detection_Using_Second-Order_Features_ICCV_2025_paper.pdf",
+  "table": 4,
+  "dataset": "VidProM",
+  "unit": "AP percentage points",
+  "source_pdf_sha256": "eae035922f465a8245969a95a7e8d9e06f11ed022b06bb2c11ce4f6a5d265981",
+  "input_csv_sha256": "88e44909c8e50402db87c5804f9adf5b51a556760db604b32b337add49d0a05e",
+  "methods": {
+    "FID": {
+      "published_ap": {
+        "MSE": 91.35,
+        "OS": 87.68,
+        "Pika": 99.59,
+        "ST2V": 97.87,
+        "T2VZ": 68.51,
+        "VC2": 85.92
+      },
+      "published_map": 88.49,
+      "all_six": {
+        "n_generators": 6,
+        "macro_ap": 88.4867,
+        "worst_generator": "T2VZ",
+        "worst_ap": 68.51,
+        "mean_minus_worst_pp": 19.9767,
+        "leave_one_generator_out_macro_ap": {
+          "MSE": 87.914,
+          "OS": 88.648,
+          "Pika": 86.266,
+          "ST2V": 86.61,
+          "T2VZ": 92.482,
+          "VC2": 89.0
+        }
+      },
+      "excluding_pika": {
+        "n_generators": 5,
+        "macro_ap": 86.266,
+        "worst_generator": "T2VZ",
+        "worst_ap": 68.51,
+        "mean_minus_worst_pp": 17.756,
+        "leave_one_generator_out_macro_ap": {
+          "MSE": 84.995,
+          "OS": 85.9125,
+          "ST2V": 83.365,
+          "T2VZ": 90.705,
+          "VC2": 86.3525
+        }
+      }
+    },
+    "NPR": {
+      "published_ap": {
+        "MSE": 87.04,
+        "OS": 89.85,
+        "Pika": 99.98,
+        "ST2V": 89.88,
+        "T2VZ": 88.93,
+        "VC2": 70.79
+      },
+      "published_map": 87.75,
+      "all_six": {
+        "n_generators": 6,
+        "macro_ap": 87.745,
+        "worst_generator": "VC2",
+        "worst_ap": 70.79,
+        "mean_minus_worst_pp": 16.955,
+        "leave_one_generator_out_macro_ap": {
+          "MSE": 87.886,
+          "OS": 87.324,
+          "Pika": 85.298,
+          "ST2V": 87.318,
+          "T2VZ": 87.508,
+          "VC2": 91.136
+        }
+      },
+      "excluding_pika": {
+        "n_generators": 5,
+        "macro_ap": 85.298,
+        "worst_generator": "VC2",
+        "worst_ap": 70.79,
+        "mean_minus_worst_pp": 14.508,
+        "leave_one_generator_out_macro_ap": {
+          "MSE": 84.8625,
+          "OS": 84.16,
+          "ST2V": 84.1525,
+          "T2VZ": 84.39,
+          "VC2": 88.925
+        }
+      }
+    },
+    "AIGVDet": {
+      "published_ap": {
+        "MSE": 63.33,
+        "OS": 62.12,
+        "Pika": 66.07,
+        "ST2V": 55.46,
+        "T2VZ": 63.49,
+        "VC2": 52.15
+      },
+      "published_map": 60.44,
+      "all_six": {
+        "n_generators": 6,
+        "macro_ap": 60.4367,
+        "worst_generator": "VC2",
+        "worst_ap": 52.15,
+        "mean_minus_worst_pp": 8.2867,
+        "leave_one_generator_out_macro_ap": {
+          "MSE": 59.858,
+          "OS": 60.1,
+          "Pika": 59.31,
+          "ST2V": 61.432,
+          "T2VZ": 59.826,
+          "VC2": 62.094
+        }
+      },
+      "excluding_pika": {
+        "n_generators": 5,
+        "macro_ap": 59.31,
+        "worst_generator": "VC2",
+        "worst_ap": 52.15,
+        "mean_minus_worst_pp": 7.16,
+        "leave_one_generator_out_macro_ap": {
+          "MSE": 58.305,
+          "OS": 58.6075,
+          "ST2V": 60.2725,
+          "T2VZ": 58.265,
+          "VC2": 61.1
+        }
+      }
+    },
+    "Demamba": {
+      "published_ap": {
+        "MSE": 58.73,
+        "OS": 85.87,
+        "Pika": 99.34,
+        "ST2V": 86.48,
+        "T2VZ": 79.62,
+        "VC2": 80.28
+      },
+      "published_map": 81.72,
+      "all_six": {
+        "n_generators": 6,
+        "macro_ap": 81.72,
+        "worst_generator": "MSE",
+        "worst_ap": 58.73,
+        "mean_minus_worst_pp": 22.99,
+        "leave_one_generator_out_macro_ap": {
+          "MSE": 86.318,
+          "OS": 80.89,
+          "Pika": 78.196,
+          "ST2V": 80.768,
+          "T2VZ": 82.14,
+          "VC2": 82.008
+        }
+      },
+      "excluding_pika": {
+        "n_generators": 5,
+        "macro_ap": 78.196,
+        "worst_generator": "MSE",
+        "worst_ap": 58.73,
+        "mean_minus_worst_pp": 19.466,
+        "leave_one_generator_out_macro_ap": {
+          "MSE": 83.0625,
+          "OS": 76.2775,
+          "ST2V": 76.125,
+          "T2VZ": 77.84,
+          "VC2": 77.675
+        }
+      }
+    },
+    "Our D3": {
+      "published_ap": {
+        "MSE": 96.85,
+        "OS": 97.85,
+        "Pika": 99.14,
+        "ST2V": 93.13,
+        "T2VZ": 45.11,
+        "VC2": 98.7
+      },
+      "published_map": 88.46,
+      "all_six": {
+        "n_generators": 6,
+        "macro_ap": 88.4633,
+        "worst_generator": "T2VZ",
+        "worst_ap": 45.11,
+        "mean_minus_worst_pp": 43.3533,
+        "leave_one_generator_out_macro_ap": {
+          "MSE": 86.786,
+          "OS": 86.586,
+          "Pika": 86.328,
+          "ST2V": 87.53,
+          "T2VZ": 97.134,
+          "VC2": 86.416
+        }
+      },
+      "excluding_pika": {
+        "n_generators": 5,
+        "macro_ap": 86.328,
+        "worst_generator": "T2VZ",
+        "worst_ap": 45.11,
+        "mean_minus_worst_pp": 41.218,
+        "leave_one_generator_out_macro_ap": {
+          "MSE": 83.6975,
+          "OS": 83.4475,
+          "ST2V": 84.6275,
+          "T2VZ": 96.6325,
+          "VC2": 83.235
+        }
+      }
+    }
+  }
+}
