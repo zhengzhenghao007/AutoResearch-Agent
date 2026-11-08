@@ -1,0 +1,89 @@
+{
+  "query": "AI-generated video detection",
+  "run_id": "d7d15d9a5cb141e3acafed4710b81a85",
+  "searched_at": "2026-11-08T03:33:35.045088+00:00",
+  "providers": [
+    {
+      "name": "arxiv",
+      "status": "success",
+      "hits": 20,
+      "error": null
+    },
+    {
+      "name": "openalex",
+      "status": "success",
+      "hits": 20,
+      "error": null
+    },
+    {
+      "name": "crossref",
+      "status": "success",
+      "hits": 20,
+      "error": null
+    },
+    {
+      "name": "semantic_scholar",
+      "status": "failed",
+      "hits": 0,
+      "error": "Provider returned HTTP 429; retry later."
+    }
+  ],
+  "download_attempts": 5,
+  "sources": [
+    {
+      "title": "GenVidBench: A 6-Million Benchmark for AI-Generated Video Detection",
+      "url": "https://openalex.org/W4406735094",
+      "sha256": "717f380e90a5f3e77eaf7138b5bd7028d6c030e69e123dbb7eea7819d5051743",
+      "pages": 9,
+      "candidate_spans": 85
+    },
+    {
+      "title": "AI-Generated Video Detection via Perceptual Straightening",
+      "url": "https://openalex.org/W7196937366",
+      "sha256": "8f58237d1e63855d0612551000708f54fc236aabbef6a26662a6baa4c056fc33",
+      "pages": 27,
+      "candidate_spans": 68
+    },
+    {
+      "title": "Your One-Stop Solution for AI-Generated Video Detection",
+      "url": "https://openalex.org/W7124689123",
+      "sha256": "5b0f1be9165bcd0852486e2fab6a032c25f39016f134f1510814f70b6efa17be",
+      "pages": 50,
+      "candidate_spans": 150
+    }
+  ],
+  "steps": [
+    {
+      "skill": "research_retrieve",
+      "status": "completed",
+      "summary": "Category-balanced paper coverage, ranked by English terms and Chinese character pairs within each category. This selection is not semantic relevance verification."
+    },
+    {
+      "skill": "inspect_sources",
+      "status": "completed",
+      "summary": "Source IDs, page numbers and literal quotations checked. Lexical retrieval does not establish semantic support or scientific truth."
+    },
+    {
+      "skill": "evidence_matrix",
+      "status": "completed",
+      "summary": "evidence matrix: 21 traceable research artifacts. Scientific validation remains unassessed."
+    },
+    {
+      "skill": "brainstorm",
+      "status": "completed",
+      "summary": "brainstorm: 6 traceable research artifacts. Scientific validation remains unassessed."
+    },
+    {
+      "skill": "literature_review",
+      "status": "completed",
+      "summary": "literature review: 8 traceable research artifacts. Scientific validation remains unassessed."
+    },
+    {
+      "skill": "supervise",
+      "status": "completed",
+      "summary": "supervise: 3 traceable research artifacts. Scientific validation remains unassessed."
+    }
+  ],
+  "status": "incomplete",
+  "reason": "Plan finished; human semantic review remains required."
+}
